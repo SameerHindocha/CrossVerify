@@ -28,6 +28,8 @@
       vm.getCurrentUserForEmail = JSON.parse(window.localStorage.getItem('currentUser'));
       vm.email = vm.getCurrentUserForEmail.email;
       vm.companyName = vm.getCurrentUserForEmail.companyName;
+      vm.file = vm.getCurrentUserForEmail.file;
+      vm.file = vm.file.split('/').slice(7).join('/');
       vm.getClientList();
     }
 
@@ -46,9 +48,12 @@
       let postObj = {
         email: vm.email
       }
-      DashboardService.sendSMSService(postObj);
-      toastr.success("SMS sent successfully");
-      // toastr.error("Error in Sending SMS ");
+      DashboardService.sendSMSService(postObj).then((response) => {
+        toastr.success(response.data.message);
+      }).catch((error) => {
+        console.log("error", error);
+        toastr.error(error.data.message);
+      })
     }
 
     function getClientList() {
@@ -99,8 +104,16 @@
       placement: 'bottom'
     });
 
+    $("#clip").hover(function() {
+      $(this)
+        .attr('data-original-title', 'copy to clipbard')
+        .tooltip('show');
+    }, function() {
+      $(this).tooltip('hide');
+    });
+
     function setTooltip(btn, message) {
-      $(btn).tooltip('hide')
+      $(btn)
         .attr('data-original-title', message)
         .tooltip('show');
     }
@@ -108,10 +121,11 @@
     function hideTooltip(btn) {
       setTimeout(function() {
         $(btn).tooltip('hide');
-      }, 2000);
+      }, 500);
     }
 
     function onSuccess(e) {
+
       setTooltip(e.trigger, 'Copied!');
       hideTooltip(e.trigger);
     };

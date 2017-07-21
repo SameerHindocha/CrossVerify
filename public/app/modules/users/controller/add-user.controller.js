@@ -19,6 +19,12 @@
     function activate() {}
 
     function addUser() {
+      let splitArray = vm.file.name.split('.');
+      let fileType = lodash.last(splitArray);
+      Object.defineProperty(vm.file, 'name', {
+        value: Math.floor(Math.random() * (1000000000000 - 3) + 100000) + '.' + fileType,
+        writable: true
+      });
       let postObj = {
         companyName: vm.companyName,
         state: vm.state,

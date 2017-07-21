@@ -14,6 +14,7 @@
       <input type="search" class="form-control" ng-model="vm.searchText" placeholder="Search" type="search" ng-change="vm.search()" />
     </div>
     <div class="col-md-6 actionButtons text-right">
+      <a href="{{vm.file}}" class="btn btn-primary">Download file</a>
       <label class="shareLinkText">{{vm.link}}</label>
       <button id="clip" class="btn" ngclipboard data-clipboard-text="{{vm.link}}" ngclipboard ngclipboard-success="vm.onSuccess(e);" ngclipboard-error="vm.onError(e);">
         <i class="fa fa-clipboard" aria-hidden="true"></i>

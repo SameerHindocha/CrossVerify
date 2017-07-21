@@ -6,7 +6,7 @@
 
   controller.$inject = ['ClientService', 'toastr', '$location', '$route', 'lodash', '$rootScope'];
 
-  function controller(ClientService, toastr, $location, $route, lodash, rootScope) {
+  function controller(ClientService, toastr, $location, $route, lodash, $rootScope) {
     let vm = this;
     $rootScope.showLoginBackground = false;
     vm.ClientService = ClientService;
@@ -24,6 +24,12 @@
     function addClient() {
       let sentUserId = $route.current.params.id;
       vm.sentUserId = sentUserId;
+      let splitArray = vm.file.name.split('.');
+      let fileType = lodash.last(splitArray);
+      Object.defineProperty(vm.file, 'name', {
+        value: Math.floor(Math.random() * (1000000000000 - 3) + 100000) + '.' + fileType,
+        writable: true
+      });
       let postObj = {
         companyName: vm.companyName,
         state: vm.state,
@@ -65,63 +71,6 @@
       });
 
     }
-    // function addClient() {
-    //   alert("123");
-    //   console.log(">>>>>.-------addClient------<<<<<");
-    //   alert("2-3");
-
-
-    //   let sentUserId = $route.current.params.id;
-    //   vm.sentUserId = sentUserId;
-    //   let postObj = {
-    //     companyName: vm.companyName,
-    //     state: vm.state,
-    //     city: vm.city,
-    //     pincode: vm.pincode,
-    //     email: vm.email,
-    //     ownerName: vm.ownerName,
-    //     address: vm.address,
-    //     mobile1: vm.mobile1,
-    //     mobile2: vm.mobile2,
-    //     landline: vm.landline,
-    //     panNo: vm.panNo,
-    //     GSTNo: vm.GSTNo,
-    //     userId: vm.sentUserId,
-    //     password: vm.password,
-    //     file: vm.file
-
-    //   };
-    //   alert("4");
-    //   alert(postObj);
-    //   console.log("postObj", postObj);
-    //   alert("5");
-
-    //   let urldata = {
-    //     url: "api/client",
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data'
-    //     },
-    //     data: postObj
-    //   };
-    //   alert("6");
-
-
-    //   // ClientService.addClient(urldata).then((response) => {
-    //   //   toastr.success('Registered successfully');
-    //   //   if (vm.password) {
-    //   //     $location.path('/login')
-    //   //   } else {
-    //   //     $location.path('/client/post-register')
-    //   //   }
-    //   // }).catch((error) => {
-    //   //   if (error.status == 409) {
-    //   //     toastr.error(error.data.message);
-    //   //   }
-    //   // });
-
-
-    // }
-    // 
 
 
     function checkPassword() {

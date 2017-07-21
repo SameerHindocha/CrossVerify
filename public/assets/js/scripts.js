@@ -38,7 +38,7 @@ jQuery(document).ready(function() {
         $(this).removeClass('input-error');
 
         if ($(this).attr('id') == "mobile2") {
-          if ($(this)[0].value.length > 0 && $(this)[0].value.length != 10) {
+          if ($(this)[0].value.length > 0 && $(this)[0].value.length != 10 || isNaN($(this).val())) {
             $(this).addClass('input-error');
             next_step = false;
           } else {
@@ -65,24 +65,25 @@ jQuery(document).ready(function() {
       }
 
       if ($(this).attr('id') == "mobile1") {
-        if ($(this).val().length != 10) {
+        if ($(this).val().length != 10 || isNaN($(this).val())) {
           next_step = false;
           $(this).addClass('input-error');
         }
       }
       if ($(this).attr('id') == "pincode") {
-        if ($(this).val().length != 6) {
+        if ($(this).val().length != 6 || isNaN($(this).val())) {
           next_step = false;
           $(this).addClass('input-error');
         }
       }
       if ($(this).attr('id') == "GSTNo") {
-        if ($(this).val().length != 15) {
+        let conflict = $(this).attr("data-isGstConflict");
+        console.log(conflict);
+        if ($(this).val().length != 15 || conflict === "true" ) {
           next_step = false;
           $(this).addClass('input-error');
         }
       }
-
 
       if ($(this).attr('id') == "password") {
         password = $(this).val();
