@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+  <div class="container dashboardHeader">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h1><img src="../../assets/logo-crossverify.png" /></h1>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="container">
+    <div class="row">
+      <a href="/#/login" class="btn btn-primary pull-right">Login</a>
+      <div class="col-md-12">
+        <h2>
+                Client Registration
+            </h2>
+      </div>
+      <!--      <div class="col-md-12 registrationForm">
+        <form name="addClientForm">
+          <div class="row">
+            <div class="col-md-12">
+              <h4>Company Information</h4>
+            </div>
+            <div class="inputGroupWrap col-md-6">
+              <div class="input-group input-group-icon">
+                <input type="text" name="companyName" class="form-control" ng-model="vm.companyName" placeholder=" Company Name" required>
+                <div class="input-icon"><i class="fa fa-briefcase"></i></div>
+              </div>
+              <div ng-hide="addClientForm.companyName.$valid || addClientForm.companyName.$pristine" class="alert alert-danger">
+                Company Name is Require
+              </div>
+            </div> -->
+      <!-- ******STATE********* -->
+      <!-- <div class="inputGroupWrap col-md-6">
+              <div class="input-group input-group-icon">
+                <select name="state" class="form-control" ng-model="vm.state" ng-options="state for state in vm.states" required="">
+                  <option value="">Please select State</option>
+                </select>
+                <div class="input-icon"><i class="fa fa-location-arrow"></i></div>
+              </div>
+              <div ng-hide="addClientForm.state.$valid || addClientForm.state.$pristine" class="alert alert-danger">
+                State Name is Require
+              </div>
+            </div> -->
+      <!-- ******CITY********* -->
+      <!--      <div class="inputGroupWrap col-md-6">
+              <div class="input-group input-group-icon">
+                <input type="text" name="city" class="form-control" ng-model="vm.city" placeholder="City Name" required>
+                <div class="input-icon"><i class="fa fa-map-marker"></i></div>
+              </div>
+              <div ng-hide="addClientForm.city.$valid || addClientForm.city.$pristine" class="alert alert-danger">
+                City Name is Require
+              </div>
+            </div> -->
+      <!-- *******PINCODE******** -->
+      <!--  <div class="inputGroupWrap col-md-6">
+              <div class="input-group input-group-icon">
+                <input type="number" name="pincode" class="form-control no-spin" ng-model="vm.pincode" placeholder="Pincode" maxlength="6" minlength="6" required>
+                <div class="input-icon"><i class="fa fa-thumb-tack"></i></div>
+              </div>
+              <div ng-hide="addClientForm.pincode.$valid || addClientForm.pincode.$pristine" class="alert alert-danger">
+                Invalid Pincode
+              </div>
+            </div>
+          </div> -->
+      <!-- *******OWNER NAME******** -->
+      <!--      <div class="row">
+            <div class="col-md-12">
+              <h4>Personal Information</h4>
+            </div>
+            <div class="inputGroupWrap col-md-6">
+              <div class="input-group input-group-icon">
+                <input type="text" name="ownerName" class="form-control" ng-model="vm.ownerName" placeholder="Owner Name" required>
+                <div class="input-icon"><i class="fa fa-user"></i></div>
+              </div>
+              <div ng-hide="addClientForm.ownerName.$valid || addClientForm.ownerName.$pristine" class="alert alert-danger">
+                Owner Name is Require
+              </div>
+            </div> -->
+      <!-- *******ADDRESS******** -->
+      <!--  <div class="inputGroupWrap col-md-6">
+              <div class="input-group input-group-icon">
+                <input type="text" name="address" class="form-control" ng-model="vm.address" placeholder="Address" required>
+                <div class="input-icon"><i class="fa fa-address-card"></i></div>
+              </div>
+              <div ng-hide="addClientForm.address.$valid || addClientForm.address.$pristine" class="alert alert-danger">
+                Address is Require
+              </div>
+            </div> -->
+      <!-- *******MOBILE 1******** -->
+      <!--  <div class="inputGroupWrap col-md-6">
+              <div class="input-group input-group-icon">
+                <input type="number" name="mobile1" class="form-control no-spin" ng-model="vm.mobile1" placeholder="Mobile Number" maxlength="10" minlength="10" required>
+                <div class="input-icon"><i class="fa fa-mobile"></i></div>
+              </div>
+              <div ng-hide="addClientForm.mobile1.$valid || addClientForm.mobile1.$pristine" class="alert alert-danger">
+                Invalid Mobile Number
+              </div>
+            </div> -->
+      <!-- *******MOBILE2******** -->
+      <!--    <div class="inputGroupWrap col-md-6">
+              <div class="input-group input-group-icon">
+                <input type="number" name="mobile2" class="form-control no-spin" ng-model="vm.mobile2" placeholder="Alternate Mobile Number" maxlength="10" minlength="10">
+                <div class="input-icon"><i class="fa fa-mobile"></i></div>
+              </div>
+            </div> -->
+      <!-- *******LANDLINE******** -->
+      <!--   <div class="inputGroupWrap col-md-6">
+              <div class="input-group input-group-icon">
+                <input type="number" name="landline" class="form-control no-spin" ng-model="vm.landline" placeholder="Landline Number">
+                <div class="input-icon"><i class="fa fa-phone"></i></div>
+              </div>
+            </div>
+          </div> -->
+      <!-- ******PAN NO********* -->
+      <!--   <div class="row">
+            <div class="col-md-12">
+              <h4>KYC Information</h4>
+            </div>
+            <div class="inputGroupWrap col-md-6">
+              <div class="input-group input-group-icon">
+                <input type="text" name="panNo" class="form-control" style='text-transform:uppercase' maxlength="10" ng-model="vm.panNo" placeholder="Pan Number" required>
+                <div class="input-icon"><i class="fa fa-id-card"></i></div>
+              </div>
+              <div ng-hide="addClientForm.panNo.$valid || addClientForm.panNo.$pristine" class="alert alert-danger">
+                Pan Number is Require
+              </div>
+            </div> -->
+      <!-- *******GST NO******** -->
+      <!--  <div class="inputGroupWrap col-md-6">
+              <div class="input-group input-group-icon">
+                <input type="text" name="GSTNo" class="form-control" ng-model="vm.GSTNo" placeholder="GST Number" minlength="15" maxlength="15" ng-change="vm.getGSTStatus();vm.fetchRecord()" required>
+                <div class="input-icon"><i class="fa fa-id-card-o"></i></div>
+              </div>
+              <div ng-hide="addClientForm.GSTNo.$valid || addClientForm.GSTNo.$pristine" class="alert alert-danger">
+                GST Number is Require
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <h4>User Information</h4>
+            </div> -->
+      <!-- *******EMAIL******** -->
+      <!--   <div class="inputGroupWrap col-md-6">
+              <div class="input-group input-group-icon">
+                <input type="email" name="email" class="form
+-control" ng-model="vm.email" placeholder="Email Address" required>
+                <div class="input-icon"><i class="fa fa-envelope-o"></i></div>
+              </div>
+              <div ng-hide="addClientForm.email.$valid || addClientForm.email.$pristine" class="alert alert-danger">
+                Invalid Email Address
+              </div>
+            </div> -->
+      <!-- *******PASSWORD******** -->
+      <!--  <div class="inputGroupWrap col-md-12">
+              <div class="row"> -->
+      <!--            <div class="inputGroupWrap col-md-6">
+                  <div class="input-group input-group-icon">
+                    <input type="password" name="password" class="form-control" ng-model="vm.password" placeholder=" Password" minlength="8" autocomplete="off">
+                    <div class="input-icon"><i class="fa fa-key"></i></div>
+                  </div>
+                  <div ng-hide="addClientForm.password.$valid" class="alert alert-danger">
+                    Invalid Password
+                  </div>
+                </div>
+                <div class="inputGroupWrap col-md-6">
+                  <div class="input-group input-group-icon">
+                    <input type="password" name="confirmPassword" class="form-control" ng-model="vm.confirmPassword" placeholder="Confirm Password" autocomplete="off">
+                    <div class="input-icon"><i class="fa fa-key"></i></div>
+                  </div>
+                  <div ng-hide="addClientForm.confirmPassword.$valid" class="alert alert-danger">
+                    Invalid Confirm Password
+                  </div>
+                </div> -->
+      <!--            </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <h4>Document</h4>
+              <input type="file" ngf-select ng-model="vm.file" name="file" accept="image/*" ngf-max-size="2MB" ngf-model-invalid="errorFile">
+              <div class="alert alert-danger" ng-show="addUserForm.file.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
+              </div>
+              <br>
+              <img ng-show="addUserForm.file.$valid" ngf-thumbnail="vm.file" class="thumb">
+              <input type="button" class="btn btn-danger" value="Remove" ng-click="vm.file = null" ng-show="vm.file">
+            </div>
+          </div>
+          <button class="btn btn-primary" ng-disabled=" 
+          vm.gstConflict || 
+          addClientForm.companyName.$invalid || addClientForm.state.$invalid || addClientForm.city.$invalid || addClientForm.pincode.$invalid || addClientForm.ownerName.$invalid || addClientForm.address.$invalid || addClientForm.mobile1.$invalid || addClientForm.panNo.$invalid || addClientForm.tinNo.$invalid || addClientForm.GSTNo.$invalid || addClientForm.email.$invalid" ng-click="vm.addClient()">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html> -->
+      <!-- NEW CODE -->
+      <div class="top-content">
+        <div class="inner-bg">
+          <div class="container">
+            <!--  <div class="row">
+           <div class="col-md-12">
+        <h2>
+                Client Registration
+            </h2>
+      </div>
+        </div> -->
+            <div class="row  registrationForm">
+              <div class="col-sm-6 col-sm-offset-3 form-box">
+                <form role="form" name="addClientForm" class="registration-form">
+                  <!-- =======================PAGE 1============================ -->
+                  <fieldset>
+                    <div class="form-top">
+                      <div class="form-top-left">
+                        <h3>Step 1 / 4</h3>
+                        <p>Authentication Details:</p>
+                      </div>
+                      <div class="form-top-right">
+                        <i class="fa fa-key"></i>
+                      </div>
+                    </div>
+                    <div class="form-bottom">
+                      ***** EMAIL *****
+                      <div class="form-group input-group input-group-icon">
+                        <input type="email" id="email" name="email" class="form-control" ng-model="vm.email" placeholder="Email Address" required>
+                        <div class="input-icon"><i class="fa fa-envelope-o"></i></div>
+                      </div>
+                      <div ng-hide="addClientForm.email.$valid || addClientForm.email.$pristine" class="alert alert-danger">
+                        Invalid Email Address
+                      </div>
+                      ***** GST *****
+                      <div class="form-group input-group input-group-icon">
+                        <input type="text" id="GSTNo" name="GSTNo" class="form-control toUpper" ng-model="vm.GSTNo" placeholder="GST Number" minlength="15" maxlength="15" ng-change="vm.getGSTStatus()" required>
+                        <div class="input-icon"><i class="fa fa-id-card-o"></i></div>
+                      </div>
+                      <div ng-hide="addClientForm.GSTNo.$valid || addClientForm.GSTNo.$pristine || vm.gstConflict" class="alert alert-danger">
+                        Invalid GST Number
+                      </div>
+                      ***** PASSWORD *****
+                      <div class="input-group input-group-icon">
+                        <input type="password" id="password" name="password" class="form-control" ng-model="vm.password" placeholder=" Password" minlength="8" autocomplete="off">
+                        <div class="input-icon"><i class="fa fa-key"></i></div>
+                      </div>
+                      <div ng-hide="addClientForm.password.$valid" class="alert alert-danger">
+                        Password should have minimum 8 characters
+                      </div>
+                      - ***** CONFIRM PASSWORD *****
+                      <div class="input-group input-group-icon">
+                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" ng-model="vm.confirmPassword" placeholder="Confirm Password" autocomplete="off">
+                        <div class="input-icon"><i class="fa fa-key"></i></div>
+                      </div>
+                      <div ng-hide="addClientForm.confirmPassword.$valid" class="alert alert-danger">
+                        Invalid Confirm Password
+                      </div>
+                    </div>
+                    <button type="button" ng-disabled="vm.gstConflict" ng-click="vm.checkPassword();vm.fetchRecord()" class="btn btn-next btn-primary">Next</button>
+                  </fieldset>
+                  <!-- =======================PAGE 2============================ -->
+                  <fieldset>
+                    <div class="form-top">
+                      <div class="form-top-left">
+                        <h3>Step 2 / 4</h3>
+                        <p>Company Information:</p>
+                      </div>
+                      <div class="form-top-right">
+                        <i class="fa fa-building-o"></i>
+                      </div>
+                    </div>
+                    <div class="form-bottom">
+                      *******COMPANY NAME********
+                      <div class="form-group">
+                        <div class="input-group input-group-icon">
+                          <input type="text" id="companyName" name="companyName" class="form-control" ng-model="vm.companyName" placeholder="Company Name" required>
+                          <div class="input-icon"><i class="fa fa-briefcase"></i></div>
+                        </div>
+                        <div ng-hide="addClientForm.companyName.$valid || addClientForm.companyName.$pristine" class="alert alert-danger">
+                          Company Name is Require
+                        </div>
+                      </div>
+                      ******STATE*********
+                      <div class="form-group">
+                        <div class="input-group input-group-icon">
+                          <select name="state" id="state" class="form-control" ng-model="vm.state" ng-options="state for state in vm.states" required="">
+                            <option disabled="" value="">Please select State</option>
+                          </select>
+                          <div class="input-icon"><i class="fa fa-location-arrow"></i></div>
+                        </div>
+                        <div ng-hide="addClientForm.state.$valid || addClientForm.state.$pristine" class="alert alert-danger">
+                          State Name is Require
+                        </div>
+                      </div>
+                      ******CITY*********
+                      <div class="form-group">
+                        <div class="input-group input-group-icon">
+                          <input type="text" id="city" name="city" class="form-control" ng-model="vm.city" placeholder="City Name" required>
+                          <div class="input-icon"><i class="fa fa-map-marker"></i></div>
+                        </div>
+                        <div ng-hide="addClientForm.city.$valid || addClientForm.city.$pristine" class="alert alert-danger">
+                          City Name is Require
+                        </div>
+                      </div>
+                      *******PINCODE********
+                      <div class="form-group">
+                        <div class="input-group input-group-icon">
+                          <input type="number" id="pincode" name="pincode" class="form-control no-spin" ng-model="vm.pincode" placeholder="Pincode" maxlength="6" minlength="6" required>
+                          <div class="input-icon"><i class="fa fa-thumb-tack"></i></div>
+                        </div>
+                        <div ng-hide="addClientForm.pincode.$valid || addClientForm.pincode.$pristine" class="alert alert-danger">
+                          Invalid Pincode
+                        </div>
+                      </div>
+                      <button type="button" class="btn btn-previous btn-primary">Previous</button>
+                      <button type="button" class="btn btn-next btn-primary">Next</button>
+                    </div>
+                  </fieldset>
+                  <!-- =======================PAGE 3============================ -->
+                  <fieldset>
+                    <div class="form-top">
+                      <div class="form-top-left">
+                        <h3>Step 3 / 4</h3>
+                        <p>Personal Information:</p>
+                      </div>
+                      <div class="form-top-right">
+                        <i class="fa fa-user"></i>
+                      </div>
+                    </div>
+                    <div class="form-bottom">
+                      ******* OWNER NAME ********
+                      <div class="form-group">
+                        <div class="form-group input-group input-group-icon">
+                          <input type="text" id="ownerName" name="ownerName" class="form-control" ng-model="vm.ownerName" placeholder="Owner Name" required>
+                          <div class="input-icon"><i class="fa fa-user"></i></div>
+                        </div>
+                        <div ng-hide="addClientForm.ownerName.$valid || addClientForm.ownerName.$pristine" class="alert alert-danger">
+                          Owner Name is Require
+                        </div>
+                      </div>
+                      ******* ADDRESS ********
+                      <div class="form-group">
+                        <div class="form-group input-group input-group-icon">
+                          <input type="text" id="address" name="address" class="form-control" ng-model="vm.address" placeholder="Address" required>
+                          <div class="input-icon"><i class="fa fa-address-card"></i></div>
+                        </div>
+                        <div ng-hide="addClientForm.address.$valid || addClientForm.address.$pristine" class="alert alert-danger">
+                          Address is Require
+                        </div>
+                      </div>
+                      ******* MOBILE 1 ********
+                      <div class="form-group">
+                        <div class="form-group input-group input-group-icon">
+                          <input type="number" id="mobile1" name="mobile1" class="form-control no-spin" ng-model="vm.mobile1" placeholder="Mobile Number" maxlength="10" minlength="10" required>
+                          <div class="input-icon"><i class="fa fa-mobile"></i></div>
+                        </div>
+                        <div ng-hide="addClientForm.mobile1.$valid || addClientForm.mobile1.$pristine" class="alert alert-danger">
+                          Invalid Mobile Number
+                        </div>
+                      </div>
+                      ******* MOBILE 2 ********
+                      <div class="form-group">
+                        <div class="form-group input-group input-group-icon">
+                          <input type="number" id="mobile2" name="mobile2" class="form-control no-spin" ng-model="vm.mobile2" placeholder="Alternate Mobile Number" maxlength="10" minlength="10">
+                          <div class="input-icon"><i class="fa fa-mobile"></i></div>
+                        </div>
+                      </div>
+                      ******* LANDLINE ********
+                      <div class="form-group">
+                        <div class="form-group input-group input-group-icon">
+                          <input type="number" id="landline" name="landline" class="form-control no-spin" ng-model="vm.landline" placeholder="Landline Number">
+                          <div class="input-icon"><i class="fa fa-phone"></i></div>
+                        </div>
+                      </div>
+                      *******OWNER NAME********
+                      <button type="button" class="btn btn-previous btn-primary">Previous</button>
+                      <button type="button" class="btn btn-next btn-primary">Next</button>
+                    </div>
+                  </fieldset>
+                  <!-- =======================PAGE 4============================ -->
+                  <fieldset>
+                    <div class="form-top">
+                      <div class="form-top-left">
+                        <h3>Step 4 / 4</h3>
+                        <p>Require Documents:</p>
+                      </div>
+                      <div class="form-top-right">
+                        <i class="fa fa-file-excel-o"></i>
+                      </div>
+                    </div>
+                    <div class="form-bottom">
+                      <!-- ******* PAN NUMBER ******** -->
+                      <div class="form-group">
+                        <div class="input-group input-group-icon">
+                          <input type="text" id="panNo" name="panNo" class="form-control toUpper" ng-model="vm.panNo" placeholder="Pan Number">
+                          <div class="input-icon"><i class="fa fa-id-card"></i></div>
+                        </div>
+                        <div ng-hide="addClientForm.panNo.$valid || addClientForm.panNo.$pristine" class="alert alert-danger">
+                          Pan Number is Require
+                        </div>
+                      </div>
+                      <!-- ******* UPLOAD FILE  ******** -->
+                      <div class="form-group">
+                        <input type="file" id="file" ngf-select ng-model="vm.file" name="file" accept="image/*" ngf-max-size="2MB" ngf-model-invalid="errorFile">
+                        <div class="alert alert-danger" ng-show="addUserForm.file.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
+                        </div>
+                        <br>
+                        <img ng-show="addUserForm.file.$valid" ngf-thumbnail="vm.file" class="thumb">
+                        <button type="button" class="btn btn-danger" ng-click="vm.file=null" ng-show="vm.file"><i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                      <!--   <div class="form-group">
+                        <label class="sr-only" for="form-google-plus">Google plus</label>
+                        <input type="text" name="form-google-plus" placeholder="Google plus..." class="form-google-plus form-control" id="form-google-plus">
+                      </div> -->
+                      <button type="button" class="btn btn-previous btn-primary">Previous</button>
+                      <!-- <button type="button" class="btn" ng-click="vm.addClient()">Sign me up!</button> -->
+                      <button type="submit" class="btn" ng-click="vm.addClient()">Sign me up!</button>
+                    </div>
+                  </fieldset>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>

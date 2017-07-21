@@ -1,0 +1,68 @@
+<html ng-app="mainApp">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Cross Verify</title>
+  <meta name="HandheldFriendly" content="True">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <!-- NODE MODULE STAT -->
+  <script src="node_modules/angular/angular.min.js"></script>
+  <script src="node_modules/angular-route/angular-route.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="node_modules/angular-toastr/dist/angular-toastr.css">
+  <script src="node_modules/angular-toastr/dist/angular-toastr.tpls.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <!-- ***** NODE MODULE END ***** -->
+  <script src="node_modules/ng-lodash/build/ng-lodash.min.js"></script>
+  <script src="node_modules/ng-file-upload/dist/ng-file-upload.min.js"></script>
+  <script src="node_modules/clipboard/dist/clipboard.min.js"></script>
+  <script src="node_modules/ngclipboard/dist/ngclipboard.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="./assets/style/client-registration.css">
+  <link rel="stylesheet" type="text/css" href="./assets/style/style.css">
+  <script src="app/modules/users/user.module.js"></script>
+  <script src="app/modules/client/client.module.js"></script>
+  <script src="app/modules/dashboard/dashboard.module.js"></script>
+  <script src="app/modules/auth/login/auth.module.js"></script>
+  <script src="app/modules/file-operation/file-operation.module.js"></script>
+  <!-- <script src="app/modules/auth/edit-profile/edit-profile.module.js"></script> -->
+  <script src="app/app.module.js"></script>
+  <script src="app/header/header.js"></script>
+  <!-- ***** SERVICES ***** -->
+  <script src="app/modules/users/model/user.service.js"></script>
+  <script src="app/modules/client/model/client.service.js"></script>
+  <script src="app/modules/dashboard/model/dashboard.service.js"></script>
+  <script src="app/modules/auth/login/model/auth.service.js"></script>
+  <script src="app/modules/file-operation/model/file-operation.service.js"></script>
+  <!-- ***** ROUTE ***** -->
+  <script src="app/modules/users/user.route.js"></script>
+  <script src="app/modules/client/client.route.js"></script>
+  <script src="app/modules/dashboard/dashboard.route.js"></script>
+  <script src="app/modules/auth/login/auth.route.js"></script>
+  <script src="app/modules/file-operation/file-operation.route.js"></script>
+  <!--  ***** Controller ***** -->
+  <script src="app/modules/users/controller/add-user.controller.js"></script>
+  <script src="app/modules/users/controller/list-user.controller.js"></script>
+  <script src="app/modules/client/controller/add-client.controller.js"></script>
+  <script src="app/modules/dashboard/controller/dashboard.controller.js"></script>
+  <script src="app/modules/auth/login/controller/login.controller.js"></script>
+  <script src="app/modules/users/controller/profile.controller.js"></script>
+  <script src="app/modules/file-operation/controller/file-comparision.controller.js"></script>
+  <!-- ***** DIRECTIVE ***** -->
+  <script src="app/modules/users/directive/popup.directive.js"></script>
+  <!-- EXTRA -->
+  <!-- <script src="assets/js/jquery-1.11.1.min.js"></script> -->
+  <!-- <script src="assets/bootstrap/js/bootstrap.min.js"></script> -->
+  <script src="assets/js/jquery.backstretch.min.js"></script>
+  <!-- <script src="assets/js/retina-1.1.0.min.js"></script> -->
+  <script src="assets/js/scripts.js"></script>
+</head>
+
+<body ng-class="{'alpha':showLoginBackground}">
+  <ng-view></ng-view>
+</body>
+
+</html>

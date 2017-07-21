@@ -1,0 +1,36 @@
+<div class="container dashboardHeader">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <h1><img src="../../assets/logo-crossverify.png" /></h1>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="jumbotron loginForm registrationForm">
+        <h2>Sign In</h2>
+        <form name="authForm" class="form" novalidate>
+          <div class="inputGroupWrap">
+            <div class="input-group input-group-icon">
+              <input type="email" name="data1" class="form-control" ng-model="vm.data1" placeholder="Enter Email" required>
+              <div class="input-icon"><i class="fa fa-envelope"></i></div>
+            </div>
+          </div>
+          <div class="inputGroupWrap">
+            <div class="input-group input-group-icon">
+              <input type="Password" name="data2" class="form-control" ng-model="vm.data2" placeholder="Enter Password" required>
+              <div class="input-icon"><i class="fa fa-key"></i></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary" ng-click="vm.doLogin()" ng-disabled="authForm.$invalid">Login</button>
+            <br />
+            <span class="text-danger">{{ vm.error }}</span>
+          </div>
+          <div class="regLink"><span>Not yet Registered?</span> <a ng-click="vm.register()">Register here</a></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

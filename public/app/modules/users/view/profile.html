@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <header></header>
+</head>
+
+<body>
+  <div class="container dashboardHeader">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h1>Profile</h1>
+        <div class="pull-right">
+          <popup-info data="vm.user" on-update="finalvalues(details)"></popup-info>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 registrationForm registrationFormDisplay
+">
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Company Information</h4>
+          </div>
+          <br />
+          <div class="inputGroupWrap col-sm-3">
+            <div class="input-group input-group-icon">
+              <label>Company Name</label>
+              <br>
+              <span>{{vm.user.companyName}}</span>
+            </div>
+          </div>
+          <!-- *************** -->
+          <div class="inputGroupWrap col-sm-3">
+            <div class="input-group input-group-icon">
+              <label>State</label>
+              <br>
+              <span>{{vm.user.state}}</span>
+            </div>
+          </div>
+          <!-- *************** -->
+          <div class="inputGroupWrap col-sm-3">
+            <div class="input-group input-group-icon">
+              <label>City</label>
+              <br>
+              <span>{{vm.user.city}}</span>
+            </div>
+          </div>
+          <!-- *************** -->
+          <div class="inputGroupWrap col-sm-3">
+            <div class="input-group input-group-icon">
+              <label>Pincode</label>
+              <br>
+              <span>{{vm.user.pincode}}</span>
+            </div>
+          </div>
+        </div>
+        <!-- *************** -->
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Personal Information</h4>
+          </div>
+          <div class="inputGroupWrap col-sm-3">
+            <div class="input-group input-group-icon">
+              <label>Owner Name</label>
+              <br>
+              <span>{{vm.user.ownerName}}</span>
+            </div>
+          </div>
+          <!-- *************** -->
+          <div class="inputGroupWrap col-sm-3">
+            <div class="input-group input-group-icon">
+              <label>Address</label>
+              <br>
+              <span>{{vm.user.address}}</span>
+            </div>
+          </div>
+          <!-- *******Mobile1******** -->
+          <div class="inputGroupWrap col-sm-3">
+            <div class="input-group input-group-icon">
+              <label>Mobile 1</label>
+              <br>
+              <span>{{vm.user.mobile1}}</span>
+            </div>
+          </div>
+          <!-- *************** -->
+          <div class="inputGroupWrap col-sm-3">
+            <div class="input-group input-group-icon">
+              <label>Mobile 2</label>
+              <br>
+              <span>{{vm.user.mobile2}}</span>
+            </div>
+          </div>
+          <!-- *************** -->
+          <div class="inputGroupWrap col-sm-3">
+            <div class="input-group input-group-icon">
+              <label>Landline</label>
+              <br>
+              <span>{{vm.user.landline}}</span>
+            </div>
+          </div>
+        </div>
+        <!-- *************** -->
+        <div class="row">
+          <div class="col-md-12">
+            <h4>KYC Information</h4>
+          </div>
+          <div class="inputGroupWrap col-sm-3">
+            <div class="input-group input-group-icon">
+              <label>Pan Number</label>
+              <br>
+              <span>{{vm.user.panNo}}</span>
+            </div>
+          </div>
+          <!-- *************** -->
+          <div class="inputGroupWrap col-sm-3">
+            <div class="input-group input-group-icon">
+              <label>Gst Number</label>
+              <br>
+              <span>{{vm.user.GSTNo}}</span>
+            </div>
+          </div>
+          <!-- *************** -->
+          <div class="inputGroupWrap col-sm-3">
+            <div class="input-group input-group-icon">
+              <label>Email Id</label>
+              <br>
+              <span>{{vm.user.email}}</span>
+            </div>
+          </div>
+          <!-- *************** -->
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
