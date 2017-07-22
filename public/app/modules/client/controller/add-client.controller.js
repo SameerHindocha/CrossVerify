@@ -6,7 +6,7 @@
 
   controller.$inject = ['ClientService', 'toastr', '$location', '$route', 'lodash', '$rootScope'];
 
-  function controller(ClientService, toastr, $location, $route, lodash, rootScope) {
+  function controller(ClientService, toastr, $location, $route, lodash, $rootScope) {
     let vm = this;
     $rootScope.showLoginBackground = false;
     vm.ClientService = ClientService;
@@ -52,6 +52,7 @@
 
 
       ClientService.addClient(urldata).then((response) => {
+        console.log("response", response);
         toastr.success('Registered successfully');
         if (vm.password) {
           $location.path('/login')

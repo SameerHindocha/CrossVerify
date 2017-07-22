@@ -44,7 +44,7 @@ CrossVerify is a free portal where you can register your company ,unique link wi
     session = req.session;
     if (req.session.isLoggedIn == 'Y') {
       let msg = 'We' + req.session.userProfile.companyName + 'request you to fill your Company DETAILS with GSTIN ,WHICH WILL BE NEEDED ( WITHOUT SPELLING ERROR) . WE HUMBALLY REQUEST TO FILL UP THIS FORM AND SUBMIT IT AS EARLY AS POSSIBLE TO UPDATE YOUR DETAILS WITH OUR Company.' +
-        'PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS :   http://localhost:8020/#/client/add'
+        'PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS :   http://localhost:8020//client/add'
       //http://' + global.config.server.url + ':' +
       // global.config.server.port + '/#/client/add/' + req.session.userProfile._id
       let data = {

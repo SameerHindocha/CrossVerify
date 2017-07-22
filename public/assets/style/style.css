@@ -1,4 +1,5 @@
 input,
+
 input[type="radio"]+label,
 input[type="checkbox"]+label:before,
 select option,
@@ -322,7 +323,7 @@ h2,
 .registrationForm .input-group .form-control {
   display: inline-block;
   padding: 14px 14px 14px 62px;
-  border-radius: 4px !important;
+  border-radius: 0px !important;
   height: auto;
 }
 
@@ -365,12 +366,56 @@ h2,
   height: 2.75em;
 }
 
+.btn {
+  background: #eee;
+  border: 0;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  text-shadow: none;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  color: #444;
+  padding: 5px 9px;
+  filter: none;
+}
+
+.btn:hover {
+  background: #ccc;
+  text-shadow: none;
+}
+
+.btn:active {
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.btn:focus {
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  outline: none;
+}
+
+.btn.btn-primary {
+  background: #368ee0;
+  color: #fff;
+  text-shadow: none;
+  filter: none;
+}
+
+.btn.btn-primary:hover {
+  background: #1e74c5;
+}
+
 .registrationForm .alert {
   padding: 0 0 0 15px;
   margin: 0;
   background: none;
   border: 0 none;
-  position: absolute;
+  /*position: absolute;*/
   bottom: 7px;
   left: 0;
   font-size: 12px;
@@ -547,6 +592,76 @@ popup-info .modal-dialog select.form-control:focus {
 .toUpper {
   text-transform: uppercase
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

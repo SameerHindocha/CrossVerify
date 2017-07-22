@@ -77,6 +77,11 @@ jQuery(document).ready(function() {
         }
       }
       if ($(this).attr('id') == "GSTNo") {
+        console.log($(this)[0]);
+        var element = angular.element($(this));
+        var controller = element.controller();
+        var scope = element.scope();
+        console.log("scope", scope);
         if ($(this).val().length != 15) {
           next_step = false;
           $(this).addClass('input-error');
