@@ -11,6 +11,7 @@ let byPassedEndpoints = [
   '/logout',
   '/gst-status',
   '/compare-file',
+  '/edit-user'
 ];
 
 let fs = require('fs');

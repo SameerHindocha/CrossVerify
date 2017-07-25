@@ -17,7 +17,7 @@ module.exports = class UserController {
     app.get('/admin-api/user/:id', this.getUserbyId);
     app.get('/admin-api/gst-status/:gstNo', this.getGSTStatus);
     app.post('/admin-api/user', multerUpload.single('file'), this.insertNewUser);
-    app.put('/edituser', this.updateUser);
+    app.post('/admin-api/edit-user', multerUpload.single('file'), this.updateUser);
     // app.delete('/admin-api/user/:id', this.deleteUser);
   }
 
@@ -45,7 +45,9 @@ module.exports = class UserController {
     users.landline = postbody.landline;
     users.panNo = postbody.panNo;
     users.GSTNo = postbody.GSTNo;
-    users.file = global.ROOT_PATH + '/../public/assets/uploads/files/' + req.file.filename;
+    if (req.file) {
+      users.file = global.ROOT_PATH + '/../public/assets/uploads/files/' + req.file.filename;
+    }
     db.User.findOne({ email: postbody.email }).then((response) => {
       if (response != null) {
         return res.status(409).send({ message: "Email is already registered" });
@@ -79,6 +81,7 @@ module.exports = class UserController {
   };
 
   updateUser(req, res) {
+    let filePath;
     session = req.session;
     if (req.session.isLoggedIn == 'Y') {
       let sessionEmail = req.session.userProfile.email;
@@ -94,10 +97,17 @@ module.exports = class UserController {
             user.mobile1 = updatebody.mobile1;
             user.mobile2 = updatebody.mobile2;
             user.landline = updatebody.landline;
+            if (req.file) {
+              user.file = global.ROOT_PATH + '/../public/assets/uploads/files/' + req.file.filename;
+            }
           }
           user.save()
             .then((user) => {
               req.session.userProfile = user;
+              if (req.file) {
+                filePath = global.ROOT_PATH + '/../public/assets/uploads/files/' + req.file.filename
+              }
+
               db.Client.update({ "email": sessionEmail }, {
                   $set: {
                     "address": updatebody.address,
@@ -107,7 +117,8 @@ module.exports = class UserController {
                     "ownerName": updatebody.ownerName,
                     "mobile1": updatebody.mobile1,
                     "mobile2": updatebody.mobile2,
-                    "landline": updatebody.landline
+                    "landline": updatebody.landline,
+                    "file": filePath
                   }
                 }, { multi: true })
                 .then((response) => {

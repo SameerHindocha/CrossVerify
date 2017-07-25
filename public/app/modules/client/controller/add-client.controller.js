@@ -48,6 +48,8 @@
         file: vm.file
 
       };
+
+      console.log("postObj", postObj);
       let urldata = {
         url: "api/client",
         headers: {
@@ -58,13 +60,15 @@
 
 
       ClientService.addClient(urldata).then((response) => {
-        toastr.success('Registered successfully');
+        toastr.success(response.data.message);
         if (vm.password) {
           $location.path('/login')
         } else {
           $location.path('/client/post-register')
         }
       }).catch((error) => {
+        toastr.error(error.data.message);
+
         if (error.status == 409) {
           toastr.error(error.data.message);
         }
@@ -103,7 +107,9 @@
         };
 
         ClientService.fetchUserRecord(fetchObj).then((response) => {
+
           if (response.status === 200) {
+
             let userData = response.data;
             vm.companyName = userData.companyName;
             vm.state = userData.state;
@@ -118,6 +124,7 @@
             vm.file = userData.file;
           }
         }).catch((error) => {
+          console.log("error", error);
           vm.companyName = '';
           vm.state = '';
           vm.city = '';
@@ -127,7 +134,6 @@
           vm.mobile1 = '';
           vm.mobile2 = '';
           vm.landline = '';
-          vm.panNo = '';
           vm.file = '';
         })
       }

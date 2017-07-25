@@ -88,15 +88,14 @@
       return defer.promise;
     }
 
-    function updateUser(data) {
+    function updateUser(urldata) {
+      console.log("urldata", urldata);
       let defer = $q.defer();
-      $http({
-        method: 'put',
-        url: '/editUser',
-        data: data,
-      }).then(function(response) {
+      Upload.upload(urldata).then(function(response) {
+        console.log("response=>", response);
         defer.resolve(response);
       }).catch(function(error) {
+        console.log("error", error);
         defer.reject(error);
       });
       return defer.promise;

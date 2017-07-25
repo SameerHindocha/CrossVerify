@@ -38,8 +38,9 @@ module.exports = class ClientController {
     User.landline = req.body.landline;
     User.panNo = req.body.panNo;
     User.GSTNo = req.body.GSTNo;
-    User.file = global.ROOT_PATH + '/../public/assets/uploads/files/' + req.file.filename;
-
+    if (req.file) {
+      User.file = global.ROOT_PATH + '/../public/assets/uploads/files/' + req.file.filename;
+    }
     if (req.body.password) {
       User.password = Utils.md5(req.body.password)
     }
@@ -57,8 +58,9 @@ module.exports = class ClientController {
     Client.GSTNo = req.body.GSTNo;
     Client.userId = req.body.userId;
     Client.userKey = req.body.userId + req.body.GSTNo;
-    Client.file = global.ROOT_PATH + '/../public/assets/uploads/files/' + req.file.filename;
-
+    if (req.file) {
+      Client.file = global.ROOT_PATH + '/../public/assets/uploads/files/' + req.file.filename;
+    }
 
     if (req.body.password) {
       Client.password = Utils.md5(req.body.password)
@@ -70,13 +72,11 @@ module.exports = class ClientController {
           Client.save().then((resp) => {
             db.User.findOne({ _id: req.body.userId }, function(err, linkSentBy) {
               if (err) {
-                res.send(err)
-              }
-              //  else if (linkSentBy == null) {
+                res.status(500).send({ message: 'Internal Server Error' });
+              } else if (linkSentBy == null) {
 
-              //   // DATA NOT FOUND
-              // }
-              else {
+                res.status(404).send({ message: 'Object Not found' });
+              } else {
                 userAsClient.companyName = linkSentBy.companyName;
                 userAsClient.address = linkSentBy.address;
                 userAsClient.state = linkSentBy.state;
@@ -91,21 +91,22 @@ module.exports = class ClientController {
                 userAsClient.GSTNo = linkSentBy.GSTNo;
                 userAsClient.userId = repeatedUser._id;
                 userAsClient.userKey = repeatedUser._id + linkSentBy.GSTNo;
-                userAsClient.file = linkSentBy.file;
-
+                if (linkSentBy.file) {
+                  userAsClient.file = linkSentBy.file;
+                }
 
                 if (linkSentBy.password) {
                   userAsClient.password = Utils.md5(linkSentBy.password)
                 }
                 userAsClient.save().then((res) => {
-                  res.send(res)
+                  res.send({ message: "Registered Successfully" })
                 }).catch((error) => {
-                  res.send(error)
+                  res.status(400).send({ message: 'Error in Registration' });
                 })
               }
             })
           }).catch((error) => {
-            res.send(error)
+            res.status(400).send({ message: 'Error in Registration' });
           })
         } else {
           User.save().then((response) => {
@@ -113,13 +114,10 @@ module.exports = class ClientController {
             Client.save().then((resp) => {
               db.User.findOne({ _id: req.body.userId }, function(err, linkSentBy) {
                 if (err) {
-                  res.send(err)
-                }
-                //  else if (linkSentBy == null) {
-
-                //   // DATA NOT FOUND
-                // }
-                else {
+                  res.status(500).send({ message: 'Internal Server Error' });
+                } else if (linkSentBy == null) {
+                  res.status(404).send({ message: 'Object Not found' });
+                } else {
                   userAsClient.companyName = linkSentBy.companyName;
                   userAsClient.address = linkSentBy.address;
                   userAsClient.state = linkSentBy.state;
@@ -134,32 +132,32 @@ module.exports = class ClientController {
                   userAsClient.GSTNo = linkSentBy.GSTNo;
                   userAsClient.userId = finalId;
                   userAsClient.userKey = finalId + linkSentBy.GSTNo;
-                  userAsClient.file = linkSentBy.file;
-
-
+                  if (linkSentBy.file) {
+                    userAsClient.file = linkSentBy.file;
+                  }
                   if (linkSentBy.password) {
                     userAsClient.password = Utils.md5(linkSentBy.password)
                   }
                   userAsClient.save().then((res) => {
-                    res.send(res)
+                    res.send({ message: "Registered Successfully" });
                   }).catch((error) => {
-                    res.send(error)
+                    res.status(400).send({ message: 'Error in Registration' });
                   })
                 }
               })
             }).catch((error) => {
-              res.send(error)
+              res.status(400).send({ message: 'Error in Registration' });
             })
           }).catch((error) => {
-            res.send(error)
+            res.status(400).send({ message: 'Error in Registration' });
           })
         }
       })
     } else {
       Client.save().then((response) => {
-        res.send(response)
+        res.send({ message: "Registered Successfully" })
       }).catch((err) => {
-        res.send(err)
+        res.status(400).send({ message: 'Error in Registration' });
       })
     }
 

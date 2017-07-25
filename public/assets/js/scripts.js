@@ -15,6 +15,14 @@ jQuery(document).ready(function() {
   /*
       Form
   */
+
+  //PAGE LOAD
+  $(".registration-form").ready(function() {
+    $("#ifPassword").hide();
+  });
+
+
+
   $('.registration-form fieldset:first-child').fadeIn('slow');
 
   $('.registration-form input[type="text"], input[type="number"].mobile1, input[type="email"]').on('focus', function() {
@@ -54,7 +62,6 @@ jQuery(document).ready(function() {
         $(this).removeClass('input-error');
       }
 
-
       if ($(this).attr('id') == "state") {
         if ($(this)[0].selectedIndex === 0) {
           // console.log($(this));
@@ -76,10 +83,17 @@ jQuery(document).ready(function() {
           $(this).addClass('input-error');
         }
       }
+      if ($(this).attr('id') == "panNo") {
+        if ($(this).val().length != 10) {
+          next_step = false;
+          $(this).addClass('input-error');
+        }
+      }
+
       if ($(this).attr('id') == "GSTNo") {
         let conflict = $(this).attr("data-isGstConflict");
         console.log(conflict);
-        if ($(this).val().length != 15 || conflict === "true" ) {
+        if ($(this).val().length != 15 || conflict === "true") {
           next_step = false;
           $(this).addClass('input-error');
         }
@@ -100,11 +114,8 @@ jQuery(document).ready(function() {
 
 
 
-
-
-
       // if ($(this).attr('id') == "panNo") {
-      //   if ($(this).val().length != 10) {
+      //   if ($(togglehis).val().length != 10) {
       //     next_step = false;
       //     $(this).addClass('input-error');
       //   }
@@ -127,9 +138,16 @@ jQuery(document).ready(function() {
 
   });
 
+  //Show Hide Password
+  $('.registration-form .togglePassword').on('click', function() {
+    if ($(this).attr('id') == "togglePassword") {
+      $("#ifPassword").toggle(500);
+    }
+  });
+
   // previous step
   $('.registration-form .btn-previous').on('click', function() {
-    $(this).parents('fieldset').fadeOut(400, function() {
+    $(this).parents('fieldset').fadeOut(100, function() {
       $(this).prev().fadeIn();
     });
   });
@@ -152,14 +170,14 @@ jQuery(document).ready(function() {
 
 
 
-      if ($(this).attr('id') == "panNo") {
-        if ($(this)[0].value.length != 10) {
-          $(this).addClass('input-error');
-          e.preventDefault();
-        } else {
-          $(this).removeClass('input-error');
-        }
-      }
+      // if ($(this).attr('id') == "panNo") {
+      //   if ($(this)[0].value.length != 10) {
+      //     $(this).addClass('input-error');
+      //     e.preventDefault();
+      //   } else {
+      //     $(this).removeClass('input-error');
+      //   }
+      // }
 
 
     });

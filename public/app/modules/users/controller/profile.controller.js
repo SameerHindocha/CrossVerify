@@ -4,9 +4,9 @@
     .module('userApp')
     .controller('ProfileController', controller);
 
-  controller.$inject = ['user', 'UserService', '$location', 'toastr', '$scope'];
+  controller.$inject = ['user', 'UserService', '$location', 'toastr', '$scope', 'lodash'];
 
-  function controller(user, UserService, $location, toastr, $scope) {
+  function controller(user, UserService, $location, toastr, $scope, lodash) {
     let vm = this;
     vm.user = user;
 
@@ -19,8 +19,29 @@
     }
 
     $scope.finalvalues = function(updatedData) {
-      console.log("updatedData", updatedData);
-      UserService.updateUser(updatedData).then((response) => {
+      console.log("updatedData", updatedData.file);
+
+
+      if (updatedData.file) {
+        console.log("updatedData", updatedData);
+        let splitArray = updatedData.file.name.split('.');
+        let fileType = lodash.last(splitArray);
+        Object.defineProperty(updatedData.file, 'name', {
+          value: Math.floor(Math.random() * (1000000000000 - 3) + 100000) + '.' + fileType,
+          writable: true
+        });
+      }
+
+
+      let urldata = {
+        url: "admin-api/edit-user",
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        data: updatedData
+      };
+      console.log("updatedData2", updatedData);
+      UserService.updateUser(urldata).then((response) => {
         if (response.status === 200) {
           toastr.success(response.data.message);
           $location.path('/dashboard');

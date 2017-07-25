@@ -18,8 +18,7 @@
   </div>
   <div class="container">
     <div class="row">
-      <div class="col-md-12 registrationForm registrationFormDisplay
-">
+      <div class="col-md-12 registrationForm registrationFormDisplay">
         <div class="row">
           <div class="col-md-12">
             <h4>Company Information</h4>
@@ -99,6 +98,15 @@
               <label>Landline</label>
               <br>
               <span>{{vm.user.landline}}</span>
+            </div>
+          </div>
+          <!-- *************** -->
+          <div class="inputGroupWrap col-sm-3">
+            <div class="input-group input-group-icon">
+              <label>File Uploaded</label>
+              <br>
+              <span ng-if="vm.user.file">Yes</span>
+              <span ng-if="!vm.user.file">No</span>
             </div>
           </div>
         </div>

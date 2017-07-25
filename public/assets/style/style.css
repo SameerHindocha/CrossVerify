@@ -590,9 +590,33 @@ popup-info .modal-dialog select.form-control:focus {
   filter: none;
 }
 
+.btn.btn-danger {
+  background: #ff4433;
+  text-shadow: none;
+  color: #fff;
+  filter: none;
+}
+
 .btn.btn-primary:hover {
   background: #1e74c5;
 }
+
+.btn.btn-danger:hover {
+  background: #E51400;
+}
+
+.asterisk_input:after {
+  content: " *";
+  color: #e32;
+  position: absolute;
+  margin: 0px 0px 0px -20px;
+  font-size: 17px;
+  padding: 0 5px 0 0;
+}
+
+
+
+
 
 
 

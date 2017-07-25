@@ -4,7 +4,7 @@
 let byPassedEndpoints = [
   '/client',
   '/gst-status',
-  '/user-data'
+  '/user-data',
 
 ];
 

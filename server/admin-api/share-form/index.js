@@ -18,7 +18,7 @@ module.exports = class ShareFormController {
         html: `<h4>We ${req.session.userProfile.companyName}  request you to fill your Company DETAILS with GSTIN ,WHICH WILL BE NEEDED ( WITHOUT SPELLING ERROR).
       </h4>We humbly request to fill up this form and submit it as early as possible to update your details with our company.
                     <h4> PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS.</h4><br>
-                    <a href='http://${global.config.server.url}:${global.config.server.port}/#/client/add/${req.session.userProfile._id}' class='alert-link'>Click here to fill the GST registration form</a></br></br>
+                    <a href='http://${global.config.server.url}:${global.config.server.port}/#/client/add/${req.session.userProfile._id}' class='alert-link'>Click here to fill the Cross Verify registration form</a></br></br>
                     <br /><br />
                     <h4>
                     What is CrossVerify.in <br />
@@ -55,7 +55,7 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
         message: msg
       }
       console.log(msg);
-      SendSMS.SMSFunction(data,req,res);
+      SendSMS.SMSFunction(data, req, res);
     } else {
       res.redirect(500, '/logout');
     }
