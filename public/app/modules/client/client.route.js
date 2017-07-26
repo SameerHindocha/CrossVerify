@@ -10,6 +10,7 @@
           controllerAs: 'vm',
           loggedInGuard: false
         })
+
         .when("/client/post-register", {
           template: `<h1>Thankyou</h1>`,
           loggedInGuard: false

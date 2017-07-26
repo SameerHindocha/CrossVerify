@@ -35,8 +35,8 @@ jQuery(document).ready(function() {
     console.log("NEXT");
     window.samir = true;
 
-    var parent_fieldset = $(this).parents('fieldset');
-    var next_step = true;
+    let parent_fieldset = $(this).parents('fieldset');
+    let next_step = true;
     let password, confirmPassword;
 
     parent_fieldset.find('input[type="text"], input[type="number"], input[type="email"], input[type="password"],select').each(function() {

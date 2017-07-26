@@ -35,7 +35,7 @@
             <div class="input-group">
               <label>
                 Pin Code</label>
-              <input type="text" name="pincode" class="form-control no-spin" ng-model="details.pincode" placeholder="Pincode" maxlength="6" minlength="6" required>
+              <input type="number" name="pincode" class="form-control no-spin" ng-model="details.pincode" placeholder="Pincode" maxlength="6" minlength="6" required>
               <div ng-hide="updateUserForm.pincode.$valid || updateUserForm.pincode.$pristine" class="alert alert-danger">
                 Invalid Pincode
               </div>
@@ -51,28 +51,29 @@
             <div class="input-group">
               <label>
                 Mobile1</label>
-              <input type="text" name="mobile1" class="form-control" ng-model="details.mobile1" placeholder="Mobile Number" maxlength="10" minlength="10" required>
+              <input type="number" name="mobile1" class="form-control no-spin" ng-model="details.mobile1" placeholder="Mobile Number" maxlength="10" minlength="10" required>
               <div ng-hide="updateUserForm.mobile1.$valid || updateUserForm.mobile1.$pristine" class="alert alert-danger">
                 Invalid Mobile Number
               </div>
             </div>
             <div class="input-group">
               <label>Mobile2</label>
-              <input type="text" name="mobile2" maxlength="10" minlength="10" class="form-control" ng-model="details.mobile2" placeholder="Alternate Mobile Number">
+              <input type="number" name="mobile2" maxlength="10" minlength="10" class="form-control no-spin" ng-model="details.mobile2" placeholder="Alternate Mobile Number">
               <div ng-hide="updateUserForm.mobile2.$valid || updateUserForm.mobile2.$pristine" class="alert alert-danger">
                 Invalid Mobile Number
               </div>
             </div>
             <div class="input-group">
               <label>Landline No</label>
-              <input type="text" name="landline" class="form-control" ng-model="details.landline" placeholder="Landline Number">
+              <input type="number" name="landline" class="form-control no-spin" ng-model="details.landline" placeholder="Landline Number">
             </div>
             <div class="col-md-12">
+              <label>Document</label>
               <input type="file" class="filestyle" id="file" ngf-select ng-model="details.file" name="file" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
               <div class="alert alert-danger" ng-show="updateUserForm.file.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
               </div>
               <br>
-              <div <i class="fa fa-file-excel-o">
+              <div>
                 </i>
                 <button type="button" class="btn btn-danger" ng-click="details.file=null" ng-if="details.file"><i class="fa fa-times" aria-hidden="true"></i> Remove
                 </button>
@@ -80,7 +81,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" ng-click="send()" data-dismiss="modal" ng-disabled="updateUserForm.ownerName.$invalid || updateUserForm.city.$invalid || updateUserForm.pincode.$invalid || updateUserForm.address.$invalid || updateUserForm.mobile1.$invalid || updateUserForm.mobile2.$invalid ">Save</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="send()" ng-disabled="updateUserForm.ownerName.$invalid || updateUserForm.city.$invalid || updateUserForm.pincode.$invalid || updateUserForm.address.$invalid || updateUserForm.mobile1.$invalid || updateUserForm.mobile2.$invalid">Save</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
           </div>
       </form>

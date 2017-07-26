@@ -1,5 +1,5 @@
-let Utils = require('../../libs/utils.js');
-let multer = require('multer');
+const Utils = require('../../libs/utils.js');
+const multer = require('multer');
 let session;
 let storage = multer.diskStorage({
   destination: function(req, file, callback) {
@@ -18,14 +18,13 @@ module.exports = class ClientController {
     app.get('/api/gst-status/:userKey', this.getGSTStatus);
     app.get('/api/user-data/:email/:password/:GSTNo', this.fetchUserRecord);
     app.post('/api/client', multerUpload.single('file'), this.insertNewClient);
-
   }
 
   insertNewClient(req, res) {
-    let Client = new db.Client();
-    let userAsClient = new db.Client();
-    let User = new db.User();
-    let finalId;
+    let Client, userAsClient, User, finalId;
+    Client = new db.Client();
+    userAsClient = new db.Client();
+    User = new db.User();
     User.companyName = req.body.companyName;
     User.address = req.body.address;
     User.state = req.body.state;
@@ -61,11 +60,9 @@ module.exports = class ClientController {
     if (req.file) {
       Client.file = global.ROOT_PATH + '/../public/assets/uploads/files/' + req.file.filename;
     }
-
     if (req.body.password) {
       Client.password = Utils.md5(req.body.password)
     }
-
     if (req.body.password) {
       db.User.findOne({ email: req.body.email }, function(err, repeatedUser) {
         if (repeatedUser != null) {
@@ -94,7 +91,6 @@ module.exports = class ClientController {
                 if (linkSentBy.file) {
                   userAsClient.file = linkSentBy.file;
                 }
-
                 if (linkSentBy.password) {
                   userAsClient.password = Utils.md5(linkSentBy.password)
                 }
@@ -138,7 +134,7 @@ module.exports = class ClientController {
                   if (linkSentBy.password) {
                     userAsClient.password = Utils.md5(linkSentBy.password)
                   }
-                  userAsClient.save().then((res) => {
+                  userAsClient.save().then((response) => {
                     res.send({ message: "Registered Successfully" });
                   }).catch((error) => {
                     res.status(400).send({ message: 'Error in Registration' });
@@ -160,28 +156,28 @@ module.exports = class ClientController {
         res.status(400).send({ message: 'Error in Registration' });
       })
     }
-
   };
 
-
   getClientsByUser(req, res) {
+    let email;
     session = req.session;
     if (req.session.isLoggedIn == 'Y') {
-      let email = req.params.email;
+      email = req.params.email;
       db.User.findOne({ email: email }, function(err, foundUser) {
         if (err) {
-          res.send(err)
+          res.status(500).send({ message: 'Internal Server Error' });
+        } else if (foundUser == null) {
+          res.status(400).send({ message: 'Object Not found' });
         } else {
           db.Client.find({ userId: foundUser._id }, function(err, clients) {
             if (err) {
-              res.send(err);
+              res.status(500).send({ message: 'Internal Server Error' });
             } else {
               clients.link = 'http://' + global.config.server.url + ':' + global.config.server.port + '/#/client/add/' + req.session.userProfile._id;
               res.send(clients)
             }
           });
         }
-
       });
     } else {
       res.redirect(500, '/logout');
@@ -197,7 +193,6 @@ module.exports = class ClientController {
   }
 
   getGSTStatus(req, res) {
-
     db.Client.findOne({ userKey: req.params.userKey }, function(err, data) {
       if (err) {
         res.send(err);
@@ -212,26 +207,16 @@ module.exports = class ClientController {
   };
 
   fetchUserRecord(req, res) {
-    console.log("Email" + req.params.email);
-    console.log("Password" + req.params.password);
-    console.log("GST NO" + req.params.GSTNo);
-
     db.User.findOne({ email: req.params.email, password: Utils.md5(req.params.password), GSTNo: req.params.GSTNo }, function(err, user) {
       if (err) {
         res.send(err);
       } else {
         if (user) {
-          console.log("user", user);
           return res.send(user);
         } else {
-          console.log("NOT FOUND");
           return res.status(404).send({ message: 'No match found' });
         }
       }
     });
-
-
   }
-
-
 }

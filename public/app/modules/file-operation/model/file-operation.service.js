@@ -8,15 +8,14 @@
 
   function Service($http, $q) {
     return {
-      compareFileService:compareFileService
+      compareFileService: compareFileService
     };
 
-      function compareFileService(data) {
-        console.log("service data", data);
+    function compareFileService(data) {
       let defer = $q.defer();
       $http({
         method: 'get',
-        url: '/admin-api/compare-file/'+data.id
+        url: '/admin-api/compare-file/' + data.id
       }).then(function(response) {
         defer.resolve(response);
       }).catch(function(error) {
@@ -24,6 +23,5 @@
       });
       return defer.promise;
     }
-
   }
 })();

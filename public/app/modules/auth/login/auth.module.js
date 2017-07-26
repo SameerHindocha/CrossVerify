@@ -1,1 +1,1 @@
-angular.module('authApp', ['ngRoute', 'toastr']);
+angular.module('authApp', ['ngRoute']);

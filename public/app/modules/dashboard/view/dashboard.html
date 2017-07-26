@@ -7,24 +7,24 @@
     </div>
   </div>
 </div>
-<hr>
 <div class="container-fluid detailTable">
   <div class="row">
     <div class="col-md-6">
-      <input type="search" class="form-control" ng-model="vm.searchText" placeholder="Search" type="search" ng-change="vm.search()" />
+      <input type="search" class="form-control" ng-model="vm.searchText" placeholder="Search by Company Name or GST Number" type="search" ng-change="vm.search()" />
     </div>
     <div class="col-md-6 actionButtons text-right">
-      <a href="{{vm.file}}" class="btn btn-primary"><i class="fa fa-download" aria-hidden="true"></i> Download file</a>
-      <label class="shareLinkText">{{vm.link}}</label>
-      <button id="clip" class="btn" ngclipboard data-clipboard-text="{{vm.link}}" ngclipboard ngclipboard-success="vm.onSuccess(e);" ngclipboard-error="vm.onError(e);">
-        <i class="fa fa-clipboard" aria-hidden="true"></i>
-      </button>
-      <ul class="nav navbar-nav shareLinks">
+      <label>Share this link to me
+        <label class="shareLinkText">{{vm.link}}
+          <!--    <span style=" border-left: solid #acb0b7; padding: 5px 5px 5px 5px; border-top: 3px"></span> -->
+          <button id="clip" class="btn" ngclipboard data-clipboard-text="{{vm.link}}" ngclipboard ngclipboard-success="vm.onSuccess(e);" ngclipboard-error="vm.onError(e);">
+            <i class="fa fa-clipboard" aria-hidden="true"></i>
+          </button>
+        </label>
+      </label>
+      <ul class="nav navbar-nav shareLinks" id="share">
         <li>
           <a data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-            <!-- <a class="shareLinks" href="javascript:void(0)"> -->
             <i class="fa fa-share-alt" aria-hidden="true"></i>
-            <!-- </a> -->
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
@@ -41,14 +41,12 @@
           </ul>
         </li>
       </ul>
-      <!-- <button class="btn btn-primary" ng-click="vm.sendSMS()"><i class="fa fa-mobile" aria-hidden="true"></i> Share Via SMS</button>
-      <button class="btn btn-primary" ng-click="vm.sendLink()"><i class="fa fa-envelope-o" aria-hidden="true"></i> Share Via Email</button> -->
     </div>
     <div class="col-md-12">
       <div class="table-responsive">
         <table class="table table-hover">
           <thead>
-            <tr>
+            <tr class="info">
               <th class="active">Company Name</th>
               <th class="active">Address</th>
               <th class="active">State</th>
@@ -80,9 +78,9 @@
               <td><span class="mobileTitle">Pan No</span> {{client.panNo }} </td>
               <td><span class="mobileTitle">GST No</span> {{client.GSTNo }} </td>
               <td><span class="mobileTitle">File Comparision</span>
-                <input type="button" class="btn btn-primary" value="compare" ng-click="vm.openFileComparisionPage(client)">
+                <input type="button" class="btn btn-primary" value="Compare" ng-click="vm.openFileComparisionPage(client)" ng-disabled="!client.file ||  !vm.getCurrentUserForEmail.file">
               </td>
-              <td><span class="mobileTitle">Comparision Status</span><span ng-if="client.fileCompareStatus"><i class="fa fa-check" aria-hidden="true"></i></span><span ng-if="client.fileCompareStatus==false"><i class="fa fa-times" aria-hidden="true"></i></span></td>
+              <td align="center"><span class="mobileTitle">Comparision Status</span><span ng-if="client.fileCompareStatus"><i class="fa fa-check" aria-hidden="true"></i></span><span ng-if="client.fileCompareStatus==false"><i class="fa fa-times" aria-hidden="true"></i></span></td>
             </tr>
           </tbody>
         </table>
@@ -91,6 +89,3 @@
     </div>
   </div>
 </div>
-<!-- <div class="inner">1</div>
-<div class="inner2">1</div>
-<div class="inner">1</div> -->

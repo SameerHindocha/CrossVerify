@@ -1,1 +1,1 @@
-angular.module('clientApp', ['ngRoute', 'toastr']);
+angular.module('clientApp', ['ngRoute']);

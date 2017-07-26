@@ -1,7 +1,7 @@
-let express = require('express');
-let session = require('express-session');
-let bodyParser = require('body-parser');
-let morgan = require('morgan');
+const express = require('express');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
 let app = express();
 global.ROOT_PATH = __dirname;
 const config = require('./config/development.js');
@@ -11,15 +11,17 @@ const path = require('path');
 const fs = require('fs');
 
 let sessionOptions = {
-  name: 'session',
-  secret: 'ScRcHp',
-  resave: true,
-  saveUninitialized: true,
+  name: 'cv.session', //cookie name (formerly known as key).
+  secret: 'SpcvTrsPOTms', // session cookie is signed with this secret to prevent tampering.
+  resave: true, // forces session to be saved even when unmodified.
+  saveUninitialized: false, //forces a session that is "uninitialized" to be saved to the store.A session is uninitialized when it is new but not modified.
+  rolling: false, //forces a cookie set on every response.This resets the expiration date.
   cookie: {
     path: "/",
-    // maxAge: 1800000, //30 mins
     httpOnly: true,
-    // secure: true,
+    maxAge: 86400000, //24 hr
+    httpOnly: true,
+    secure: false,
   }
 };
 

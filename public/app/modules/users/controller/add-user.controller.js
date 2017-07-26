@@ -4,9 +4,9 @@
     .module('userApp')
     .controller('addUserController', controller);
 
-  controller.$inject = ['UserService', 'toastr', '$location', 'lodash', '$rootScope'];
+  controller.$inject = ['UserService', '$location', 'lodash', '$rootScope'];
 
-  function controller(UserService, toastr, $location, lodash, $rootScope) {
+  function controller(UserService, $location, lodash, $rootScope) {
     let vm = this;
     $rootScope.showLoginBackground = false;
     vm.UserService = UserService;
@@ -19,15 +19,16 @@
     function activate() {}
 
     function addUser() {
+      let splitArray, fileType, postObj, urldata;
       if (vm.file) {
-        let splitArray = vm.file.name.split('.');
-        let fileType = lodash.last(splitArray);
+        splitArray = vm.file.name.split('.');
+        fileType = lodash.last(splitArray);
         Object.defineProperty(vm.file, 'name', {
           value: Math.floor(Math.random() * (1000000000000 - 3) + 100000) + '.' + fileType,
           writable: true
         });
       }
-      let postObj = {
+      postObj = {
         companyName: vm.companyName,
         state: vm.state,
         city: vm.city,
@@ -38,46 +39,43 @@
         mobile1: vm.mobile1,
         mobile2: vm.mobile2,
         landline: vm.landline,
-        panNo: vm.panNo,
-        tinNo: vm.tinNo,
-        GSTNo: vm.GSTNo,
+        panNo: vm.panNo.toUpperCase(),
+        GSTNo: vm.GSTNo.toUpperCase(),
         password: vm.password,
         file: vm.file
       };
-      let urldata = {
+      urldata = {
         url: "admin-api/user",
         headers: {
           'Content-Type': 'multipart/form-data'
         },
         data: postObj
       };
-      console.log('postObj', postObj);
-
       if (vm.password != vm.confirmPassword) {
-        toastr.error('Confirm password must match the entered password');
+        noty('warning', 'Confirm password must match the entered password');
       } else {
         UserService.addUser(urldata).then((response) => {
-          toastr.success(response.data.message);
+          noty('success', response.data.message);
           $location.path('/login');
         }).catch((error) => {
           if (error.status == 409) {
-            toastr.error(error.data.message);
+            noty('error', error.data.message);
           }
         });
       }
-
     }
 
     function getGSTStatus() {
+      let gstObj;
       if (lodash.size(vm.GSTNo) == 15) {
-        let gstObj = {
+        gstObj = {
           gstNo: vm.GSTNo
         };
         UserService.gstStatus(gstObj).then((response) => {
           vm.gstConflict = false;
         }).catch((error) => {
           vm.gstConflict = true;
-          toastr.error(error.data.message);
+          noty('warning', 'topRight', error.data.message);
         })
       }
     }

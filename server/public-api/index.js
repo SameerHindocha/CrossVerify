@@ -5,7 +5,6 @@ let byPassedEndpoints = [
   '/client',
   '/gst-status',
   '/user-data',
-
 ];
 
 let fs = require('fs');

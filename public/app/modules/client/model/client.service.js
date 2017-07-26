@@ -13,21 +13,6 @@
       fetchUserRecord: fetchUserRecord
     };
 
-    // function addClient(data) {
-    //   var defer = $q.defer();
-    //   $http({
-    //     method: 'post',
-    //     url: '/api/client',
-    //     data: data
-    //   }).then(function(response) {
-    //     defer.resolve(response);
-    //   }).catch(function(error) {
-    //     defer.reject(error);
-    //   });
-    //   return defer.promise;
-    // }
-
-
     function addClient(urldata) {
       let defer = $q.defer();
       Upload.upload(urldata).then(function(response) {
@@ -63,7 +48,5 @@
       });
       return defer.promise;
     }
-
-
   }
 })();

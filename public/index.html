@@ -6,23 +6,26 @@
   <title>Cross Verify</title>
   <meta name="HandheldFriendly" content="True">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <!-- NODE MODULE STAT -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <!-- ***** NODE MODULE STAT ***** -->
   <script src="node_modules/angular/angular.min.js"></script>
   <script src="node_modules/angular-route/angular-route.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
   <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-  <link rel="stylesheet" href="node_modules/angular-toastr/dist/angular-toastr.css">
-  <script src="node_modules/angular-toastr/dist/angular-toastr.tpls.js"></script>
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-  <!-- ***** NODE MODULE END ***** -->
   <script src="node_modules/ng-lodash/build/ng-lodash.min.js"></script>
   <script src="node_modules/ng-file-upload/dist/ng-file-upload.min.js"></script>
   <script src="node_modules/clipboard/dist/clipboard.min.js"></script>
   <script src="node_modules/ngclipboard/dist/ngclipboard.min.js"></script>
+  <script src="node_modules/bounce.js/bounce.min.js"></script>
+  <link rel="stylesheet" href="node_modules/noty/lib/noty.css">
+  <script src="node_modules/noty/lib/noty.js"></script>
+  <!-- ***** NODE MODULE END ***** -->
+  <!-- ***** STYLES ***** -->
   <link rel="stylesheet" type="text/css" href="./assets/style/client-registration.css">
   <link rel="stylesheet" type="text/css" href="./assets/style/style.css">
+  <!-- ***** MODULES ***** -->
   <script src="app/modules/users/user.module.js"></script>
   <script src="app/modules/client/client.module.js"></script>
   <script src="app/modules/dashboard/dashboard.module.js"></script>
@@ -32,6 +35,7 @@
   <script src="app/app.module.js"></script>
   <script src="app/header/header.js"></script>
   <!-- ***** SERVICES ***** -->
+  <script src="app/services/noty.js"></script>
   <script src="app/modules/users/model/user.service.js"></script>
   <script src="app/modules/client/model/client.service.js"></script>
   <script src="app/modules/dashboard/model/dashboard.service.js"></script>

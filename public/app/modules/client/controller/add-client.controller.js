@@ -4,9 +4,9 @@
     .module('clientApp')
     .controller('addClientController', controller);
 
-  controller.$inject = ['ClientService', 'toastr', '$location', '$route', 'lodash', '$rootScope'];
+  controller.$inject = ['ClientService', '$location', '$route', 'lodash', '$rootScope'];
 
-  function controller(ClientService, toastr, $location, $route, lodash, $rootScope) {
+  function controller(ClientService, $location, $route, lodash, $rootScope) {
     let vm = this;
     $rootScope.showLoginBackground = false;
     vm.ClientService = ClientService;
@@ -20,17 +20,19 @@
 
     function activate() {}
 
-
     function addClient() {
-      let sentUserId = $route.current.params.id;
+      let sentUserId, splitArray, fileType, postObj, urldata;
+      sentUserId = $route.current.params.id;
       vm.sentUserId = sentUserId;
-      let splitArray = vm.file.name.split('.');
-      let fileType = lodash.last(splitArray);
-      Object.defineProperty(vm.file, 'name', {
-        value: Math.floor(Math.random() * (1000000000000 - 3) + 100000) + '.' + fileType,
-        writable: true
-      });
-      let postObj = {
+      if (vm.file) {
+        splitArray = vm.file.name.split('.');
+        fileType = lodash.last(splitArray);
+        Object.defineProperty(vm.file, 'name', {
+          value: Math.floor(Math.random() * (1000000000000 - 3) + 100000) + '.' + fileType,
+          writable: true
+        });
+      }
+      postObj = {
         companyName: vm.companyName,
         state: vm.state,
         city: vm.city,
@@ -46,11 +48,9 @@
         userId: vm.sentUserId,
         password: vm.password,
         file: vm.file
-
       };
 
-      console.log("postObj", postObj);
-      let urldata = {
+      urldata = {
         url: "api/client",
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -58,28 +58,24 @@
         data: postObj
       };
 
-
       ClientService.addClient(urldata).then((response) => {
-        toastr.success(response.data.message);
+        noty('success', response.data.message);
         if (vm.password) {
           $location.path('/login')
         } else {
           $location.path('/client/post-register')
         }
       }).catch((error) => {
-        toastr.error(error.data.message);
-
+        noty('error', error.data.message);
         if (error.status == 409) {
-          toastr.error(error.data.message);
+          noty('error', error.data.message);
         }
       });
-
     }
-
 
     function checkPassword() {
       if (vm.password != vm.confirmPassword) {
-        toastr.error('Confirm password must match the entered password');
+        noty('warning', 'Confirm password must match entered password');
       }
     }
 
@@ -93,24 +89,23 @@
           vm.gstConflict = false;
         }).catch((error) => {
           vm.gstConflict = true;
-          toastr.error(error.data.message);
+          noty('warning', error.data.message);
         })
       }
     }
 
     function fetchRecord() {
+      let fetchObj, userData;
       if (lodash.size(vm.GSTNo) == 15) {
-        let fetchObj = {
+        fetchObj = {
           email: vm.email,
           password: vm.password,
           GSTNo: vm.GSTNo
         };
 
         ClientService.fetchUserRecord(fetchObj).then((response) => {
-
           if (response.status === 200) {
-
-            let userData = response.data;
+            userData = response.data;
             vm.companyName = userData.companyName;
             vm.state = userData.state;
             vm.city = userData.city;
@@ -124,7 +119,6 @@
             vm.file = userData.file;
           }
         }).catch((error) => {
-          console.log("error", error);
           vm.companyName = '';
           vm.state = '';
           vm.city = '';
@@ -138,12 +132,5 @@
         })
       }
     }
-
   }
 })();
-
-
-
-
-// form-control ng-touched ng-dirty ng-valid-parse ng-valid ng-valid-minlength ng-empty
-// form-control ng-valid-email ng-not-empty ng-dirty ng-valid ng-valid-required ng-touched

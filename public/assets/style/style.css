@@ -244,6 +244,7 @@ hr {
 
 h1 {
   font-size: 35px;
+  font-weight: bold;
 }
 
 h2,
@@ -614,13 +615,58 @@ popup-info .modal-dialog select.form-control:focus {
   padding: 0 5px 0 0;
 }
 
+.active {
+  text-align: center;
+}
+
+
+
+
+/***User Header***/
+
+#navigation .user .dropdown {
+  float: left;
+}
+
+
+#navigation .user .dropdown.open {
+  background: #1b67af;
+}
+
+#navigation .user .dropdown>a:hover {
+  background: #1b67af;
+}
+
+#navigation .user .dropdown>a {
+  display: block;
+  color: #fff;
+  padding: 15px 15px 15px 15px;
+  text-decoration: none;
+}
+
+#navigation .user .icon-nav>li>a:hover {
+  background: #1b67af;
+  text-decoration: none;
+}
+
+
+#navigation .user .dropdown>a:hover {
+  background: #1b67af;
+}
+
+#navigation .user {
+  float: right;
+}
+
+#navigation .user>a {
+  color: #fff;
+}
 
 
 
 
 
-
-
+/***User Header***/
 
 
 /************************ Responsive ***********************/

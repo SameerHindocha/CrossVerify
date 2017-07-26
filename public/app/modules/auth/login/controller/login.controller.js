@@ -4,9 +4,9 @@
     .module('authApp')
     .controller('AuthController', controller);
 
-  controller.$inject = ['AuthService', '$location', 'toastr', '$rootScope'];
+  controller.$inject = ['AuthService', '$location', '$rootScope'];
 
-  function controller(AuthService, $location, toastr, $rootScope) {
+  function controller(AuthService, $location, $rootScope) {
 
     let vm = this;
     $rootScope.showLoginBackground = true;
@@ -18,11 +18,11 @@
     function activate() {
       AuthService.getLoginStatus().then((response) => {
         if (response.status === 200) {
-          toastr.success(response.data.message);
+          noty('success', response.data.message);
           $location.path('/dashboard');
         }
       }).catch((error) => {
-        toastr.error(error.data.message);
+        noty('error', error.data.message);
       })
     }
 
@@ -33,7 +33,7 @@
       };
       AuthService.Login(postObj).then((response) => {
         window.localStorage.setItem('currentUser', JSON.stringify(response.data.userData));
-        toastr.success(response.data.message);
+        noty('success', response.data.message);
         $location.path('/dashboard');
       }).catch((Error) => {
         vm.error = Error.data.message;
