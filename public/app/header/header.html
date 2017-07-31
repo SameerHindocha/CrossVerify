@@ -5,10 +5,19 @@
         <a class="navbar-brand" href="/#/dashboard">
           <img src="../../assets/logo-crossverify.png" />
         </a>
+        <ul class="main-nav">
+          <li>
+            <a href="/#/dashboard" routerLinkActive="active">
+                    <span>Home</span>  
+            </a>
+          </li>
+        </ul>
       </div>
       <div class="user">
         <div class="dropdown">
-          <a class='dropdown-toggle' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{userName}}</a>
+          <a class='dropdown-toggle' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{userName}}
+           <span class="caret"></span>
+          </a>
           <ul class="dropdown-menu pull-right">
             <li>
               <a href="#/user/edit">

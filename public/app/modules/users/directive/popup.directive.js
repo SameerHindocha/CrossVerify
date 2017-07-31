@@ -29,9 +29,22 @@
 
         $scope.openAddPopup = function() {
           $('#myModal').modal('show');
+          $scope.initData = {
+            ownerName: $scope.data.ownerName,
+            state: $scope.data.state,
+            city: $scope.data.city,
+            pincode: parseInt($scope.data.pincode),
+            address: $scope.data.address,
+            mobile1: parseInt($scope.data.mobile1),
+            mobile2: parseInt($scope.data.mobile2),
+            landline: parseInt($scope.data.landline)
+          }
         };
         $scope.send = function() {
           $scope.onUpdate({ details: $scope.details });
+        }
+        $scope.cancel = function() {
+          $scope.details = $scope.initData;
         }
       }],
       link: function($scope, attr, elem) {}

@@ -131,6 +131,9 @@ select option {
   color: #fff;
 }
 
+
+
+
 .input-group {
   margin-bottom: 1em;
   zoom: 1;
@@ -252,6 +255,12 @@ h2,
   font-size: 28px;
 }
 
+fieldset {
+  border: 1px solid silver;
+  margin: 0 2px;
+  padding: .35em .625em .75em;
+}
+
 .actionButtons {
   padding-bottom: 20px;
 }
@@ -277,9 +286,43 @@ h2,
   margin-top: 0;
 }
 
-.detailTable input[type="search"] {
-  margin-bottom: 20px;
-  max-width: 500px;
+// .detailTable input[type="search"] {
+//   margin-bottom: 20px;
+//   max-width: 500px;
+// }
+.detailTable input[type=search] {
+  width: 120px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  background-image: url('searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 40px;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+}
+
+.detailTable input[type=search]:focus {
+  width: 60%;
+}
+
+.detailTable .search-group .search-icon i {
+  line-height: 2.0em;
+}
+
+.search-group .search-icon {
+  position: absolute;
+  margin: 2px 20px 20px 12px;
+  top: 0;
+  left: 0;
+  width: 3.4em;
+  height: 3.4em;
+  line-height: 3.4em;
+  text-align: center;
+  pointer-events: none;
 }
 
 .navbar {
@@ -290,9 +333,11 @@ h2,
   margin: 25px auto 20px;
   width: 100%;
   max-width: 450px;
-  padding: 30px;
+  padding: 30px; // height: 344px;
 }
 
+//1080 - 344 / 2
+//1056 - 30 - 30 - 344
 .container .loginForm h2 {
   margin-top: 5px;
   margin-bottom: 20px;
@@ -370,7 +415,8 @@ h2,
   padding: 0 0 0 15px;
   margin: 0;
   background: none;
-  border: 0 none; // position: absolute;
+  border: 0 none;
+  position: absolute;
   bottom: 7px;
   left: 0;
   font-size: 12px;
@@ -385,7 +431,7 @@ h2,
 }
 
 .navbar-inverse {
-  background-color: #d5d5d5;
+  background-color: #368ee0;
   border: 0 none;
 }
 
@@ -414,6 +460,18 @@ h2,
 .dropdown-menu {
   min-width: 120px;
 }
+
+// .dropdown-menu>li>a:hover,
+// .dropdown-menu>li>a:focus {
+//   background-image: none !important;
+// }
+.dropdown-menu>li>a:hover,
+.dropdown-menu>li>a:focus {
+  background-color: #368ee0;
+  color: #fff
+}
+
+
 
 .table-responsive {
   border: 1px solid #ddd;
@@ -487,6 +545,7 @@ label.shareLinkText {
   border-radius: 4px;
   margin-right: 10px;
   margin-bottom: 0;
+  overflow: auto;
 }
 
 .registrationForm h4 {
@@ -606,20 +665,91 @@ popup-info .modal-dialog select.form-control:focus {
   background: #E51400;
 }
 
+.asterisk_input {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  font-size: 17px;
+  width: 12px;
+  height: 12px;
+  z-index: 9;
+}
+
 .asterisk_input:after {
   content: " *";
   color: #e32;
-  position: absolute;
-  margin: 0px 0px 0px -20px;
-  font-size: 17px;
-  padding: 0 5px 0 0;
 }
 
 .active {
   text-align: center;
 }
 
+// .profile {
+//   border: 1px solid silver;
+//   margin: 0 2px;
+//   padding: .35em .625em .75em;
+// }
 
+/*header home start*/
+
+@media (max-width: 976px) {
+  #navigation .main-nav>li>a {
+    font-size: 12px;
+    padding: 10px 8px !important;
+  }
+}
+
+#navigation .main-nav {
+  float: left;
+}
+
+#navigation .main-nav>li {
+  list-style-type: none;
+  float: left;
+  position: absolute;
+  margin: 0;
+}
+
+#navigation .main-nav>li>a {
+  display: block;
+  padding: 10px 15px;
+  line-height: 30px;
+  color: #fff;
+}
+
+#navigation .main-nav>li>a:hover {
+  text-decoration: none;
+  background: #1e74c5;
+}
+
+
+
+table tbody .fa-times {
+  color: red;
+  font-size: 1.5em;
+}
+
+table tbody .fa-check {
+  color: green;
+  font-size: 1.5em;
+}
+
+table tbody .fa-minus {
+  font-size: 1.5em;
+}
+
+
+
+// .fileCompareStatusRed {
+//   color: red;
+//   font-size: 1.5em;
+// }
+// .fileCompareStatusGreen {
+//   color: green;
+//   font-size: 1.5em;
+// }
+
+/*header home end*/
 
 
 /***User Header***/
@@ -630,11 +760,11 @@ popup-info .modal-dialog select.form-control:focus {
 
 
 #navigation .user .dropdown.open {
-  background: #1b67af;
+  background: #1e74c5;
 }
 
 #navigation .user .dropdown>a:hover {
-  background: #1b67af;
+  background: #1e74c5;
 }
 
 #navigation .user .dropdown>a {
@@ -645,13 +775,13 @@ popup-info .modal-dialog select.form-control:focus {
 }
 
 #navigation .user .icon-nav>li>a:hover {
-  background: #1b67af;
+  background: #1e74c5;
   text-decoration: none;
 }
 
 
 #navigation .user .dropdown>a:hover {
-  background: #1b67af;
+  background: #1e74c5;
 }
 
 #navigation .user {
@@ -661,6 +791,100 @@ popup-info .modal-dialog select.form-control:focus {
 #navigation .user>a {
   color: #fff;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

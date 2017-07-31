@@ -12,7 +12,7 @@
     <div class="col-md-12">
       <h2>
                 Client Registration
-            </h2>
+      </h2>
     </div>
     <div class="top-content">
       <div class="inner-bg">
@@ -34,7 +34,7 @@
                   <div class="form-bottom">
                     <!-- ***** EMAIL ***** -->
                     <div class="form-group">
-                      <div class="form-group input-group input-group-icon">
+                      <div class="form-group inputGroupWrap input-group input-group-icon">
                         <input type="email" id="email" name="email" class="form-control" ng-model="vm.email" placeholder="Email Address" required>
                         <span class="asterisk_input"> </span>
                         <div class="input-icon"><i class="fa fa-envelope-o"></i></div>
@@ -45,7 +45,7 @@
                     </div>
                     <!-- ******* PAN NUMBER ******** -->
                     <div class="form-group">
-                      <div class="input-group input-group-icon">
+                      <div class="input-group inputGroupWrap input-group-icon">
                         <input type="text" id="panNo" name="panNo" class="form-control toUpper" ng-model="vm.panNo" placeholder="Pan Number" maxlength="10" minlength="10" required>
                         <span class="asterisk_input"> </span>
                         <div class="input-icon"><i class="fa fa-id-card"></i></div>
@@ -56,7 +56,7 @@
                     </div>
                     <!-- ***** GST ***** -->
                     <div class="form-group">
-                      <div class="form-group input-group input-group-icon">
+                      <div class="form-group inputGroupWrap input-group input-group-icon">
                         <input type="text" id="GSTNo" name="GSTNo" class="form-control toUpper" ng-model="vm.GSTNo" data-isGstConflict={{vm.gstConflict}} placeholder="GST Number" minlength="15" maxlength="15" ng-change="vm.getGSTStatus()" required>
                         <span class="asterisk_input"> </span>
                         <div class="input-icon"><i class="fa fa-id-card-o"></i></div>
@@ -68,7 +68,7 @@
                     <!-- ***** PASSWORD ***** -->
                     <div>
                       To Register as a user
-                      <a href="" id="togglePassword" class="togglePassword"> Click here</a>
+                      <a href="" id="togglePassword" ng-click="vm.clearPassword()" class="togglePassword"> Click here</a>
                     </div>
                     <br>
                     <div id="ifPassword">
@@ -125,6 +125,7 @@
                           <option disabled="" value="">Please select State</option>
                           <option ng-repeat="state in vm.states">{{state}}</option>
                         </select>
+                        <span class="asterisk_input"> </span>
                         <div class="input-icon"><i class="fa fa-location-arrow"></i></div>
                       </div>
                       <div ng-hide="addClientForm.state.$valid || addClientForm.state.$pristine" class="alert alert-danger">
@@ -184,9 +185,9 @@
                     <div class="form-group">
                       <div class="form-group input-group input-group-icon">
                         <input type="text" id="address" name="address" class="form-control" ng-model="vm.address" placeholder="Address" required>
+                        <span class="asterisk_input"> </span>
                         <div class="input-icon"><i class="fa fa-address-card"></i></div>
                       </div>
-                      <span class="asterisk_input"> </span>
                       <div ng-hide="addClientForm.address.$valid || addClientForm.address.$pristine" class="alert alert-danger">
                         Address is Required
                       </div>
@@ -195,9 +196,9 @@
                     <div class="form-group">
                       <div class="form-group input-group input-group-icon">
                         <input type="text" id="mobile1" name="mobile1" class="form-control" ng-model="vm.mobile1" placeholder="Mobile Number" maxlength="10" minlength="10" required>
+                        <span class="asterisk_input"> </span>
                         <div class="input-icon"><i class="fa fa-mobile"></i></div>
                       </div>
-                      <span class="asterisk_input"> </span>
                       <div ng-hide="addClientForm.mobile1.$valid || addClientForm.mobile1.$pristine" class="alert alert-danger">
                         Invalid Mobile Number
                       </div>

@@ -214,7 +214,7 @@ module.exports = class ClientController {
         if (user) {
           return res.send(user);
         } else {
-          return res.status(404).send({ message: 'No match found' });
+          return res.status(100).send({ message: 'No match found' });
         }
       }
     });

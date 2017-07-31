@@ -75,7 +75,7 @@
           vm.gstConflict = false;
         }).catch((error) => {
           vm.gstConflict = true;
-          noty('warning', 'topRight', error.data.message);
+          noty('warning', error.data.message);
         })
       }
     }

@@ -9,9 +9,7 @@ function headerDirective(AuthService, $location, $rootScope) {
     controller: function($scope) {
       $scope.Logout = Logout;
       $scope.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      if (!$rootScope.userName) {
-        $rootScope.userName = $scope.currentUser.ownerName;
-      }
+      $rootScope.userName = $scope.currentUser.ownerName;
 
       function Logout() {
         AuthService.logout().then((response) => {

@@ -14,6 +14,7 @@
     vm.checkPassword = checkPassword;
     vm.getGSTStatus = getGSTStatus;
     vm.fetchRecord = fetchRecord;
+    vm.clearPassword = clearPassword;
     vm.gstConflict = false;
     vm.states = ["Andaman and Nicobar", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chandigarh", "Dadra and Nagar Haveli", "Daman and Diu", "Delhi", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu & Kashmir", "Karnataka", "Kerala", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Orissa", "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Tripura", "Uttar Pradesh", "West Bengal", "Chhattisgarh", "Uttarakhand", "Jharkhand", "Telangana"]
     activate();
@@ -94,6 +95,11 @@
       }
     }
 
+    function clearPassword() {
+      vm.password = '';
+      vm.confirmPassword = '';
+    }
+
     function fetchRecord() {
       let fetchObj, userData;
       if (lodash.size(vm.GSTNo) == 15) {
@@ -104,6 +110,7 @@
         };
 
         ClientService.fetchUserRecord(fetchObj).then((response) => {
+          console.log("response", response);
           if (response.status === 200) {
             userData = response.data;
             vm.companyName = userData.companyName;
@@ -118,17 +125,23 @@
             vm.panNo = userData.panNo;
             vm.file = userData.file;
           }
+          if (response.status === 100) {
+            vm.companyName = '';
+            vm.state = '';
+            vm.city = '';
+            vm.pincode = '';
+            vm.ownerName = '';
+            vm.address = '';
+            vm.mobile1 = '';
+            vm.mobile2 = '';
+            vm.landline = '';
+            vm.file = '';
+          }
+
+
         }).catch((error) => {
-          vm.companyName = '';
-          vm.state = '';
-          vm.city = '';
-          vm.pincode = '';
-          vm.ownerName = '';
-          vm.address = '';
-          vm.mobile1 = '';
-          vm.mobile2 = '';
-          vm.landline = '';
-          vm.file = '';
+          console.log("error", error.status);
+
         })
       }
     }

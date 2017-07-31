@@ -100,6 +100,8 @@ module.exports = class UserController {
               req.session.userProfile = user;
               if (req.file) {
                 filePath = global.ROOT_PATH + '/../public/assets/uploads/files/' + req.file.filename
+              } else if (user.file) {
+                filePath = user.file;
               }
               db.Client.update({ "email": sessionEmail }, {
                   $set: {
@@ -115,10 +117,22 @@ module.exports = class UserController {
                   }
                 }, { multi: true })
                 .then((response) => {
-                  if (user.file) {
+                  if (req.file) {
                     fs.unlink(fileToDelete, function() {});
+                    db.Client.update({ 'userId': req.session.userProfile._id }, {
+                        $set: {
+                          "fileCompareStatus": null
+                        }
+                      }, { multi: true })
+                      .then((response) => {
+                        res.status(200).send({ message: "Updated successfully", user: user });
+
+                      }).catch((error) => {
+                        res.status(404).send({ message: 'Object Not Found' });
+                      })
+                  } else {
+                    res.status(200).send({ message: "Updated successfully", user: user });
                   }
-                  res.status(200).send({ message: "Updated successfully", user: user });
                 }).catch((error) => {
                   res.status(404).send({ message: 'Object Not Found' });
                 })

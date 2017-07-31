@@ -22,7 +22,7 @@
     }
 
     $scope.finalvalues = function(updatedData) {
-      let splitArray, fileType, urldata;
+      let splitArray, fileType, urldata, setLocalStorageData, updatedResponseData;
       if (updatedData.file) {
         splitArray = updatedData.file.name.split('.');
         fileType = lodash.last(splitArray);
@@ -42,11 +42,23 @@
         if (response.status === 200) {
           noty('success', response.data.message);
           vm.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-          vm.user = response.data.user;
-          $rootScope.userName = response.data.user.ownerName;
-          vm.currentUser = localStorage.setItem("currentUser", JSON.stringify(response.data.user));
+          updatedResponseData = response.data;
+          setLocalStorageData = vm.currentUser;
+          vm.user = updatedResponseData.user;
+          setLocalStorageData.ownerName = updatedResponseData.user.ownerName;
+          setLocalStorageData.state = updatedResponseData.user.state;
+          setLocalStorageData.city = updatedResponseData.user.city;
+          setLocalStorageData.pincode = updatedResponseData.user.pincode;
+          setLocalStorageData.address = updatedResponseData.user.address;
+          setLocalStorageData.mobile1 = updatedResponseData.user.mobile1;
+          setLocalStorageData.mobile2 = updatedResponseData.user.mobile2;
+          setLocalStorageData.landline = updatedResponseData.user.landline;
+          setLocalStorageData.file = updatedResponseData.user.file;
+          $rootScope.userName = updatedResponseData.user.ownerName;
+          vm.currentUser = localStorage.setItem("currentUser", JSON.stringify(setLocalStorageData));
         }
       }).catch((error) => {
+        console.log("error", error);
         noty('error', error.data.message);
       })
     }

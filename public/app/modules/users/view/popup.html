@@ -1,4 +1,4 @@
-<a class="btn btn-primary btn-sm" ng-click="openAddPopup()">Edit Profile</a>
+<a class="" ng-click="openAddPopup()"><b>Edit</b></a>
 <div class="modal fade" id="myModal" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -82,7 +82,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="send()" ng-disabled="updateUserForm.ownerName.$invalid || updateUserForm.city.$invalid || updateUserForm.pincode.$invalid || updateUserForm.address.$invalid || updateUserForm.mobile1.$invalid || updateUserForm.mobile2.$invalid">Save</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancel()">Cancel</button>
           </div>
       </form>
       </div>
