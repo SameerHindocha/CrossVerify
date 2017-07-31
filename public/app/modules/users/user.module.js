@@ -1,1 +1,1 @@
-angular.module('userApp', ['ngRoute', 'toastr']);
+angular.module('userApp', ['ngRoute']);

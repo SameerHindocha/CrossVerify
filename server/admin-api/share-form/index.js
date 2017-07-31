@@ -1,24 +1,24 @@
-let SendMail = require("../../helpers/send-mail.js");
-let SendSMS = require("../../helpers/send-sms.js");
-let request = require('request');
+const SendMail = require("../../helpers/send-mail.js");
+const SendSMS = require("../../helpers/send-sms.js");
+const request = require('request');
 let session;
 
 module.exports = class ShareFormController {
   constructor(app) {
     app.get('/admin-api/share-form/:email', this.sendMail);
     app.get('/admin-api/send-sms/:email', this.sendSMS);
-    // app.get('/admin-api/share-link/:email', this.shareLink);
   }
 
   sendMail(req, res) {
+    let emailObj;
     session = req.session;
     if (req.session.isLoggedIn == 'Y') {
-      let emailObj = {
-        subject: `Welcome to GST registration ${req.session.userProfile.ownerName}`, // Subject line
+      emailObj = {
+        subject: `Welcome to Cross Verify registration`, // Subject line
         html: `<h4>We ${req.session.userProfile.companyName}  request you to fill your Company DETAILS with GSTIN ,WHICH WILL BE NEEDED ( WITHOUT SPELLING ERROR).
       </h4>We humbly request to fill up this form and submit it as early as possible to update your details with our company.
                     <h4> PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS.</h4><br>
-                    <a href='http://${global.config.server.url}:${global.config.server.port}/#/client/add/${req.session.userProfile._id}' class='alert-link'>Click here to fill the GST registration form</a></br></br>
+                    <a href='http://${global.config.server.url}:${global.config.server.port}/#/client/add/${req.session.userProfile._id}' class='alert-link'>Click here to fill the Cross Verify registration form</a></br></br>
                     <br /><br />
                     <h4>
                     What is CrossVerify.in <br />
@@ -28,10 +28,10 @@ CrossVerify is a free portal where you can register your company ,unique link wi
                     </h4>
 
                    <h4>Warm Regards,<h4>
-                    <h4>GST team</h4>`,
+                   <h4>${req.session.userProfile.companyName} </h4>`,
       };
       SendMail.MailFunction(emailObj, req.session.userProfile.email).then(function(data) {
-        res.send({ message: "Email has been sent successfully to your registered mail" })
+        res.send({ message: "Link has been sent successfully to your registered Email" })
       }, function(err) {
         res.send(err)
       });
@@ -41,18 +41,20 @@ CrossVerify is a free portal where you can register your company ,unique link wi
   };
 
   sendSMS(req, res) {
+    let uri, link, msg, data;
     session = req.session;
     if (req.session.isLoggedIn == 'Y') {
-      let msg = 'We' + req.session.userProfile.companyName + 'request you to fill your Company DETAILS with GSTIN ,WHICH WILL BE NEEDED ( WITHOUT SPELLING ERROR) . WE HUMBALLY REQUEST TO FILL UP THIS FORM AND SUBMIT IT AS EARLY AS POSSIBLE TO UPDATE YOUR DETAILS WITH OUR Company.' +
-        'PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS :   http://localhost:8020/#/client/add'
-      //http://' + global.config.server.url + ':' +
-      // global.config.server.port + '/#/client/add/' + req.session.userProfile._id
-      let data = {
+      uri = `http://${global.config.server.url}:${global.config.server.port}/#/client/add/${req.session.userProfile._id}`
+      link = encodeURIComponent(uri);
+      msg = `We  ${req.session.userProfile.companyName} request you to fill your Company DETAILS with GSTIN ,WHICH WILL BE NEEDED ( WITHOUT SPELLING ERROR) . WE HUMBALLY REQUEST TO FILL UP THIS FORM AND SUBMIT IT AS EARLY AS POSSIBLE TO UPDATE YOUR DETAILS WITH OUR Company.
+
+PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
+      msg += link;
+      data = {
         mobile: req.session.userProfile.mobile1,
         message: msg
       }
-      console.log("msg", msg);
-      SendSMS.SMSFunction(data);
+      SendSMS.SMSFunction(data, req, res);
     } else {
       res.redirect(500, '/logout');
     }

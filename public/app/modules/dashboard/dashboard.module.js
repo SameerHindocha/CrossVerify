@@ -1,1 +1,1 @@
-angular.module('dashboardApp', ['ngRoute', 'toastr']);
+angular.module('dashboardApp', ['ngRoute']);

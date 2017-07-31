@@ -51,6 +51,5 @@
       });
       return defer.promise;
     }
-
   }
 })();

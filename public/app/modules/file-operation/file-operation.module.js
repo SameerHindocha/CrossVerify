@@ -1,1 +1,1 @@
-angular.module('fileApp', ['ngRoute', 'toastr']);
+angular.module('fileApp', ['ngRoute']);

@@ -6,7 +6,7 @@ angular
 
 config.$inject = ['$routeProvider', '$httpProvider'];
 run.$inject = ['$rootScope', '$route', '$location'];
-httpInterceptor.$inject = ['$timeout', '$q', '$location', '$injector', 'toastr'];
+httpInterceptor.$inject = ['$timeout', '$q', '$location', '$injector'];
 
 function config($routeProvider, $httpProvider) {
   $routeProvider.otherwise({ redirectTo: '/login' });
@@ -23,7 +23,6 @@ function run($rootScope, $route, $location) {
       return;
       // return $location.path(next.$$route.originalPath);
     } else if (window.localStorage.getItem('currentUser') == null && !next.$$route.loggedInGuard) {
-
       console.log("Session = False & LoginGuard = False");
       // return $location.path(next.$$route.originalPath);
       return;
@@ -34,7 +33,7 @@ function run($rootScope, $route, $location) {
   });
 }
 
-function httpInterceptor($timeout, $q, $location, $injector, toastr) {
+function httpInterceptor($timeout, $q, $location, $injector) {
   return {
     request: function(config) {
       config.headers = config.headers || {};
@@ -44,9 +43,6 @@ function httpInterceptor($timeout, $q, $location, $injector, toastr) {
       return $q.reject(rejection);
     },
     response: function(result) {
-      // if (window.localStorage.getItem('currentUser') && window.location.href == 'http://localhost:8020/#/login') {
-      //     // $location.path('/user/list');
-      // }
       return result || $q.when(result);
     },
     responseError: function(response) {

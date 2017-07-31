@@ -11,7 +11,6 @@
       addUser: addUser,
       listUser: listUser,
       deleteUser: deleteUser,
-      // editUser: editUser,
       getUserById: getUserById,
       updateUser: updateUser,
       gstStatus: gstStatus
@@ -20,10 +19,8 @@
     function addUser(urldata) {
       let defer = $q.defer();
       Upload.upload(urldata).then(function(response) {
-        console.log("response", response);
         defer.resolve(response);
       }).catch(function(error) {
-        console.log("error", error);
         defer.reject(error);
       });
       return defer.promise;
@@ -43,9 +40,6 @@
     }
 
     function deleteUser(userId) {
-      console.log(userId);
-
-      console.log(userId);
       let defer = $q.defer();
       $http({
         method: 'delete',
@@ -58,24 +52,7 @@
       return defer.promise;
     }
 
-    // function editUser(data, userId) {
-
-    //   let defer = $q.defer();
-    //   $http({
-    //     method: 'put',
-    //     url: '/admin-api/user/' + userId,
-    //     data: data
-    //   }).then(function(response) {
-    //     defer.resolve(response);
-    //   }).catch(function(error) {
-    //     defer.reject(error);
-    //   });
-    //   return defer.promise;
-    // }
-
     function getUserById(userId) {
-
-
       let defer = $q.defer();
       $http({
         method: 'get',
@@ -88,13 +65,9 @@
       return defer.promise;
     }
 
-    function updateUser(data) {
+    function updateUser(urldata) {
       let defer = $q.defer();
-      $http({
-        method: 'put',
-        url: '/editUser',
-        data: data,
-      }).then(function(response) {
+      Upload.upload(urldata).then(function(response) {
         defer.resolve(response);
       }).catch(function(error) {
         defer.reject(error);

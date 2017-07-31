@@ -4,9 +4,9 @@
     .module('clientApp')
     .controller('dashboardController', controller);
 
-  controller.$inject = ['DashboardService', 'AuthService', 'toastr', '$location', 'lodash', '$rootScope'];
+  controller.$inject = ['DashboardService', 'AuthService', '$location', 'lodash', '$rootScope'];
 
-  function controller(DashboardService, AuthService, toastr, $location, lodash, $rootScope) {
+  function controller(DashboardService, AuthService, $location, lodash, $rootScope) {
     let vm = this;
     $rootScope.showLoginBackground = false;
     vm.DashboardService = DashboardService;
@@ -36,9 +36,9 @@
         email: vm.email
       }
       DashboardService.shareLinkService(postObj).then((response) => {
-        toastr.success(response.data.message);
+        noty('success', response.data.message);
       }).catch((error) => {
-        toastr.error("Error in Sending E-mail");
+        noty('error', error.data.message);
       })
     }
 
@@ -46,9 +46,11 @@
       let postObj = {
         email: vm.email
       }
-      DashboardService.sendSMSService(postObj);
-      toastr.success("SMS sent successfully");
-      // toastr.error("Error in Sending SMS ");
+      DashboardService.sendSMSService(postObj).then((response) => {
+        noty('success', response.data.message);
+      }).catch((error) => {
+        noty('error', error.data.message);
+      })
     }
 
     function getClientList() {
@@ -59,22 +61,21 @@
         vm.clients = response.data;
         vm.clientListResponse = response.data;
       }).catch((error) => {
-        toastr.error("Error in getting Client List");
+        noty('error', error.data.message);
       })
     }
 
     function Logout() {
       AuthService.logout().then((response) => {
         window.localStorage.removeItem('currentUser');
-        toastr.success(response.data.message);
+        noty('success', response.data.message);
         $location.path('/login');
       }).catch((error) => {
-        toastr.error("Error logging out");
+        noty('error', error.data.message);
       })
     }
 
     function openFileComparisionPage(client) {
-      console.log("client detail ctrl", client);
       $location.path('/file-compare/' + client._id);
     }
 
@@ -96,11 +97,27 @@
 
     $('#clip').tooltip({
       trigger: 'click',
-      placement: 'bottom'
+      placement: 'top'
+    });
+
+    $("#clip").hover(function() {
+      $(this)
+        .attr('data-original-title', 'copy to clipbard')
+        .tooltip('show');
+    }, function() {
+      $(this).tooltip('hide');
+    });
+
+    $("#share").hover(function() {
+      $(this)
+        .attr('data-original-title', 'share via')
+        .tooltip('show');
+    }, function() {
+      $(this).tooltip('hide');
     });
 
     function setTooltip(btn, message) {
-      $(btn).tooltip('hide')
+      $(btn)
         .attr('data-original-title', message)
         .tooltip('show');
     }
@@ -108,7 +125,7 @@
     function hideTooltip(btn) {
       setTimeout(function() {
         $(btn).tooltip('hide');
-      }, 2000);
+      }, 500);
     }
 
     function onSuccess(e) {
@@ -120,8 +137,5 @@
       setTooltip(e.trigger, 'Failed!');
       hideTooltip(e.trigger);
     }
-
   }
-
-
 })();

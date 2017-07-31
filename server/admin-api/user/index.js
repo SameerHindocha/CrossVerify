@@ -1,7 +1,8 @@
-let Utils = require('../../libs/utils.js');
-let multer = require('multer');
-let session;
-let storage = multer.diskStorage({
+const Utils = require('../../libs/utils.js');
+const multer = require('multer');
+const fs = require('file-system');
+let session, storage, multerUpload;
+storage = multer.diskStorage({
   destination: function(req, file, callback) {
     callback(null, global.ROOT_PATH + '/../public/assets/uploads/files/')
   },
@@ -9,25 +10,15 @@ let storage = multer.diskStorage({
     callback(null, file.originalname)
   }
 });
-let multerUpload = multer({ storage: storage });
+multerUpload = multer({ storage: storage });
 
 module.exports = class UserController {
   constructor(app) {
-    // app.get('/admin-api/user', this.getAllUser);
     app.get('/admin-api/user/:id', this.getUserbyId);
     app.get('/admin-api/gst-status/:gstNo', this.getGSTStatus);
     app.post('/admin-api/user', multerUpload.single('file'), this.insertNewUser);
-    app.put('/edituser', this.updateUser);
-    // app.delete('/admin-api/user/:id', this.deleteUser);
+    app.post('/admin-api/edit-user', multerUpload.single('file'), this.updateUser);
   }
-
-  // getAllUser(req, res) {
-  //   db.User.find({}).then((response) => {
-  //     res.send(response);
-  //   }).catch((error) => {
-  //     res.json(error);
-  //   })
-  // }
 
   insertNewUser(req, res) {
     let postbody = req.body;
@@ -45,7 +36,9 @@ module.exports = class UserController {
     users.landline = postbody.landline;
     users.panNo = postbody.panNo;
     users.GSTNo = postbody.GSTNo;
-    users.file = global.ROOT_PATH + '/../public/assets/uploads/files/' + req.file.filename;
+    if (req.file) {
+      users.file = global.ROOT_PATH + '/../public/assets/uploads/files/' + req.file.filename;
+    }
     db.User.findOne({ email: postbody.email }).then((response) => {
       if (response != null) {
         return res.status(409).send({ message: "Email is already registered" });
@@ -79,10 +72,11 @@ module.exports = class UserController {
   };
 
   updateUser(req, res) {
+    let filePath, fileToDelete, sessionEmail, updatebody;
     session = req.session;
     if (req.session.isLoggedIn == 'Y') {
-      let sessionEmail = req.session.userProfile.email;
-      let updatebody = req.body;
+      sessionEmail = req.session.userProfile.email;
+      updatebody = req.body;
       db.User.findOne({ "email": sessionEmail })
         .then((user) => {
           if (user != null) {
@@ -94,10 +88,21 @@ module.exports = class UserController {
             user.mobile1 = updatebody.mobile1;
             user.mobile2 = updatebody.mobile2;
             user.landline = updatebody.landline;
+            if (user.file) {
+              fileToDelete = user.file;
+            }
+            if (req.file) {
+              user.file = global.ROOT_PATH + '/../public/assets/uploads/files/' + req.file.filename;
+            }
           }
           user.save()
             .then((user) => {
               req.session.userProfile = user;
+              if (req.file) {
+                filePath = global.ROOT_PATH + '/../public/assets/uploads/files/' + req.file.filename
+              } else if (user.file) {
+                filePath = user.file;
+              }
               db.Client.update({ "email": sessionEmail }, {
                   $set: {
                     "address": updatebody.address,
@@ -107,16 +112,31 @@ module.exports = class UserController {
                     "ownerName": updatebody.ownerName,
                     "mobile1": updatebody.mobile1,
                     "mobile2": updatebody.mobile2,
-                    "landline": updatebody.landline
+                    "landline": updatebody.landline,
+                    "file": filePath
                   }
                 }, { multi: true })
                 .then((response) => {
-                  res.status(200).send({ message: "Updated successfully" });
+                  if (req.file) {
+                    fs.unlink(fileToDelete, function() {});
+                    db.Client.update({ 'userId': req.session.userProfile._id }, {
+                        $set: {
+                          "fileCompareStatus": null
+                        }
+                      }, { multi: true })
+                      .then((response) => {
+                        res.status(200).send({ message: "Updated successfully", user: user });
+
+                      }).catch((error) => {
+                        res.status(404).send({ message: 'Object Not Found' });
+                      })
+                  } else {
+                    res.status(200).send({ message: "Updated successfully", user: user });
+                  }
                 }).catch((error) => {
                   res.status(404).send({ message: 'Object Not Found' });
                 })
             }).catch((error) => {
-
               res.status(400).send({ message: "Error in updating user" })
             })
         }).catch((error) => {
@@ -140,22 +160,4 @@ module.exports = class UserController {
       }
     });
   };
-
-
-
-
-  // deleteUser(req, res) {
-  //   db.User.remove({
-  //     _id: req.params.id
-  //   }, function(err, data) {
-
-  //     if (data.result.n === 0) {
-  //       res.send({ message: 'not Found' });
-  //     } else if (err) {
-  //       res.send(err);
-  //     } else {
-  //       res.json({ message: 'Successfully deleted' });
-  //     }
-  //   });
-  // };
 }

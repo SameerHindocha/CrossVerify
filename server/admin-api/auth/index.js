@@ -1,4 +1,4 @@
-let Utils = require('../../libs/utils.js');
+const Utils = require('../../libs/utils.js');
 let session;
 module.exports = class AuthController {
   constructor(app) {
@@ -17,13 +17,13 @@ module.exports = class AuthController {
   }
 
   Login(req, res) {
-    let Email = req.body.Email;
-    let Password = Utils.md5(req.body.Password);
+    let Email, Password, sessionObj;
+    Email = req.body.Email;
+    Password = Utils.md5(req.body.Password);
     db.User.findOne({ email: Email, password: Password })
       .then(function(userData) {
         if (userData) {
-
-          let sessionObj = {
+          sessionObj = {
             _id: userData._id,
             companyName: userData.companyName,
             state: userData.state,
@@ -48,16 +48,14 @@ module.exports = class AuthController {
           return res.status(404).send({ message: "Incorrect Email or Password" })
         }
       }).catch(function(error) {
-        console.error(error);
         return res.status(500).send({ message: "Internal server error" })
       });
   }
 
   Logout(req, res) {
-    console.log("LOGOUT called");
     req.session.destroy(function(err) {
       if (err) {
-        console.log(err);
+        return res.send({ message: "Error in logging out" })
       } else {
         return res.send({ message: "Logged out" })
       }
