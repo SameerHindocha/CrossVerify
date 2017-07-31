@@ -1,0 +1,84 @@
+<header>
+</header>
+<h1>File Comparision</h1>
+<!-- <div class="col-md-12">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th class="active">Company</th>
+              <th class="active">Duration</th>
+              <th class="active">Place</th>
+              <th class="active">Salary</th>
+            </tr>
+          </thead>
+          </table>
+          </div>
+          </div> -->
+<div class="col-md-12">
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th class="active">Field</th>
+          <th class="active">Company 1</th>
+          <th class="active">Company 2</th>
+          <th class="active">Status</th>
+          <!-- <th class="active">Salary</th> -->
+        </tr>
+      </thead>
+      <tr ng-repeat="field in vm.userRowObject">
+        <td>{{field.Name}}</td>
+        <td>{{field}}</td>
+        <td>{{field.Name}}</td>
+        <td align="center">
+          <span class="mobileTitle">Comparision Status</span>
+          <span ng-if="client.fileCompareStatus">
+                <i class=" fa fa-check fileCompareStatusGreen" aria-hidden="true"></i>
+              </span>
+          <span ng-if="client.fileCompareStatus==false">
+              <i class="fa fa-times fileCompareStatusRed" aria-hidden="true "></i>
+              </span>
+        </td>
+        <!-- <td>{{field.Company}}</td> -->
+        <!--  <td>{{field.Duration}}</td>
+        <td>{{field.Place}}</td>
+        <td>{{field.Sal}}</td> -->
+        <!-- <td>{{field.Company}}</td> -->
+        <!--  <td>{{field.Duration}}</td>
+        <td>{{field.Place}}</td>
+        <td>{{field.Sal}}</td> -->
+      </tr>
+    </table>
+  </div>
+  <br>
+  <hr>
+  <br>
+  <!--   <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th class="active">Name</th>
+          <th class="active">Company</th>
+          <th class="active">Duration</th>
+          <th class="active">Place</th>
+          <th class="active">Salary</th>
+        </tr>
+      </thead>
+      <tr ng-repeat="field in vm.clientRowObject">
+        <td>{{field.Name}}</td>
+        <td>{{field.Company}}</td>
+        <td>{{field.Duration}}</td>
+        <td>{{field.Place}}</td>
+        <td>{{field.Sal}}</td>
+      </tr>
+    </table>
+  </div> -->
+</div>
+</div>
+<button type="button" class="btn btn-primary" ng-click="vm.compareFiles() ">Compare</button>
+<div ng-if="vm.showStatus">
+  <h2>Difference:</h2> {{vm.difference}}
+</div>
+<span ng-if="vm.matchStatus && vm.showStatus"><h1><i class="fa fa-check " aria-hidden="true "></i> Ststus :  Matched</h1></span><span ng-if="vm.matchStatus==false && vm.showStatus "><h1><i class="fa fa-times " aria-hidden="true"></i>Ststus :  Not Matched</span></h1>
+</span>

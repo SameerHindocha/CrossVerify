@@ -1,0 +1,103 @@
+<header></header>
+<div class="container-fluid dashboardHeader">
+  <div class="row">
+    <div class="col-md-12">
+      <h2 class="welcomeMessage">Welcome, {{vm.companyName}}</h2>
+      <h1 class="text-center">Client Details</h1>
+    </div>
+  </div>
+</div>
+<div class="container-fluid detailTable">
+  <div class="row">
+    <div class="col-md-6 search-group">
+      <input type="search" class="form-control" ng-model="vm.searchText" placeholder="Search by Company name or Gst number" type="search" ng-change="vm.search()" />
+      <div class="search-icon"><i class=" fa fa-search"></i></div>
+    </div>
+    <div class="col-md-6 actionButtons text-right">
+      <label>Share this link to me</label>
+      <label class="shareLinkText">{{vm.link}}
+        <!--    <span style=" border-left: solid #acb0b7; padding: 5px 5px 5px 5px; border-top: 3px"></span> -->
+        <button id="clip" class="btn" ngclipboard data-clipboard-text="{{vm.link}}" ngclipboard ngclipboard-success="vm.onSuccess(e);" ngclipboard-error="vm.onError(e);">
+          <i class="fa fa-clipboard" aria-hidden="true"></i>
+        </button>
+      </label>
+      <ul class="nav navbar-nav shareLinks" id="share">
+        <li>
+          <a data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-share-alt" aria-hidden="true"></i>
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a ng-click="vm.sendLink()">
+                <i class="fa fa-envelope-o"></i> Email
+              </a>
+            </li>
+            <li>
+              <a ng-click="vm.sendSMS()">
+                <i class="fa fa-mobile"></i> SMS
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr class="info">
+              <th class="active">Company Name</th>
+              <th class="active">Address</th>
+              <th class="active">State</th>
+              <th class="active">City</th>
+              <th class="active">Pincode</th>
+              <th class="active">Email</th>
+              <th class="active">Owner Name</th>
+              <th class="active">Mobile1</th>
+              <th class="active">Mobile2</th>
+              <th class="active">Landline</th>
+              <th class="active">Pan No</th>
+              <th class="active">GST No</th>
+              <th class="active">File Comparision</th>
+              <th class="active">Comparision Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="client in vm.clients">
+              <td><span class="mobileTitle">Company Name</span> {{client.companyName}} </td>
+              <td><span class="mobileTitle">Address</span> {{client.address}} </td>
+              <td><span class="mobileTitle">State</span> {{client.state }} </td>
+              <td><span class="mobileTitle">City</span> {{client.city }} </td>
+              <td><span class="mobileTitle">Pincode</span> {{client.pincode }} </td>
+              <td><span class="mobileTitle">Email</span> {{client.email }} </td>
+              <td><span class="mobileTitle">Owner Name</span> {{client.ownerName }} </td>
+              <td><span class="mobileTitle">Mobile1</span> {{client.mobile1 }} </td>
+              <td><span class="mobileTitle">Mobile2</span> {{client.mobile2 }} </td>
+              <td><span class="mobileTitle">Landline</span> {{client.landline }} </td>
+              <td><span class="mobileTitle">Pan No</span> {{client.panNo }} </td>
+              <td><span class="mobileTitle">GST No</span> {{client.GSTNo }} </td>
+              <td><span class="mobileTitle">File Comparision</span>
+                <input type="button" class="btn btn-primary" value="Compare" ng-click="vm.openFileComparisionPage(client)" ng-disabled="!client.file ||  !vm.getCurrentUserForEmail.file">
+              </td>
+              <td align="center">
+                <!-- <span class="mobileTitle">Comparision Status</span> -->
+                <!-- {{client.fileCompareStatus}} -->
+                <span ng-if="client.fileCompareStatus==null">
+                  <i class=" fa fa-minus" aria-hidden="true"></i>
+                </span>
+                <span ng-if="client.fileCompareStatus">
+                  <i class=" fa fa-check" aria-hidden="true"></i>
+                </span>
+                <span ng-if="client.fileCompareStatus==false">
+                 <i class="fa fa-times" aria-hidden="true "></i>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br>
+    </div>
+  </div>
+</div>
