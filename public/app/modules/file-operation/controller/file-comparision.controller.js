@@ -4,13 +4,15 @@
     .module('fileApp')
     .controller('fileComparisionController', controller);
 
-  controller.$inject = ['FileOperationService', '$location', '$route', 'lodash'];
+  controller.$inject = ['ClientService', '$location', '$route', 'lodash'];
 
-  function controller(FileOperationService, $location, $route, lodash) {
+  function controller(ClientService, $location, $route, lodash) {
     let vm = this;
     vm.compareFiles = compareFiles;
     vm.matchStatus, vm.clientRowObject, vm.userRowObject, vm.difference;
     vm.showStatus = false;
+    vm.sessionClientDetail = JSON.parse(window.localStorage.getItem('currentUser'));
+
     activate();
 
     function activate() {
@@ -19,32 +21,50 @@
       postObj = {
         id: clientId
       }
-      FileOperationService.compareFileService(postObj).then((response) => {
-        if (response.data.clientRowObject) {
-          vm.clientRowObject = response.data.clientRowObject;
-        }
-        if (response.data.userRowObject) {
 
-          console.log("response.data.userRowObject", response.data.userRowObject);
-          vm.userRowObject = response.data.userRowObject;
-        }
-        if (response.data.status === '204') {
-          vm.difference = response.data.message;
-          vm.matchStatus = false;
-        } else {
-          vm.clientRowObject = response.data.clientRowObject;
-          vm.userRowObject = response.data.userRowObject;
-          if (response.data.difference.length == 0) {
-            vm.matchStatus = true;
-            vm.difference = 'No difference.'
-          } else {
-            vm.matchStatus = false;
-            vm.difference = response.data.difference;
-          }
-        }
+      console.log("data", vm.sessionClientDetail);
+
+      getClient(clientId);
+
+      // FileOperationService.compareFileService(postObj).then((response) => {
+      //   if (response.data.clientRowObject) {
+      //     vm.clientRowObject = response.data.clientRowObject;
+      //   }
+      //   if (response.data.userRowObject) {
+
+      //     console.log("response.data.userRowObject", response.data.userRowObject);
+      //     vm.userRowObject = response.data.userRowObject;
+      //   }
+      //   if (response.data.status === '204') {
+      //     vm.difference = response.data.message;
+      //     vm.matchStatus = false;
+      //   } else {
+      //     vm.clientRowObject = response.data.clientRowObject;
+      //     vm.userRowObject = response.data.userRowObject;
+      //     if (response.data.difference.length == 0) {
+      //       vm.matchStatus = true;
+      //       vm.difference = 'No difference.'
+      //     } else {
+      //       vm.matchStatus = false;
+      //       vm.difference = response.data.difference;
+      //     }
+      //   }
+      // }).catch((error) => {
+      //   console.log("error", error);
+      // })
+    }
+
+
+
+    function getClient(clientId) {
+      ClientService.getUserById(clientId).then((response) => {
+        vm.purchaseFileData = response.data.purchaseFile;
+        console.log("purchaseFileData", vm.purchaseFileData);
+
       }).catch((error) => {
-        console.log("error", error);
+
       })
+
     }
 
     function compareFiles() {

@@ -1,10 +1,13 @@
 const Utils = require('../../libs/utils.js');
 const multer = require('multer');
 const fs = require('file-system');
+const _ = require('lodash');
+const XLSX = require('xlsx');
+
 let session, storage, multerUpload;
 storage = multer.diskStorage({
   destination: function(req, file, callback) {
-    callback(null, global.ROOT_PATH + '/../public/assets/uploads/files/')
+    callback(null, global.ROOT_PATH + '/../public/assets/uploads/files/sales/')
   },
   filename: function(req, file, callback) {
     callback(null, file.originalname)
@@ -16,11 +19,12 @@ module.exports = class UserController {
   constructor(app) {
     app.get('/admin-api/user/:id', this.getUserbyId);
     app.get('/admin-api/gst-status/:gstNo', this.getGSTStatus);
-    app.post('/admin-api/user', multerUpload.single('file'), this.insertNewUser);
-    app.post('/admin-api/edit-user', multerUpload.single('file'), this.updateUser);
+    app.post('/admin-api/user', multerUpload.single('saleFilePath'), this.insertNewUser);
+    app.post('/admin-api/edit-user', multerUpload.single('saleFilePath'), this.updateUser);
   }
 
   insertNewUser(req, res) {
+    let userRowObject;
     let postbody = req.body;
     let users = new db.User();
     users.companyName = postbody.companyName;
@@ -37,7 +41,15 @@ module.exports = class UserController {
     users.panNo = postbody.panNo;
     users.GSTNo = postbody.GSTNo;
     if (req.file) {
-      users.file = global.ROOT_PATH + '/../public/assets/uploads/files/' + req.file.filename;
+      let userFile, userWorkBook;
+      userFile = req.file.path;
+      users.saleFilePath = userFile;
+      userWorkBook = XLSX.readFile(userFile);
+      userRowObject = XLSX.utils.sheet_to_json(userWorkBook.Sheets[userWorkBook.SheetNames[0]]);
+      users.saleFile = userRowObject;
+      // userWorkBook.SheetNames.forEach(function(sheetName) {
+      //   userRowObject = XLSX.utils.sheet_to_json(userWorkBook.Sheets[sheetName]);
+      // });
     }
     db.User.findOne({ email: postbody.email }).then((response) => {
       if (response != null) {
@@ -52,6 +64,7 @@ module.exports = class UserController {
         });
       }
     }).catch((error) => {
+      console.log("error", error);
       res.json(error);
     });
   };
@@ -72,7 +85,7 @@ module.exports = class UserController {
   };
 
   updateUser(req, res) {
-    let filePath, fileToDelete, sessionEmail, updatebody;
+    let filePath, fileToDelete, sessionEmail, updatebody, userRowObject, userFile;
     session = req.session;
     if (req.session.isLoggedIn == 'Y') {
       sessionEmail = req.session.userProfile.email;
@@ -88,21 +101,20 @@ module.exports = class UserController {
             user.mobile1 = updatebody.mobile1;
             user.mobile2 = updatebody.mobile2;
             user.landline = updatebody.landline;
-            if (user.file) {
-              fileToDelete = user.file;
+            if (user.saleFilePath) {
+              fileToDelete = user.saleFilePath;
             }
             if (req.file) {
-              user.file = global.ROOT_PATH + '/../public/assets/uploads/files/' + req.file.filename;
+              userFile = req.file.path
+              user.saleFilePath = userFile;
+              let userWorkBook = XLSX.readFile(userFile);
+              userRowObject = XLSX.utils.sheet_to_json(userWorkBook.Sheets[userWorkBook.SheetNames[0]]);
+              user.saleFile = userRowObject;
             }
           }
           user.save()
             .then((user) => {
               req.session.userProfile = user;
-              if (req.file) {
-                filePath = global.ROOT_PATH + '/../public/assets/uploads/files/' + req.file.filename
-              } else if (user.file) {
-                filePath = user.file;
-              }
               db.Client.update({ "email": sessionEmail }, {
                   $set: {
                     "address": updatebody.address,
@@ -112,8 +124,7 @@ module.exports = class UserController {
                     "ownerName": updatebody.ownerName,
                     "mobile1": updatebody.mobile1,
                     "mobile2": updatebody.mobile2,
-                    "landline": updatebody.landline,
-                    "file": filePath
+                    "landline": updatebody.landline
                   }
                 }, { multi: true })
                 .then((response) => {
@@ -126,7 +137,6 @@ module.exports = class UserController {
                       }, { multi: true })
                       .then((response) => {
                         res.status(200).send({ message: "Updated successfully", user: user });
-
                       }).catch((error) => {
                         res.status(404).send({ message: 'Object Not Found' });
                       })
@@ -148,9 +158,10 @@ module.exports = class UserController {
   };
 
   getGSTStatus(req, res) {
+    console.log("req.params", req.params);
     db.User.findOne({ GSTNo: req.params.gstNo }, function(err, data) {
       if (err) {
-        res.send(err);
+        return res.send(err);
       } else {
         if (data) {
           return res.status(409).send({ message: "GST is already registered" });
@@ -160,4 +171,6 @@ module.exports = class UserController {
       }
     });
   };
+
+
 }

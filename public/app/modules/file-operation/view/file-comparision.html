@@ -1,61 +1,134 @@
 <header>
 </header>
 <h1>File Comparision</h1>
-<!-- <div class="col-md-12">
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th class="active">Company</th>
-              <th class="active">Duration</th>
-              <th class="active">Place</th>
-              <th class="active">Salary</th>
-            </tr>
-          </thead>
-          </table>
-          </div>
-          </div> -->
+<!-- Invoice_Date Invoice_number Invoice_Category Type Supply_Type
+Customer_Billing_Name Customer_Billing_Address Customer_Billing_City Customer_Billing_PinCode Customer_Billing_State Customer_Billing_StateCode Customer_Billing_GSTIN Item_Category Item_Total_Before_Discount Item_Discount Nil_Rated_Amount Exempted_Amount Non_GST_Amount Item_Taxable_Value CGST_Rate CGST_Amount SGST_Rate SGST_Amount IGST_Rate IGST_Amount TCS Cess_Rate Cess_Amount Other Charges Roundoff Item_Total_Including_GST Taxable Value on which TCS has been deducted Mobile_number Email_address -->
 <div class="col-md-12">
   <div class="table-responsive">
-    <table class="table table-bordered">
+    <table class="table" style="display: inline-block;">
       <thead>
         <tr>
-          <th class="active">Field</th>
-          <th class="active">Company 1</th>
-          <th class="active">Company 2</th>
-          <th class="active">Status</th>
-          <!-- <th class="active">Salary</th> -->
+          <th class="active"></th>
+          <th class="active">Invoice_Date</th>
+          <th class="active">Invoice_number</th>
+          <th class="active">Invoice_Category</th>
+          <th class="active">Type</th>
+          <th class="active">Supply_Type</th>
+          <th class="active">Customer_Billing_Name</th>
+          <th class="active">Customer_Billing_Address</th>
+          <th class="active">Customer_Billing_City</th>
+          <th class="active">Customer_Billing_PinCode</th>
+          <th class="active">Customer_Billing_State</th>
+          <th class="active">Customer_Billing_StateCode</th>
+          <th class="active">Customer_Billing_GSTIN</th>
+          <th class="active">Item_Category</th>
+          <th class="active">Item_Total_Before_Discount</th>
+          <th class="active">Item_Discount</th>
+          <th class="active">Nil_Rated_Amount</th>
+          <th class="active">Exempted_Amount</th>
+          <th class="active">Non_GST_Amount</th>
+          <th class="active">Item_Taxable_Value</th>
+          <th class="active">CGST_Rate</th>
+          <th class="active">CGST_Amount</th>
+          <th class="active">SGST_Rate</th>
+          <th class="active">SGST_Amount</th>
+          <th class="active">IGST_Rate</th>
+          <th class="active">IGST_Amount</th>
+          <th class="active">TCS</th>
+          <th class="active">Cess_Rate</th>
+          <th class="active">Cess_Amount</th>
+          <th class="active">Other_Charges</th>
+          <th class="active">Roundoff</th>
+          <th class="active">Item_Total_Including_GST</th>
+          <th class="active">Taxable_Value_on_which_TCS_has_been_deducted</th>
+          <th class="active">Mobile_number</th>
+          <th class="active">Email_address</th>
         </tr>
       </thead>
-      <tr ng-repeat="field in vm.userRowObject">
-        <td>{{field.Name}}</td>
-        <td>{{field}}</td>
-        <td>{{field.Name}}</td>
-        <td align="center">
-          <span class="mobileTitle">Comparision Status</span>
-          <span ng-if="client.fileCompareStatus">
-                <i class=" fa fa-check fileCompareStatusGreen" aria-hidden="true"></i>
-              </span>
-          <span ng-if="client.fileCompareStatus==false">
-              <i class="fa fa-times fileCompareStatusRed" aria-hidden="true "></i>
-              </span>
-        </td>
-        <!-- <td>{{field.Company}}</td> -->
-        <!--  <td>{{field.Duration}}</td>
-        <td>{{field.Place}}</td>
-        <td>{{field.Sal}}</td> -->
-        <!-- <td>{{field.Company}}</td> -->
-        <!--  <td>{{field.Duration}}</td>
-        <td>{{field.Place}}</td>
-        <td>{{field.Sal}}</td> -->
+      <tr>
+        <td>User Data</td>
+        <td>{{vm.sessionClientDetail.saleFile.Invoice_Date}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Invoice_number}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Invoice_Category}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Type}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Supply_Type}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Customer_Billing_Name}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Customer_Billing_Address}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Customer_Billing_City}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Customer_Billing_PinCode}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Customer_Billing_State}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Customer_Billing_StateCode}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Customer_Billing_GSTIN}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Item_Category}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Item_Total_Before_Discount}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Item_Discount}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Nil_Rated_Amount}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Exempted_Amount}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Non_GST_Amount}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Item_Taxable_Value}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.CGST_Rate}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.CGST_Amount}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.SGST_Rate}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.SGST_Amount}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.IGST_Rate}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.IGST_Amount}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.TCS}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Cess_Rate}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Cess_Amount}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Other_Charges}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Roundoff}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Item_Total_Including_GST}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Taxable_Value_on_which_TCS_has_been_deducted}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Mobile_number}}</td>
+        <td>{{vm.sessionClientDetail.saleFile.Email_address}}</td>
+      </tr>
+      <tr>
+        <td>Client Data</td>
+        <td>{{vm.purchaseFileData.Invoice_Date}}</td>
+        <td>{{vm.purchaseFileData.Invoice_number}}</td>
+        <td>{{vm.purchaseFileData.Invoice_Category}}</td>
+        <td>{{vm.purchaseFileData.Type}}</td>
+        <td>{{vm.purchaseFileData.Supply_Type}}</td>
+        <td>{{vm.purchaseFileData.Customer_Billing_Name}}</td>
+        <td>{{vm.purchaseFileData.Customer_Billing_Address}}</td>
+        <td>{{vm.purchaseFileData.Customer_Billing_City}}</td>
+        <td>{{vm.purchaseFileData.Customer_Billing_PinCode}}</td>
+        <td>{{vm.purchaseFileData.Customer_Billing_State}}</td>
+        <td>{{vm.purchaseFileData.Customer_Billing_StateCode}}</td>
+        <td>{{vm.purchaseFileData.Customer_Billing_GSTIN}}</td>
+        <td>{{vm.purchaseFileData.Item_Category}}</td>
+        <td>{{vm.purchaseFileData.Item_Total_Before_Discount}}</td>
+        <td>{{vm.purchaseFileData.Item_Discount}}</td>
+        <td>{{vm.purchaseFileData.Nil_Rated_Amount}}</td>
+        <td>{{vm.purchaseFileData.Exempted_Amount}}</td>
+        <td>{{vm.purchaseFileData.Non_GST_Amount}}</td>
+        <td>{{vm.purchaseFileData.Item_Taxable_Value}}</td>
+        <td>{{vm.purchaseFileData.CGST_Rate}}</td>
+        <td>{{vm.purchaseFileData.CGST_Amount}}</td>
+        <td>{{vm.purchaseFileData.SGST_Rate}}</td>
+        <td>{{vm.purchaseFileData.SGST_Amount}}</td>
+        <td>{{vm.purchaseFileData.IGST_Rate}}</td>
+        <td>{{vm.purchaseFileData.IGST_Amount}}</td>
+        <td>{{vm.purchaseFileData.TCS}}</td>
+        <td>{{vm.purchaseFileData.Cess_Rate}}</td>
+        <td>{{vm.purchaseFileData.Cess_Amount}}</td>
+        <td>{{vm.purchaseFileData.Other_Charges}}</td>
+        <td>{{vm.purchaseFileData.Roundoff}}</td>
+        <td>{{vm.purchaseFileData.Item_Total_Including_GST}}</td>
+        <td>{{vm.purchaseFileData.Taxable_Value_on_which_TCS_has_been_deducted}}</td>
+        <td>{{vm.purchaseFileData.Mobile_number}}</td>
+        <td>{{vm.purchaseFileData.Email_address}}</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
       </tr>
     </table>
-  </div>
-  <br>
-  <hr>
-  <br>
-  <!--   <div class="table-responsive">
-    <table class="table table-bordered">
+    <!--     <table class="table" style="display: inline-block;">
       <thead>
         <tr>
           <th class="active">Name</th>
@@ -66,19 +139,17 @@
         </tr>
       </thead>
       <tr ng-repeat="field in vm.clientRowObject">
-        <td>{{field.Name}}</td>
         <td>{{field.Company}}</td>
         <td>{{field.Duration}}</td>
         <td>{{field.Place}}</td>
         <td>{{field.Sal}}</td>
       </tr>
-    </table>
-  </div> -->
+    </table> -->
+  </div>
 </div>
-</div>
-<button type="button" class="btn btn-primary" ng-click="vm.compareFiles() ">Compare</button>
 <div ng-if="vm.showStatus">
   <h2>Difference:</h2> {{vm.difference}}
 </div>
-<span ng-if="vm.matchStatus && vm.showStatus"><h1><i class="fa fa-check " aria-hidden="true "></i> Ststus :  Matched</h1></span><span ng-if="vm.matchStatus==false && vm.showStatus "><h1><i class="fa fa-times " aria-hidden="true"></i>Ststus :  Not Matched</span></h1>
+<input type="button" class="btn btn-primary" value="Compare " ng-click="vm.compareFiles() ">
+<span ng-if="vm.matchStatus && vm.showStatus"><h1><i class="fa fa-check " aria-hidden="true "></i> Matched</h1></span><span ng-if="vm.matchStatus==false && vm.showStatus "><h1><i class="fa fa-times " aria-hidden="true"></i> Not Matched</span></h1>
 </span>

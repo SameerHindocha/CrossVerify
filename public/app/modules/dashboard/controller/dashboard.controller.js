@@ -21,6 +21,7 @@
     vm.openFileComparisionPage = openFileComparisionPage;
     vm.onSuccess = onSuccess;
     vm.onError = onError;
+    vm.downloadPurchaseFile = downloadPurchaseFile;
 
     activate();
 
@@ -94,6 +95,14 @@
         vm.clients = vm.filteredList;
       }
     }
+
+    function downloadPurchaseFile(path) {
+      console.log("path", path);
+      vm.downloadPath = path.split('/').slice(5).join('/');
+      console.log("vm.downloadPath", vm.downloadPath);
+    }
+
+
 
     $('#clip').tooltip({
       trigger: 'click',

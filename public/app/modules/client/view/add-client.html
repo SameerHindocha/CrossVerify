@@ -234,23 +234,35 @@
                   </div>
                   <div class="form-bottom">
                     <!-- ******* UPLOAD FILE  ******** -->
+                    purchase
                     <div class="form-group">
-                      <input type="file" class="filestyle" id="file" ngf-select ng-model="vm.file" name="file" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
-                      <div class="alert alert-danger" ng-show="addUserForm.file.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
+                      <input type="file" class="filestyle" id="purchaseFile" ngf-select ng-model="vm.purchaseFile" name="purchaseFile" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
+                      <div class="alert alert-danger" ng-show="addUserForm.purchaseFile.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
                       </div>
                       <br>
                       <div <i class="fa fa-file-excel-o">
                         </i>
-                        <button type="button" class="btn btn-danger" ng-click="vm.file=null" ng-if="vm.file"><i class="fa fa-times" aria-hidden="true"></i> Remove
+                        <button type="button" class="btn btn-danger" ng-click="vm.purchaseFile=null" ng-if="vm.purchaseFile"><i class="fa fa-times" aria-hidden="true"></i> Remove
                         </button>
                       </div>
-                      <button type="button" class="btn btn-previous btn-primary">Previous</button>
-                      <button type="submit" class="btn btn-primary" ng-click="vm.addClient()">Sign me up!</button>
-                    </div>
+                      sales
+                      <div class="form-group">
+                        <input type="file" class="filestyle" id="salesFile" ngf-select ng-model="vm.salesFile" name="salesFile" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
+                        <div class="alert alert-danger" ng-show="addUserForm.salesFile.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
+                        </div>
+                        <br>
+                        <div <i class="fa fa-file-excel-o">
+                          </i>
+                          <button type="button" class="btn btn-danger" ng-click="vm.salesFile=null" ng-if="vm.salesFile"><i class="fa fa-times" aria-hidden="true"></i> Remove
+                          </button>
+                        </div>
+                        <button type="button" class="btn btn-previous btn-primary">Previous</button>
+                        <button type="submit" class="btn btn-primary" ng-click="vm.addClient()">Sign me up!</button>
+                      </div>
                 </fieldset>
               </form>
+              </div>
               </div>
             </div>
           </div>
         </div>
-      </div>

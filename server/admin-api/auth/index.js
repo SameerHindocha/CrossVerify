@@ -38,7 +38,8 @@ module.exports = class AuthController {
             panNo: userData.panNo,
             GSTNo: userData.GSTNo,
             preLink: global.preLink,
-            file: userData.file
+            saleFilePath: userData.saleFilePath,
+            saleFile: userData.saleFile
           }
           req.session.isLoggedIn = 'Y';
           session.email = userData.email;

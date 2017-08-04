@@ -1,9 +1,18 @@
 const Utils = require('../../libs/utils.js');
 const multer = require('multer');
+const _ = require('lodash');
+const XLSX = require('xlsx');
+
 let session;
 let storage = multer.diskStorage({
   destination: function(req, file, callback) {
-    callback(null, global.ROOT_PATH + '/../public/assets/uploads/files/')
+    console.log("file in storage dest", file);
+    if (file.fieldname === 'purchaseFile') {
+      callback(null, global.ROOT_PATH + '/../public/assets/uploads/files/purchase')
+    }
+    if (file.fieldname === 'salesFile') {
+      callback(null, global.ROOT_PATH + '/../public/assets/uploads/files/sales')
+    }
   },
   filename: function(req, file, callback) {
     callback(null, file.originalname)
@@ -15,13 +24,17 @@ module.exports = class ClientController {
   constructor(app) {
     app.get('/api/client', this.getAllClient);
     app.get('/api/client-by-user/:email', this.getClientsByUser);
+    app.get('/api/client/:id', this.getClientById);
     app.get('/api/gst-status/:userKey', this.getGSTStatus);
     app.get('/api/user-data/:email/:password/:GSTNo', this.fetchUserRecord);
-    app.post('/api/client', multerUpload.single('file'), this.insertNewClient);
+    app.post('/api/client', multerUpload.fields([
+      { name: 'purchaseFile', maxCount: 1 },
+      { name: 'salesFile', maxCount: 1 }
+    ]), this.insertNewClient);
   }
 
   insertNewClient(req, res) {
-    let Client, userAsClient, User, finalId;
+    let Client, userAsClient, User, finalId, userRowObject, clientRowObject;
     Client = new db.Client();
     userAsClient = new db.Client();
     User = new db.User();
@@ -37,8 +50,12 @@ module.exports = class ClientController {
     User.landline = req.body.landline;
     User.panNo = req.body.panNo;
     User.GSTNo = req.body.GSTNo;
-    if (req.file) {
-      User.file = global.ROOT_PATH + '/../public/assets/uploads/files/' + req.file.filename;
+    if (req.files.salesFile) {
+      let userFile = req.files.salesFile[0].path;
+      User.saleFilePath = userFile;
+      let userWorkBook = XLSX.readFile(userFile);
+      userRowObject = XLSX.utils.sheet_to_json(userWorkBook.Sheets[userWorkBook.SheetNames[0]]);
+      User.saleFile = userRowObject[0];
     }
     if (req.body.password) {
       User.password = Utils.md5(req.body.password)
@@ -57,13 +74,16 @@ module.exports = class ClientController {
     Client.GSTNo = req.body.GSTNo;
     Client.userId = req.body.userId;
     Client.userKey = req.body.userId + req.body.GSTNo;
-    if (req.file) {
-      Client.file = global.ROOT_PATH + '/../public/assets/uploads/files/' + req.file.filename;
+    if (req.files.purchaseFile) {
+      let clientFile = req.files.purchaseFile[0].path; //global.ROOT_PATH + '/../public/assets/uploads/files/purchase/' + req.file.filename;
+      Client.purchaseFilePath = clientFile;
+      let clientWorkBook = XLSX.readFile(clientFile);
+      clientRowObject = XLSX.utils.sheet_to_json(clientWorkBook.Sheets[clientWorkBook.SheetNames[0]]);
+      Client.purchaseFile = clientRowObject[0];
     }
+
     if (req.body.password) {
-      Client.password = Utils.md5(req.body.password)
-    }
-    if (req.body.password) {
+      Client.password = Utils.md5(req.body.password);
       db.User.findOne({ email: req.body.email }, function(err, repeatedUser) {
         if (repeatedUser != null) {
           Client.save().then((resp) => {
@@ -89,6 +109,7 @@ module.exports = class ClientController {
                 userAsClient.userId = repeatedUser._id;
                 userAsClient.userKey = repeatedUser._id + linkSentBy.GSTNo;
                 if (linkSentBy.file) {
+                  //CLIENT
                   userAsClient.file = linkSentBy.file;
                 }
                 if (linkSentBy.password) {
@@ -219,4 +240,23 @@ module.exports = class ClientController {
       }
     });
   }
+
+  getClientById(req, res) {
+    db.Client.findOne({ _id: req.params.id }, function(err, client) {
+      if (err) {
+        res.send(err);
+      } else {
+        if (client) {
+          return res.send(client);
+        } else {
+          return res.send({ message: 'No match found' });
+        }
+      }
+    });
+
+  }
+
+
+
+
 }

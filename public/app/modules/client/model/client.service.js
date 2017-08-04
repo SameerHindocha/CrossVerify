@@ -10,7 +10,8 @@
     return {
       addClient: addClient,
       gstStatus: gstStatus,
-      fetchUserRecord: fetchUserRecord
+      fetchUserRecord: fetchUserRecord,
+      getUserById: getUserById
     };
 
     function addClient(urldata) {
@@ -42,6 +43,20 @@
         method: 'get',
         url: '/api/user-data/' + data.email + '/' + data.password + '/' + data.GSTNo
       }).then(function(response) {
+        defer.resolve(response);
+      }).catch(function(error) {
+        defer.reject(error);
+      });
+      return defer.promise;
+    }
+
+    function getUserById(id) {
+      let defer = $q.defer();
+      $http({
+        method: 'get',
+        url: '/api/client/' + id
+      }).then(function(response) {
+        console.log("response", response);
         defer.resolve(response);
       }).catch(function(error) {
         defer.reject(error);

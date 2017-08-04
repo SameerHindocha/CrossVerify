@@ -15,18 +15,18 @@
     function activate() {
       vm.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       $rootScope.userName = vm.currentUser.ownerName;
-      if (vm.user.file) {
-        vm.file = vm.user.file;
-        vm.file = vm.file.split('/').slice(7).join('/');
+      if (vm.user.saleFilePath) {
+        vm.saleFilePath = vm.user.saleFilePath;
+        vm.saleFilePath = vm.saleFilePath.split('/').slice(5).join('/');
       }
     }
 
     $scope.finalvalues = function(updatedData) {
       let splitArray, fileType, urldata, setLocalStorageData, updatedResponseData;
-      if (updatedData.file) {
-        splitArray = updatedData.file.name.split('.');
+      if (updatedData.saleFile) {
+        splitArray = updatedData.saleFile.name.split('.');
         fileType = lodash.last(splitArray);
-        Object.defineProperty(updatedData.file, 'name', {
+        Object.defineProperty(updatedData.saleFile, 'name', {
           value: Math.floor(Math.random() * (1000000000000 - 3) + 100000) + '.' + fileType,
           writable: true
         });
@@ -53,7 +53,8 @@
           setLocalStorageData.mobile1 = updatedResponseData.user.mobile1;
           setLocalStorageData.mobile2 = updatedResponseData.user.mobile2;
           setLocalStorageData.landline = updatedResponseData.user.landline;
-          setLocalStorageData.file = updatedResponseData.user.file;
+          setLocalStorageData.saleFilePath = updatedResponseData.user.saleFilePath;
+          setLocalStorageData.saleFile = updatedResponseData.user.saleFile;
           $rootScope.userName = updatedResponseData.user.ownerName;
           vm.currentUser = localStorage.setItem("currentUser", JSON.stringify(setLocalStorageData));
         }

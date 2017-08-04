@@ -25,10 +25,18 @@
       let sentUserId, splitArray, fileType, postObj, urldata;
       sentUserId = $route.current.params.id;
       vm.sentUserId = sentUserId;
-      if (vm.file) {
-        splitArray = vm.file.name.split('.');
+      if (vm.purchaseFile) {
+        splitArray = vm.purchaseFile.name.split('.');
         fileType = lodash.last(splitArray);
-        Object.defineProperty(vm.file, 'name', {
+        Object.defineProperty(vm.purchaseFile, 'name', {
+          value: Math.floor(Math.random() * (1000000000000 - 3) + 100000) + '.' + fileType,
+          writable: true
+        });
+      }
+      if (vm.salesFile) {
+        splitArray = vm.salesFile.name.split('.');
+        fileType = lodash.last(splitArray);
+        Object.defineProperty(vm.salesFile, 'name', {
           value: Math.floor(Math.random() * (1000000000000 - 3) + 100000) + '.' + fileType,
           writable: true
         });
@@ -48,7 +56,8 @@
         GSTNo: vm.GSTNo,
         userId: vm.sentUserId,
         password: vm.password,
-        file: vm.file
+        purchaseFile: vm.purchaseFile,
+        salesFile: vm.salesFile
       };
 
       urldata = {
