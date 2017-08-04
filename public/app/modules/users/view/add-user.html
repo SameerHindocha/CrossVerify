@@ -31,7 +31,7 @@
               Company Name is Required
             </div>
           </div>
-          <!-- ******STATE********* -->
+          ******STATE*********
           <div class="inputGroupWrap col-md-6">
             <div class="input-group input-group-icon">
               <select name="state" class="form-control" ng-model="vm.state" ng-options="state for state in vm.states" required="">
@@ -44,7 +44,7 @@
               State Name is Required
             </div>
           </div>
-          <!-- ******CITY********* -->
+          ******CITY*********
           <div class="inputGroupWrap col-md-6">
             <div class="input-group input-group-icon">
               <input type="text" name="city" class="form-control" ng-model="vm.city" placeholder="City Name" required>
@@ -55,7 +55,7 @@
               City Name is Required
             </div>
           </div>
-          <!-- *******PINCODE******** -->
+          *******PINCODE********
           <div class="inputGroupWrap col-md-6">
             <div class="input-group input-group-icon">
               <input type="number" name="pincode" class="form-control no-spin" ng-model="vm.pincode" placeholder="Pincode" maxlength="6" minlength="6" required>
@@ -67,7 +67,7 @@
             </div>
           </div>
         </div>
-        <!-- *******OWNER NAME******** -->
+        *******OWNER NAME********
         <div class="row">
           <div class="col-md-12">
             <h4>Personal Information</h4>
@@ -82,7 +82,7 @@
               Owner Name is Required
             </div>
           </div>
-          <!-- *******ADDRESS******** -->
+          *******ADDRESS********
           <div class="inputGroupWrap col-md-6">
             <div class="input-group input-group-icon">
               <input type="text" name="address" class="form-control" ng-model="vm.address" placeholder="Address" required>
@@ -93,7 +93,7 @@
               Address is Required
             </div>
           </div>
-          <!-- *******MOBILE 1******** -->
+          *******MOBILE 1********
           <div class="inputGroupWrap col-md-6">
             <div class="input-group input-group-icon">
               <input type="number" name="mobile1" class="form-control no-spin" ng-model="vm.mobile1" placeholder="Mobile Number" maxlength="10" minlength="10" required>
@@ -104,7 +104,7 @@
               Invalid Mobile Number
             </div>
           </div>
-          <!-- *******MOBILE2******** -->
+          *******MOBILE2********
           <div class="inputGroupWrap col-md-6">
             <div class="input-group input-group-icon">
               <input type="number" name="mobile2" class="form-control no-spin" ng-model="vm.mobile2" placeholder="Alternate Mobile Number" maxlength="10" minlength="10">
@@ -114,7 +114,7 @@
               Invalid Mobile Number
             </div>
           </div>
-          <!-- *******LANDLINE******** -->
+          *******LANDLINE********
           <div class="inputGroupWrap col-md-6">
             <div class="input-group input-group-icon">
               <input type="number" name="landline" class="form-control no-spin" ng-model="vm.landline" placeholder="Landline Number">
@@ -122,7 +122,7 @@
             </div>
           </div>
         </div>
-        <!-- ******PAN NO********* -->
+        ******PAN NO*********
         <div class="row">
           <div class="col-md-12">
             <h4>KYC Information</h4>
@@ -137,7 +137,7 @@
               Invalid Pan Number
             </div>
           </div>
-          <!-- *******GST NO******** -->
+          *******GST NO********
           <div class="inputGroupWrap col-md-6">
             <div class="input-group input-group-icon">
               <input type="text" name="GSTNo" class="form-control toUpper" ng-model="vm.GSTNo" placeholder="GST Number" ng-pattern="/^[a-zA-Z0-9]{15}$/" minlength="15" maxlength="15" ng-change="vm.getGSTStatus()" required>
@@ -153,7 +153,7 @@
           <div class="col-md-12">
             <h4>User Information</h4>
           </div>
-          <!-- *******EMAIL******** -->
+          *******EMAIL********
           <div class="inputGroupWrap col-md-6">
             <div class="input-group input-group-icon">
               <input type="email" name="email" class="form-control" ng-model="vm.email" placeholder="Email Address" required>
@@ -164,7 +164,7 @@
               Invalid Email Address
             </div>
           </div>
-          <!-- *******PASSWORD******** -->
+          *******PASSWORD********
           <div class="inputGroupWrap col-md-12">
             <div class="row">
               <div class="inputGroupWrap col-md-6">
@@ -193,16 +193,17 @@
         <div class="row">
           <div class="col-md-12">
             <h4>Document</h4>
-            <input type="file" ngf-select ng-model="vm.file" name="file" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
-            <div class="alert alert-danger" ng-show="addUserForm.file.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
+            <input type="file" ngf-select ng-model="vm.saleFile" name="saleFilePath" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
+            <div class="alert alert-danger" ng-show="addUserForm.saleFilePath.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
             </div>
             <br>
-            <img ng-show="addUserForm.file.$valid" ngf-thumbnail="vm.file" class="thumb">
-            <button type="button" class="btn btn-danger" ng-click="vm.file=null" ng-if="vm.file"><i class="fa fa-times" aria-hidden="true"></i> Remove
+            <img ng-show="addUserForm.saleFilePath.$valid" ngf-thumbnail="vm.saleFilePath" class="thumb">
+            <button type="button" class="btn btn-danger" ng-click="vm.saleFilePath=null" ng-if="vm.saleFilePath"><i class="fa fa-times" aria-hidden="true"></i> Remove
             </button>
           </div>
         </div>
-        <button class="btn btn-primary" ng-disabled="vm.gstConflict || addUserForm.companyName.$invalid || addUserForm.state.$invalid || addUserForm.city.$invalid || addUserForm.pincode.$invalid || addUserForm.ownerName.$invalid || addUserForm.address.$invalid || addUserForm.mobile1.$invalid || addUserForm.panNo.$invalid || addUserForm.tinNo.$invalid || addUserForm.GSTNo.$invalid || addUserForm.email.$invalid || addUserForm.password.$invalid || addUserForm.confirmPassword.$invalid || addUserForm.file.$invalid" ng-click="vm.addUser()">Save</button>
+        <button class="btn btn-primary" ng-click="vm.addUser()">Save</button>
+        <!--   <button class="btn btn-primary" ng-disabled="vm.gstConflict || addUserForm.companyName.$invalid || addUserForm.state.$invalid || addUserForm.city.$invalid || addUserForm.pincode.$invalid || addUserForm.ownerName.$invalid || addUserForm.address.$invalid || addUserForm.mobile1.$invalid || addUserForm.panNo.$invalid || addUserForm.tinNo.$invalid || addUserForm.GSTNo.$invalid || addUserForm.email.$invalid || addUserForm.password.$invalid || addUserForm.confirmPassword.$invalid || addUserForm.saleFilePath.$invalid" ng-click="vm.addUser()">Save</button> -->
       </form>
     </div>
   </div>

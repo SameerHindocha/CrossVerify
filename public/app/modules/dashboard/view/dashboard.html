@@ -61,6 +61,7 @@
               <th class="active">GST No</th>
               <th class="active">File Comparision</th>
               <th class="active">Comparision Status</th>
+              <th class="active">Purchase File</th>
             </tr>
           </thead>
           <tbody>
@@ -78,7 +79,7 @@
               <td><span class="mobileTitle">Pan No</span> {{client.panNo }} </td>
               <td><span class="mobileTitle">GST No</span> {{client.GSTNo }} </td>
               <td><span class="mobileTitle">File Comparision</span>
-                <input type="button" class="btn btn-primary" value="Compare" ng-click="vm.openFileComparisionPage(client)" ng-disabled="!client.file ||  !vm.getCurrentUserForEmail.file">
+                <input type="button" class="btn btn-primary" value="Compare" ng-click="vm.openFileComparisionPage(client)" ng-disabled="!client.purchaseFilePath ||  !vm.getCurrentUserForEmail.saleFilePath">
               </td>
               <td align="center">
                 <!-- <span class="mobileTitle">Comparision Status</span> -->
@@ -93,6 +94,7 @@
                  <i class="fa fa-times" aria-hidden="true "></i>
                 </span>
               </td>
+              <td align="center"><span class="mobileTitle">GST No</span> <a ng-click="vm.downloadPurchaseFile(client.purchaseFilePath)" href="{{vm.downloadPath}}"><i class="fa fa-download" aria-hidden="true"></i> </a> </td>
             </tr>
           </tbody>
         </table>
