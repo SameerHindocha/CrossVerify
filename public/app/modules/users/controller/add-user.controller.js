@@ -29,24 +29,22 @@
         });
       }
       postObj = {
-        companyName: vm.companyName,
-        state: vm.state,
-        city: vm.city,
-        pincode: vm.pincode,
+        // companyName: vm.companyName,
+        // state: vm.state,
+        // city: vm.city,
+        // pincode: vm.pincode,
         email: vm.email,
-        ownerName: vm.ownerName,
-        address: vm.address,
-        mobile1: vm.mobile1,
-        mobile2: vm.mobile2,
-        landline: vm.landline,
-        panNo: vm.panNo.toUpperCase(),
+        // ownerName: vm.ownerName,
+        // address: vm.address,
+        // mobile1: vm.mobile1,
+        // mobile2: vm.mobile2,
+        // landline: vm.landline,
+        // panNo: vm.panNo.toUpperCase(),
         GSTNo: vm.GSTNo.toUpperCase(),
         password: vm.password,
-        saleFilePath: vm.saleFile
+        saleFile: vm.saleFile
       };
 
-      console.log("postObj", postObj);
-      // console.log("saleFilePath---", saleFilePath);
       urldata = {
         url: "admin-api/user",
         headers: {

@@ -13,7 +13,9 @@
       deleteUser: deleteUser,
       getUserById: getUserById,
       updateUser: updateUser,
-      gstStatus: gstStatus
+      gstStatus: gstStatus,
+      addUserSale: addUserSale,
+      addFiles: addFiles
     };
 
     function addUser(urldata) {
@@ -88,6 +90,49 @@
       return defer.promise;
     }
 
+    function addUserSale(data) {
+      console.log("data", data);
+      let defered = $q.defer();
+      $http({
+        method: 'put',
+        url: '/admin-api/user-sale/' + data.id,
+        data: data
+      }).then(function(response) {
+        defered.resolve(response.data);
+      }).catch(function(error) {
+        defered.reject(error);
+      });
+      return defered.promise;
+
+    }
+
+
+    // function addFiles(data) {
+    //   console.log("data", data);
+    //   let defered = $q.defer();
+    //   $http({
+    //     method: 'post',
+    //     url: '/admin-api/file',
+    //     data: data
+    //   }).then(function(response) {
+    //     defered.resolve(response.data);
+    //   }).catch(function(error) {
+    //     defered.reject(error);
+    //   });
+    //   return defered.promise;
+
+    // }
+
+    function addFiles(urldata) {
+      console.log("urldata", urldata);
+      let defer = $q.defer();
+      Upload.upload(urldata).then(function(response) {
+        defer.resolve(response);
+      }).catch(function(error) {
+        defer.reject(error);
+      });
+      return defer.promise;
+    }
 
 
   }
