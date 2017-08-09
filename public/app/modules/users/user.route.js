@@ -24,6 +24,13 @@
           },
         })
 
+        .when("/user/addSale", {
+          templateUrl: 'app/modules/users/view/add-user-sale.html',
+          controller: 'addUserSaleController',
+          controllerAs: 'vm',
+          loggedInGuard: true
+        })
+
         .otherwise({
           redirectTo: '/dashboard'
         });

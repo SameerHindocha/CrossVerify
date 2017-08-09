@@ -4,14 +4,15 @@
     .module('fileApp')
     .controller('fileComparisionController', controller);
 
-  controller.$inject = ['ClientService', '$location', '$route', 'lodash'];
+  controller.$inject = ['ClientService', '$location', '$route', 'lodash', '$rootScope'];
 
-  function controller(ClientService, $location, $route, lodash) {
+  function controller(ClientService, $location, $route, lodash, $rootScope) {
     let vm = this;
     vm.compareFiles = compareFiles;
     vm.matchStatus, vm.clientRowObject, vm.userRowObject, vm.difference;
     vm.showStatus = false;
-    vm.sessionClientDetail = JSON.parse(window.localStorage.getItem('currentUser'));
+    vm.saleFileData = JSON.parse(window.localStorage.getItem('currentUser'));
+    let clientGSTNo = "27AABCA4734H1ZU";
 
     activate();
 
@@ -21,10 +22,28 @@
       postObj = {
         id: clientId
       }
+      // if ($rootScope.clientData) {
+      //   console.log("if");
+      //   clientData = $rootScope.clientData;
+      // }
+      // console.log("$rootScope.-----------------------------", clientData);
 
-      console.log("data", vm.sessionClientDetail);
 
-      getClient(clientId);
+
+      // lodash.each(vm.saleFileData, function(data) {
+      //     // lodash.each(data1, function(data) {
+
+      //     if (data[0].Customer_Billing_GSTIN == clientGSTNo) {
+      //       console.log("FOUND");
+      //     }
+
+      //     // }
+
+      //     // });
+
+      //     console.log("LOCAL STORAGE ", vm.saleFileData);
+
+      //     getClient(clientId);
 
       // FileOperationService.compareFileService(postObj).then((response) => {
       //   if (response.data.clientRowObject) {
@@ -59,7 +78,7 @@
     function getClient(clientId) {
       ClientService.getUserById(clientId).then((response) => {
         vm.purchaseFileData = response.data.purchaseFile;
-        console.log("purchaseFileData", vm.purchaseFileData);
+        // console.log("purchaseFileData", vm.purchaseFileData);
 
       }).catch((error) => {
 

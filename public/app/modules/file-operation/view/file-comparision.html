@@ -47,40 +47,40 @@ Customer_Billing_Name Customer_Billing_Address Customer_Billing_City Customer_Bi
       </thead>
       <tr>
         <td>User Data</td>
-        <td>{{vm.sessionClientDetail.saleFile.Invoice_Date}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Invoice_number}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Invoice_Category}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Type}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Supply_Type}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Customer_Billing_Name}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Customer_Billing_Address}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Customer_Billing_City}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Customer_Billing_PinCode}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Customer_Billing_State}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Customer_Billing_StateCode}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Customer_Billing_GSTIN}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Item_Category}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Item_Total_Before_Discount}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Item_Discount}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Nil_Rated_Amount}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Exempted_Amount}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Non_GST_Amount}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Item_Taxable_Value}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.CGST_Rate}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.CGST_Amount}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.SGST_Rate}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.SGST_Amount}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.IGST_Rate}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.IGST_Amount}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.TCS}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Cess_Rate}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Cess_Amount}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Other_Charges}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Roundoff}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Item_Total_Including_GST}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Taxable_Value_on_which_TCS_has_been_deducted}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Mobile_number}}</td>
-        <td>{{vm.sessionClientDetail.saleFile.Email_address}}</td>
+        <td>{{vm.saleFileData.Invoice_Date}}</td>
+        <td>{{vm.saleFileData.Invoice_number}}</td>
+        <td>{{vm.saleFileData.Invoice_Category}}</td>
+        <td>{{vm.saleFileData.Type}}</td>
+        <td>{{vm.saleFileData.Supply_Type}}</td>
+        <td>{{vm.saleFileData.Customer_Billing_Name}}</td>
+        <td>{{vm.saleFileData.Customer_Billing_Address}}</td>
+        <td>{{vm.saleFileData.Customer_Billing_City}}</td>
+        <td>{{vm.saleFileData.Customer_Billing_PinCode}}</td>
+        <td>{{vm.saleFileData.Customer_Billing_State}}</td>
+        <td>{{vm.saleFileData.Customer_Billing_StateCode}}</td>
+        <td>{{vm.saleFileData.Customer_Billing_GSTIN}}</td>
+        <td>{{vm.saleFileData.Item_Category}}</td>
+        <td>{{vm.saleFileData.Item_Total_Before_Discount}}</td>
+        <td>{{vm.saleFileData.Item_Discount}}</td>
+        <td>{{vm.saleFileData.Nil_Rated_Amount}}</td>
+        <td>{{vm.saleFileData.Exempted_Amount}}</td>
+        <td>{{vm.saleFileData.Non_GST_Amount}}</td>
+        <td>{{vm.saleFileData.Item_Taxable_Value}}</td>
+        <td>{{vm.saleFileData.CGST_Rate}}</td>
+        <td>{{vm.saleFileData.CGST_Amount}}</td>
+        <td>{{vm.saleFileData.SGST_Rate}}</td>
+        <td>{{vm.saleFileData.SGST_Amount}}</td>
+        <td>{{vm.saleFileData.IGST_Rate}}</td>
+        <td>{{vm.saleFileData.IGST_Amount}}</td>
+        <td>{{vm.saleFileData.TCS}}</td>
+        <td>{{vm.saleFileData.Cess_Rate}}</td>
+        <td>{{vm.saleFileData.Cess_Amount}}</td>
+        <td>{{vm.saleFileData.Other_Charges}}</td>
+        <td>{{vm.saleFileData.Roundoff}}</td>
+        <td>{{vm.saleFileData.Item_Total_Including_GST}}</td>
+        <td>{{vm.saleFileData.Taxable_Value_on_which_TCS_has_been_deducted}}</td>
+        <td>{{vm.saleFileData.Mobile_number}}</td>
+        <td>{{vm.saleFileData.Email_address}}</td>
       </tr>
       <tr>
         <td>Client Data</td>
@@ -147,9 +147,9 @@ Customer_Billing_Name Customer_Billing_Address Customer_Billing_City Customer_Bi
     </table> -->
   </div>
 </div>
+<button type="button" class="btn btn-primary" ng-click="vm.compareFiles() ">Compare</button>
 <div ng-if="vm.showStatus">
   <h2>Difference:</h2> {{vm.difference}}
 </div>
-<input type="button" class="btn btn-primary" value="Compare " ng-click="vm.compareFiles() ">
 <span ng-if="vm.matchStatus && vm.showStatus"><h1><i class="fa fa-check " aria-hidden="true "></i> Matched</h1></span><span ng-if="vm.matchStatus==false && vm.showStatus "><h1><i class="fa fa-times " aria-hidden="true"></i> Not Matched</span></h1>
 </span>

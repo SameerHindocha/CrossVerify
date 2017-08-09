@@ -77,6 +77,7 @@
     }
 
     function openFileComparisionPage(client) {
+      $rootScope.clientData = client;
       $location.path('/file-compare/' + client._id);
     }
 

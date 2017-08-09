@@ -38,28 +38,7 @@ module.exports = class ClientController {
     Client = new db.Client();
     userAsClient = new db.Client();
     User = new db.User();
-    User.companyName = req.body.companyName;
-    User.address = req.body.address;
-    User.state = req.body.state;
-    User.city = req.body.city;
-    User.pincode = req.body.pincode;
-    User.email = req.body.email;
-    User.ownerName = req.body.ownerName;
-    User.mobile1 = req.body.mobile1;
-    User.mobile2 = req.body.mobile2;
-    User.landline = req.body.landline;
-    User.panNo = req.body.panNo;
-    User.GSTNo = req.body.GSTNo;
-    if (req.files.salesFile) {
-      let userFile = req.files.salesFile[0].path;
-      User.saleFilePath = userFile;
-      let userWorkBook = XLSX.readFile(userFile);
-      userRowObject = XLSX.utils.sheet_to_json(userWorkBook.Sheets[userWorkBook.SheetNames[0]]);
-      User.saleFile = userRowObject[0];
-    }
-    if (req.body.password) {
-      User.password = Utils.md5(req.body.password)
-    }
+
     Client.companyName = req.body.companyName;
     Client.address = req.body.address;
     Client.state = req.body.state;
@@ -79,7 +58,10 @@ module.exports = class ClientController {
       Client.purchaseFilePath = clientFile;
       let clientWorkBook = XLSX.readFile(clientFile);
       clientRowObject = XLSX.utils.sheet_to_json(clientWorkBook.Sheets[clientWorkBook.SheetNames[0]]);
-      Client.purchaseFile = clientRowObject[0];
+      let purchaseObject = {
+        "samir": clientRowObject
+      }
+      Client.purchaseFile = purchaseObject;
     }
 
     if (req.body.password) {
@@ -94,6 +76,7 @@ module.exports = class ClientController {
 
                 res.status(404).send({ message: 'Object Not found' });
               } else {
+
                 userAsClient.companyName = linkSentBy.companyName;
                 userAsClient.address = linkSentBy.address;
                 userAsClient.state = linkSentBy.state;
@@ -110,7 +93,9 @@ module.exports = class ClientController {
                 userAsClient.userKey = repeatedUser._id + linkSentBy.GSTNo;
                 if (linkSentBy.file) {
                   //CLIENT
-                  userAsClient.file = linkSentBy.file;
+
+
+                  // userAsClient.file = linkSentBy.file;
                 }
                 if (linkSentBy.password) {
                   userAsClient.password = Utils.md5(linkSentBy.password)
@@ -126,6 +111,33 @@ module.exports = class ClientController {
             res.status(400).send({ message: 'Error in Registration' });
           })
         } else {
+          //Repeated User == NULL
+          //Unique Emai Id in User Table
+          User.companyName = req.body.companyName;
+          User.address = req.body.address;
+          User.state = req.body.state;
+          User.city = req.body.city;
+          User.pincode = req.body.pincode;
+          User.email = req.body.email;
+          User.ownerName = req.body.ownerName;
+          User.mobile1 = req.body.mobile1;
+          User.mobile2 = req.body.mobile2;
+          User.landline = req.body.landline;
+          User.panNo = req.body.panNo;
+          User.GSTNo = req.body.GSTNo;
+          if (req.files.salesFile) {
+            let userFile = req.files.salesFile[0].path;
+            User.saleFilePath = userFile;
+            let userWorkBook = XLSX.readFile(userFile);
+            userRowObject = XLSX.utils.sheet_to_json(userWorkBook.Sheets[userWorkBook.SheetNames[0]]);
+            let saleObject = {
+              "samir": userRowObject
+            }
+            User.saleFile = saleObject;
+          }
+          if (req.body.password) {
+            User.password = Utils.md5(req.body.password)
+          }
           User.save().then((response) => {
             finalId = response._id
             Client.save().then((resp) => {
@@ -150,7 +162,7 @@ module.exports = class ClientController {
                   userAsClient.userId = finalId;
                   userAsClient.userKey = finalId + linkSentBy.GSTNo;
                   if (linkSentBy.file) {
-                    userAsClient.file = linkSentBy.file;
+                    // userAsClient.file = linkSentBy.file;
                   }
                   if (linkSentBy.password) {
                     userAsClient.password = Utils.md5(linkSentBy.password)
