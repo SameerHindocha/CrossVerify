@@ -234,31 +234,31 @@
                   </div>
                   <div class="form-bottom">
                     <!-- ******* UPLOAD FILE  ******** -->
-                    purchase
                     <div class="form-group">
+                      Purchase
                       <input type="file" class="filestyle" id="purchaseFile" ngf-select ng-model="vm.purchaseFile" name="purchaseFile" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
                       <div class="alert alert-danger" ng-show="addUserForm.purchaseFile.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
                       </div>
                       <br>
-                      <div <i class="fa fa-file-excel-o">
+                      <!-- <div> <i class="fa fa-file-excel-o">
                         </i>
                         <button type="button" class="btn btn-danger" ng-click="vm.purchaseFile=null" ng-if="vm.purchaseFile"><i class="fa fa-times" aria-hidden="true"></i> Remove
                         </button>
-                      </div>
-                      sales
-                      <div class="form-group">
+                      </div> -->
+                      <div class="form-group" ng-if="vm.password">
+                        Sales
                         <input type="file" class="filestyle" id="salesFile" ngf-select ng-model="vm.salesFile" name="salesFile" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
                         <div class="alert alert-danger" ng-show="addUserForm.salesFile.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
                         </div>
                         <br>
-                        <div <i class="fa fa-file-excel-o">
+                        <!-- <div> <i class="fa fa-file-excel-o">
                           </i>
                           <button type="button" class="btn btn-danger" ng-click="vm.salesFile=null" ng-if="vm.salesFile"><i class="fa fa-times" aria-hidden="true"></i> Remove
                           </button>
-                        </div>
-                        <button type="button" class="btn btn-previous btn-primary">Previous</button>
-                        <button type="submit" class="btn btn-primary" ng-click="vm.addClient()">Sign me up!</button>
+                      </div> -->
                       </div>
+                      <button type="button" class="btn btn-previous btn-primary">Previous</button>
+                      <button type="submit" class="btn btn-primary" ng-click="vm.addClient()">Sign me up!</button>
                 </fieldset>
               </form>
               </div>
