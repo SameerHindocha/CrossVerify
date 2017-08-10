@@ -6,7 +6,6 @@ const XLSX = require('xlsx');
 let session;
 let storage = multer.diskStorage({
   destination: function(req, file, callback) {
-    console.log("file in storage dest", file);
     if (file.fieldname === 'purchaseFile') {
       callback(null, global.ROOT_PATH + '/../public/assets/uploads/files/purchase')
     }
@@ -38,7 +37,8 @@ module.exports = class ClientController {
     Client = new db.Client();
     userAsClient = new db.Client();
     User = new db.User();
-
+    let saleFileName = "1234",
+      purchaseFileName = "4321";
     Client.companyName = req.body.companyName;
     Client.address = req.body.address;
     Client.state = req.body.state;
@@ -59,15 +59,26 @@ module.exports = class ClientController {
       let clientWorkBook = XLSX.readFile(clientFile);
       clientRowObject = XLSX.utils.sheet_to_json(clientWorkBook.Sheets[clientWorkBook.SheetNames[0]]);
       let purchaseObject = {
-        "samir": clientRowObject
+        [saleFileName]: clientRowObject
       }
       Client.purchaseFile = purchaseObject;
     }
-
+    User.companyName = req.body.companyName;
+    User.address = req.body.address;
+    User.state = req.body.state;
+    User.city = req.body.city;
+    User.pincode = req.body.pincode;
+    User.email = req.body.email;
+    User.ownerName = req.body.ownerName;
+    User.mobile1 = req.body.mobile1;
+    User.mobile2 = req.body.mobile2;
+    User.landline = req.body.landline;
+    User.panNo = req.body.panNo;
+    User.GSTNo = req.body.GSTNo;
     if (req.body.password) {
       Client.password = Utils.md5(req.body.password);
       db.User.findOne({ email: req.body.email }, function(err, repeatedUser) {
-        if (repeatedUser != null) {
+        if (repeatedUser) {
           Client.save().then((resp) => {
             db.User.findOne({ _id: req.body.userId }, function(err, linkSentBy) {
               if (err) {
@@ -91,47 +102,37 @@ module.exports = class ClientController {
                 userAsClient.GSTNo = linkSentBy.GSTNo;
                 userAsClient.userId = repeatedUser._id;
                 userAsClient.userKey = repeatedUser._id + linkSentBy.GSTNo;
-                if (linkSentBy.file) {
-                  //CLIENT
+                // if (linkSentBy.file) {
+                //   //CLIENT
 
 
-                  // userAsClient.file = linkSentBy.file;
-                }
+                //   // userAsClient.file = linkSentBy.file;
+                // }
                 if (linkSentBy.password) {
                   userAsClient.password = Utils.md5(linkSentBy.password)
                 }
-                userAsClient.save().then((res) => {
+                userAsClient.save().then((response) => {
                   res.send({ message: "Registered Successfully" })
                 }).catch((error) => {
-                  res.status(400).send({ message: 'Error in Registration' });
+                  console.log("error--- - -- - - - - - - ", error);
+                  res.status(400).send({ message: 'Error in Registration1' });
                 })
               }
             })
           }).catch((error) => {
-            res.status(400).send({ message: 'Error in Registration' });
+            res.status(400).send({ message: 'Error in Registration2' });
           })
         } else {
           //Repeated User == NULL
           //Unique Emai Id in User Table
-          User.companyName = req.body.companyName;
-          User.address = req.body.address;
-          User.state = req.body.state;
-          User.city = req.body.city;
-          User.pincode = req.body.pincode;
-          User.email = req.body.email;
-          User.ownerName = req.body.ownerName;
-          User.mobile1 = req.body.mobile1;
-          User.mobile2 = req.body.mobile2;
-          User.landline = req.body.landline;
-          User.panNo = req.body.panNo;
-          User.GSTNo = req.body.GSTNo;
+
           if (req.files.salesFile) {
             let userFile = req.files.salesFile[0].path;
             User.saleFilePath = userFile;
             let userWorkBook = XLSX.readFile(userFile);
             userRowObject = XLSX.utils.sheet_to_json(userWorkBook.Sheets[userWorkBook.SheetNames[0]]);
             let saleObject = {
-              "samir": userRowObject
+              [saleFileName]: userRowObject
             }
             User.saleFile = saleObject;
           }
@@ -161,24 +162,25 @@ module.exports = class ClientController {
                   userAsClient.GSTNo = linkSentBy.GSTNo;
                   userAsClient.userId = finalId;
                   userAsClient.userKey = finalId + linkSentBy.GSTNo;
-                  if (linkSentBy.file) {
-                    // userAsClient.file = linkSentBy.file;
-                  }
+                  // if (linkSentBy.file) {
+                  //   // userAsClient.file = linkSentBy.file;
+                  // }
                   if (linkSentBy.password) {
                     userAsClient.password = Utils.md5(linkSentBy.password)
                   }
                   userAsClient.save().then((response) => {
                     res.send({ message: "Registered Successfully" });
                   }).catch((error) => {
-                    res.status(400).send({ message: 'Error in Registration' });
+                    console.log("error", error);
+                    res.status(400).send({ message: 'Error in Registration3' });
                   })
                 }
               })
             }).catch((error) => {
-              res.status(400).send({ message: 'Error in Registration' });
+              res.status(400).send({ message: 'Error in Registration4' });
             })
           }).catch((error) => {
-            res.status(400).send({ message: 'Error in Registration' });
+            res.status(400).send({ message: 'Error in Registration5' });
           })
         }
       })
@@ -186,7 +188,7 @@ module.exports = class ClientController {
       Client.save().then((response) => {
         res.send({ message: "Registered Successfully" })
       }).catch((err) => {
-        res.status(400).send({ message: 'Error in Registration' });
+        res.status(400).send({ message: 'Error in Registration6' });
       })
     }
   };

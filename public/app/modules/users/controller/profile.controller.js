@@ -79,7 +79,8 @@
         fileObj = {
           purchaseFile: vm.purchaseFile,
           saleFile: vm.saleFile,
-          id: vm.id
+          id: vm.id,
+          dateOfFile: vm.dateOfFile
         }
 
         urldata = {
@@ -90,36 +91,14 @@
           data: fileObj
         };
 
-
         UserService.addFiles(urldata).then((response) => {
           noty('success', response.data.message);
 
         }).catch((error) => {
           noty('error', error.data.message);
         });
-
-
-
-
-
-
-
-        // let userFile, userWorkBook;
-        // // userFile = vm.saleFile;
-        // console.log("userFile", userFile);
-        // userWorkBook = XLSX.readFile(userFile);
-        // console.log("userWorkBook", userWorkBook);
-        // userRowObject = xlsx.utils.sheet_to_json(userWorkBook.Sheets[userWorkBook.SheetNames[0]]);
-        // let saleObject = {
-        //   "samir": userRowObject
-        // }
-        // console.log("saleObject", saleObject);
-        // // users.saleFile = saleObject
-
       }
     }
-
-
 
     // function addPurchase() {
     //   console.log("1233");

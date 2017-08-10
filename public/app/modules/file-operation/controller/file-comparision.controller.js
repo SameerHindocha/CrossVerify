@@ -11,9 +11,10 @@
     vm.compareFiles = compareFiles;
     vm.matchStatus, vm.clientRowObject, vm.userRowObject, vm.difference;
     vm.showStatus = false;
-    vm.saleFileData = JSON.parse(window.localStorage.getItem('currentUser'));
-    let clientGSTNo = "27AABCA4734H1ZU";
-
+    vm.getClient = getClient;
+    vm.userData = JSON.parse(window.localStorage.getItem('currentUser'));
+    let clientGST = "27AABCA4734H1ZU"; //Arihant
+    // let clientData = "";
     activate();
 
     function activate() {
@@ -22,67 +23,111 @@
       postObj = {
         id: clientId
       }
-      // if ($rootScope.clientData) {
-      //   console.log("if");
-      //   clientData = $rootScope.clientData;
-      // }
-      // console.log("$rootScope.-----------------------------", clientData);
+      getClient(clientId);
+      getUser(clientGST);
 
-
-
-      // lodash.each(vm.saleFileData, function(data) {
-      //     // lodash.each(data1, function(data) {
-
-      //     if (data[0].Customer_Billing_GSTIN == clientGSTNo) {
-      //       console.log("FOUND");
-      //     }
-
-      //     // }
-
-      //     // });
-
-      //     console.log("LOCAL STORAGE ", vm.saleFileData);
-
-      //     getClient(clientId);
-
-      // FileOperationService.compareFileService(postObj).then((response) => {
-      //   if (response.data.clientRowObject) {
-      //     vm.clientRowObject = response.data.clientRowObject;
-      //   }
-      //   if (response.data.userRowObject) {
-
-      //     console.log("response.data.userRowObject", response.data.userRowObject);
-      //     vm.userRowObject = response.data.userRowObject;
-      //   }
-      //   if (response.data.status === '204') {
-      //     vm.difference = response.data.message;
-      //     vm.matchStatus = false;
-      //   } else {
-      //     vm.clientRowObject = response.data.clientRowObject;
-      //     vm.userRowObject = response.data.userRowObject;
-      //     if (response.data.difference.length == 0) {
-      //       vm.matchStatus = true;
-      //       vm.difference = 'No difference.'
-      //     } else {
-      //       vm.matchStatus = false;
-      //       vm.difference = response.data.difference;
-      //     }
-      //   }
-      // }).catch((error) => {
-      //   console.log("error", error);
-      // })
+      console.log("clientGST", clientGST);
     }
 
 
 
     function getClient(clientId) {
-      ClientService.getUserById(clientId).then((response) => {
-        vm.purchaseFileData = response.data.purchaseFile;
-        // console.log("purchaseFileData", vm.purchaseFileData);
+      console.log("clientId", clientId);
+      let data = [];
+      ClientService.getClientById(clientId).then((response) => {
+        lodash.forEach(response.data.purchaseFile, function(purchase) {
+          lodash.forEach(purchase, function(record) {
+            console.log("record", record);
+            if (vm.userData.GSTNo == record.Supplier_GSTIN) {
+              console.log("sam");
+              //Call Function
+              //"27AAACB7403R1ZD"
+              data.push(record);
+              // console.log("MATCH FOUND SUCCESSFULLY");
+            } else {
+              // console.log("No Match Found");
+            }
+
+
+          });
+        });
+        vm.purchaseFileData = data;
+        // console.log("data", data);
+
+        /*
+
+        Invoice_Date:
+            Invoice_number:
+            Invoice_Category: 
+            Supply_Type:
+            Supplier_Name:
+            Supplier_Address:
+            Supplier_City: 
+            Supplier_PinCode:
+            Supplier_State: 
+            Supplier_StateCode:
+            Supplier_GSTIN: 
+            Item_Category: 
+            Item_Total_Before_Discount:
+            Item_Discount: 
+            *
+            ?Item_Taxable_Value:
+            *
+            CGST_Rate: 
+            CGST_Amount: 
+            SGST_Rate: 
+            SGST_Amount: 
+            IGST_Rate: 
+            IGST_Amount: 
+            *
+            CESS_Rate: 
+            CESS_Amount: 
+            TCS:
+
+            Item_Total_Including_GST: 
+            Flag_Reverse_Charge: 
+            Percent_Reverse_Charge_Rate:
+            Reverse_charge_liability:
+            Reverse_charge_paid:
+            Flag_Cancelled: 
+            Mobile_number: 
+            Email_address:
+
+         */
+
+
 
       }).catch((error) => {
 
       })
+
+    }
+
+    function getUser(clientGST) {
+      let data = [];
+      // console.log("data", data);
+
+      let userFileData = vm.userData.saleFile;
+
+
+
+      lodash.forEach(userFileData, function(sale) {
+        lodash.forEach(sale, function(record) {
+          // console.log("record", record);
+          if (clientGST == record.Customer_Billing_GSTIN) {
+            data.push(record);
+            console.log("MATCH FOUND SUCCESSFULLY");
+          } else {
+            // console.log("No Match Found");
+          }
+
+
+        });
+      });
+      vm.saleFileData = data;
+      // console.log("data", data);
+
+      // console.log("data", data);
 
     }
 

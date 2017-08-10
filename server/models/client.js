@@ -197,7 +197,7 @@ module.exports = (mongoose) => {
       type: Boolean
     },
     purchaseFile: {
-      "2017": [purchaseSchema]
+      type: Mixed
     }
   }, { timestamps: true }, { strict: true });
   return mongoose.model('Client', ClientSchema);
