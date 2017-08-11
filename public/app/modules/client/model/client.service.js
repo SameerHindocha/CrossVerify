@@ -11,7 +11,8 @@
       addClient: addClient,
       gstStatus: gstStatus,
       fetchUserRecord: fetchUserRecord,
-      getClientById: getClientById
+      getClientById: getClientById,
+      changeStatus: changeStatus
     };
 
     function addClient(urldata) {
@@ -62,5 +63,23 @@
       });
       return defer.promise;
     }
+
+    function changeStatus(data) {
+      console.log("data", data);
+
+      let defered = $q.defer();
+      $http({
+        method: 'put',
+        url: '/api/client-status/' + data.clientId,
+        data: data
+      }).then(function(response) {
+        defered.resolve(response.data);
+      }).catch(function(error) {
+        defered.reject(error);
+      });
+      return defered.promise;
+    }
+
+
   }
 })();

@@ -30,6 +30,7 @@ module.exports = class ClientController {
       { name: 'purchaseFile', maxCount: 1 },
       { name: 'salesFile', maxCount: 1 }
     ]), this.insertNewClient);
+    app.put('/api/client-status/:id', this.changeMatchStatus);
   }
 
   insertNewClient(req, res) {
@@ -54,7 +55,7 @@ module.exports = class ClientController {
     Client.userId = req.body.userId;
     Client.userKey = req.body.userId + req.body.GSTNo;
     if (req.files.purchaseFile) {
-      let clientFile = req.files.purchaseFile[0].path; //global.ROOT_PATH + '/../public/assets/uploads/files/purchase/' + req.file.filename;
+      let clientFile = req.files.purchaseFile[0].path;
       Client.purchaseFilePath = clientFile;
       let clientWorkBook = XLSX.readFile(clientFile);
       clientRowObject = XLSX.utils.sheet_to_json(clientWorkBook.Sheets[clientWorkBook.SheetNames[0]]);
@@ -270,7 +271,12 @@ module.exports = class ClientController {
 
   }
 
+  changeMatchStatus(req, res) {
+    db.Client.update({ "_id": req.params.id }, { $set: { fileCompareStatus: req.body.match } }).then((response) => {
 
+    }).catch((error) => {
 
+    })
+  }
 
 }

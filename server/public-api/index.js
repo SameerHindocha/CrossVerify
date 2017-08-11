@@ -2,9 +2,12 @@
  Endpoints which don't require authentication
  */
 let byPassedEndpoints = [
+  '/api',
   '/client',
   '/gst-status',
   '/user-data',
+  '/client-status',
+  '/api/client-status/'
 ];
 
 let fs = require('fs');

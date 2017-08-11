@@ -9,130 +9,93 @@
   function controller(ClientService, $location, $route, lodash, $rootScope) {
     let vm = this;
     vm.compareFiles = compareFiles;
-    vm.matchStatus, vm.clientRowObject, vm.userRowObject, vm.difference;
-    vm.showStatus = false;
     vm.getClient = getClient;
+    vm.status;
     vm.userData = JSON.parse(window.localStorage.getItem('currentUser'));
-    let clientGST = "27AABCA4734H1ZU"; //Arihant
-    // let clientData = "";
+    vm.showSaleTable = false;
+    vm.showPurchaseTable = false;
+
+    let clientId;
+    let saleFile = [],
+      purchaseFile = [];
+    let saleCompare = [],
+      purchaseCompare = [];
+    let clientGST; //= "27AABCA4734H1ZU"; //Arihant
+
     activate();
 
     function activate() {
-      let clientId, postObj;
+      let postObj;
       clientId = $route.current.params.id;
+      clientGST = $route.current.params.gst;
       postObj = {
         id: clientId
       }
       getClient(clientId);
       getUser(clientGST);
-
-      console.log("clientGST", clientGST);
-    }
-
-
-
-    function getClient(clientId) {
-      console.log("clientId", clientId);
-      let data = [];
-      ClientService.getClientById(clientId).then((response) => {
-        lodash.forEach(response.data.purchaseFile, function(purchase) {
-          lodash.forEach(purchase, function(record) {
-            console.log("record", record);
-            if (vm.userData.GSTNo == record.Supplier_GSTIN) {
-              console.log("sam");
-              //Call Function
-              //"27AAACB7403R1ZD"
-              data.push(record);
-              // console.log("MATCH FOUND SUCCESSFULLY");
-            } else {
-              // console.log("No Match Found");
-            }
-
-
-          });
-        });
-        vm.purchaseFileData = data;
-        // console.log("data", data);
-
-        /*
-
-        Invoice_Date:
-            Invoice_number:
-            Invoice_Category: 
-            Supply_Type:
-            Supplier_Name:
-            Supplier_Address:
-            Supplier_City: 
-            Supplier_PinCode:
-            Supplier_State: 
-            Supplier_StateCode:
-            Supplier_GSTIN: 
-            Item_Category: 
-            Item_Total_Before_Discount:
-            Item_Discount: 
-            *
-            ?Item_Taxable_Value:
-            *
-            CGST_Rate: 
-            CGST_Amount: 
-            SGST_Rate: 
-            SGST_Amount: 
-            IGST_Rate: 
-            IGST_Amount: 
-            *
-            CESS_Rate: 
-            CESS_Amount: 
-            TCS:
-
-            Item_Total_Including_GST: 
-            Flag_Reverse_Charge: 
-            Percent_Reverse_Charge_Rate:
-            Reverse_charge_liability:
-            Reverse_charge_paid:
-            Flag_Cancelled: 
-            Mobile_number: 
-            Email_address:
-
-         */
-
-
-
-      }).catch((error) => {
-
-      })
-
     }
 
     function getUser(clientGST) {
-      let data = [];
-      // console.log("data", data);
-
       let userFileData = vm.userData.saleFile;
-
-
-
       lodash.forEach(userFileData, function(sale) {
         lodash.forEach(sale, function(record) {
-          // console.log("record", record);
           if (clientGST == record.Customer_Billing_GSTIN) {
-            data.push(record);
-            console.log("MATCH FOUND SUCCESSFULLY");
-          } else {
-            // console.log("No Match Found");
+            saleFile.push(record);
+            vm.showSaleTable = true;
+            let data = {}
+            data.Invoice_Category = record.Invoice_Category;
+            data.Invoice_number = record.Invoice_number;
+            saleCompare.push(data);
           }
-
-
         });
       });
-      vm.saleFileData = data;
-      // console.log("data", data);
-
-      // console.log("data", data);
-
+      vm.saleFileData = saleFile;
     }
 
+    function getClient(clientId) {
+      ClientService.getClientById(clientId).then((response) => {
+        lodash.forEach(response.data.purchaseFile, function(purchase) {
+          lodash.forEach(purchase, function(record) {
+            if (vm.userData.GSTNo == record.Supplier_GSTIN) {
+              purchaseFile.push(record);
+              vm.showPurchaseTable = true;
+              let data = {}
+              data.Invoice_Category = record.Invoice_Category;
+              data.Invoice_number = record.Invoice_Number;
+              purchaseCompare.push(data);
+            }
+          });
+        });
+        vm.purchaseFileData = purchaseFile;
+      }).catch((error) => {})
+    }
+
+
     function compareFiles() {
-      vm.showStatus = true;
+      console.log("saleCompare", saleCompare);
+      console.log("purchaseCompare", purchaseCompare);
+
+      if (lodash.size(saleCompare) && lodash.size(purchaseCompare)) {
+        let match = angular.equals(saleCompare, purchaseCompare)
+        console.log("match", match);
+        if (match) {
+          vm.status = true;
+        } else {
+          vm.status = false;
+        }
+        let obj = {
+          clientId: clientId,
+          match: match
+        }
+        ClientService.changeStatus(obj);
+
+      } else {
+        if (!lodash.size(saleCompare) || !lodash.size(purchaseCompare)) {
+          vm.hideTable = true;
+          noty('warning', "No Sufficient data found to Compare");
+        }
+      }
+
     }
 
   }

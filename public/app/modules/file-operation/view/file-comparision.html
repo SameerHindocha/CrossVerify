@@ -1,9 +1,7 @@
 <header>
 </header>
 <h1>File Comparision</h1>
-<!-- Invoice_Date Invoice_number Invoice_Category Type Supply_Type
-Customer_Billing_Name Customer_Billing_Address Customer_Billing_City Customer_Billing_PinCode Customer_Billing_State Customer_Billing_StateCode Customer_Billing_GSTIN Item_Category Item_Total_Before_Discount Item_Discount Nil_Rated_Amount Exempted_Amount Non_GST_Amount Item_Taxable_Value CGST_Rate CGST_Amount SGST_Rate SGST_Amount IGST_Rate IGST_Amount TCS Cess_Rate Cess_Amount Other Charges Roundoff Item_Total_Including_GST Taxable Value on which TCS has been deducted Mobile_number Email_address -->
-<div class="col-md-12">
+<div class="col-md-12" ng-if="vm.showSaleTable">
   <b>User File Detail</b>
   <div class="table-responsive">
     <table class="table" style="display: inline-block;">
@@ -45,7 +43,7 @@ Customer_Billing_Name Customer_Billing_Address Customer_Billing_City Customer_Bi
           <th class="active">Email_address</th>
         </tr>
       </thead>
-      <tr ng-repeat="saleFileData in vm.saleFileData">
+      <tr ng-repeat="saleFileData in vm.saleFileData" align="center">
         <td>{{saleFileData.Invoice_Date}}</td>
         <td>{{saleFileData.Invoice_number}}</td>
         <td>{{saleFileData.Invoice_Category}}</td>
@@ -83,8 +81,9 @@ Customer_Billing_Name Customer_Billing_Address Customer_Billing_City Customer_Bi
       </tr>
     </table>
   </div>
+</div>
+<div class="col-md-12" ng-if="vm.showPurchaseTable">
   <br>
-  <hr>
   <br>
   <b>Client File Detail</b>
   <div class="table-responsive">
@@ -106,9 +105,6 @@ Customer_Billing_Name Customer_Billing_Address Customer_Billing_City Customer_Bi
           <th class="active">Item_Category</th>
           <th class="active">Item_Total_Before_Discount</th>
           <th class="active">Item_Discount</th>
-          <th class="active">Nil_Rated_Amount</th>
-          <th class="active">Exempted_Amount</th>
-          <th class="active">Non_GST_Amount</th>
           <th class="active">Item_Taxable_Value</th>
           <th class="active">CGST_Rate</th>
           <th class="active">CGST_Amount</th>
@@ -119,16 +115,17 @@ Customer_Billing_Name Customer_Billing_Address Customer_Billing_City Customer_Bi
           <th class="active">TCS</th>
           <th class="active">Cess_Rate</th>
           <th class="active">Cess_Amount</th>
-          <th class="active">Other_Charges</th>
-          <th class="active">Roundoff</th>
           <th class="active">Item_Total_Including_GST</th>
-          <th class="active">Taxable_Value_on_which_TCS_has_been_deducted</th>
+          <th class="active">Flag_Reverse_Charge</th>
+          <th class="active">Percent_Reverse_Charge_Rate</th>
+          <th class="active">Reverse_charge_liability</th>
+          <th class="active">Reverse_charge_paid</th>
+          <th class="active">Flag_Cancelled</th>
           <th class="active">Mobile_number</th>
           <th class="active">Email_address</th>
         </tr>
       </thead>
-      <tr ng-repeat="purchaseFileData in vm.purchaseFileData">
-        <!-- <td>{{purchaseFileData}}</td> -->
+      <tr ng-repeat="purchaseFileData in vm.purchaseFileData" align="center">
         <td>{{purchaseFileData.Invoice_Date}}</td>
         <td>{{purchaseFileData.Invoice_Number}}</td>
         <td>{{purchaseFileData.Invoice_Category}}</td>
@@ -144,11 +141,6 @@ Customer_Billing_Name Customer_Billing_Address Customer_Billing_City Customer_Bi
         <td>{{purchaseFileData.Item_Category}}</td>
         <td>{{purchaseFileData.Item_Total_Before_Discount}}</td>
         <td>{{purchaseFileData.Item_Discount}}</td>
-        *
-        <td>{{purchaseFileData.Nil_Rated_Amount}}</td>
-        <td>{{purchaseFileData.Exempted_Amount}}</td>
-        <td>{{purchaseFileData.Non_GST_Amount}}</td>
-        *
         <td>{{purchaseFileData.Item_Taxable_Value}}</td>
         <td>{{purchaseFileData.CGST_Rate}}</td>
         <td>{{purchaseFileData.CGST_Amount}}</td>
@@ -159,23 +151,28 @@ Customer_Billing_Name Customer_Billing_Address Customer_Billing_City Customer_Bi
         <td>{{purchaseFileData.TCS}}</td>
         <td>{{purchaseFileData.CESS_Rate}}</td>
         <td>{{purchaseFileData.CESS_Amount}}</td>
-        *
-        <td>{{purchaseFileData.Other_Charges}}</td>
-        <td>{{purchaseFileData.Roundoff}}</td>
-        *
         <td>{{purchaseFileData.Item_Total_Including_GST}}</td>
-        *
-        <td>{{purchaseFileData.Taxable_Value_on_which_TCS_has_been_deducted}}</td>
-        *
+        <td>{{purchaseFileData.Flag_Reverse_Charge}}</td>
+        <td>{{purchaseFileData.Percent_Reverse_Charge_Rate}}</td>
+        <td>{{purchaseFileData.Reverse_charge_liability}}</td>
+        <td>{{purchaseFileData.Reverse_charge_paid}}</td>
+        <td>{{purchaseFileData.Flag_Cancelled}}</td>
         <td>{{purchaseFileData.Mobile_number}}</td>
         <td>{{purchaseFileData.Email_address}}</td>
       </tr>
     </table>
   </div>
 </div>
-<button type="button" class="btn btn-primary" ng-click="vm.compareFiles() ">Compare</button>
-<div ng-if="vm.showStatus">
-  <h2>Difference:</h2> {{vm.difference}}
-</div>
-<span ng-if="vm.matchStatus && vm.showStatus"><h1><i class="fa fa-check " aria-hidden="true "></i> Matched</h1></span><span ng-if="vm.matchStatus==false && vm.showStatus "><h1><i class="fa fa-times " aria-hidden="true"></i> Not Matched</span></h1>
+<button type="button" class="btn btn-primary" ng-click="vm.compareFiles()">Compare</button>
+<span ng-if="vm.status">
+  <h1>
+    <i class="fa fa-check" aria-hidden="true "></i>
+       Matched
+  </h1>
 </span>
+<span ng-if="vm.status==false">
+  <h1>
+    <i class="fa fa-times" aria-hidden="true"></i>
+     Not Matched
+  </h1>
+ </span>
