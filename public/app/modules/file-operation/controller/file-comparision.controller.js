@@ -72,31 +72,34 @@
 
 
     function compareFiles() {
-      console.log("saleCompare", saleCompare);
-      console.log("purchaseCompare", purchaseCompare);
+      let isMatch = false;
+      // saleCompare = [
+      //   { id: 1, name: 'john', age: 30, height: 6, Invoice_number: 10 },
+      //   { id: 2, name: 'ben', age: 20, height: 5, Invoice_number: 11 }
+      // ];
+      // purchaseCompare = [
+      //   { id: 2, name: 'ben', age: 20, height: 5, Invoice_number: 11 },
+      //   { id: 1, name: 'john', age: 30, height: 6, Invoice_number: 10 }
 
+      // ];
       if (lodash.size(saleCompare) && lodash.size(purchaseCompare)) {
-        let match = angular.equals(saleCompare, purchaseCompare)
-        console.log("match", match);
-        if (match) {
-          vm.status = true;
-        } else {
-          vm.status = false;
-        }
+        lodash.forEach(saleCompare, function(sale) {
+          lodash.forEach(purchaseCompare, function(purchase) {
+            if (sale.Invoice_number == purchase.Invoice_number) {
+              isMatch = angular.equals(sale, purchase);
+            }
+          });
+        });
+        vm.status = isMatch;
         let obj = {
           clientId: clientId,
-          match: match
+          match: isMatch
         }
         ClientService.changeStatus(obj);
-
       } else {
-        if (!lodash.size(saleCompare) || !lodash.size(purchaseCompare)) {
-          vm.hideTable = true;
-          noty('warning', "No Sufficient data found to Compare");
-        }
+        vm.hideTable = true;
+        noty('warning', "No Sufficient data found to Compare");
       }
-
     }
-
   }
 })();

@@ -1,5 +1,5 @@
 angular
-  .module('mainApp', ['userApp', 'clientApp', 'authApp', 'fileApp', 'dashboardApp', 'ngRoute', 'ngLodash', 'ngFileUpload', 'ngclipboard'])
+  .module('mainApp', ['userApp', 'clientApp', 'authApp', 'fileApp', 'dashboardApp', 'ngRoute', 'ngLodash', 'ngFileUpload', 'ngclipboard', 'ngComboDatePicker'])
   .config(config)
   .run(run)
   .factory('httpInterceptor', httpInterceptor);

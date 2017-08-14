@@ -2,7 +2,7 @@ const Utils = require('../../libs/utils.js');
 const multer = require('multer');
 const _ = require('lodash');
 const XLSX = require('xlsx');
-
+const moment = require('moment');
 let session;
 let storage = multer.diskStorage({
   destination: function(req, file, callback) {
@@ -38,8 +38,6 @@ module.exports = class ClientController {
     Client = new db.Client();
     userAsClient = new db.Client();
     User = new db.User();
-    let saleFileName = "1234",
-      purchaseFileName = "4321";
     Client.companyName = req.body.companyName;
     Client.address = req.body.address;
     Client.state = req.body.state;
@@ -55,12 +53,14 @@ module.exports = class ClientController {
     Client.userId = req.body.userId;
     Client.userKey = req.body.userId + req.body.GSTNo;
     if (req.files.purchaseFile) {
+      let purchaseFileName;
+      purchaseFileName = moment().format("YYYY-MM-DD");
       let clientFile = req.files.purchaseFile[0].path;
       Client.purchaseFilePath = clientFile;
       let clientWorkBook = XLSX.readFile(clientFile);
       clientRowObject = XLSX.utils.sheet_to_json(clientWorkBook.Sheets[clientWorkBook.SheetNames[0]]);
       let purchaseObject = {
-        [saleFileName]: clientRowObject
+        [purchaseFileName]: clientRowObject
       }
       Client.purchaseFile = purchaseObject;
     }
@@ -85,10 +85,8 @@ module.exports = class ClientController {
               if (err) {
                 res.status(500).send({ message: 'Internal Server Error' });
               } else if (linkSentBy == null) {
-
                 res.status(404).send({ message: 'Object Not found' });
               } else {
-
                 userAsClient.companyName = linkSentBy.companyName;
                 userAsClient.address = linkSentBy.address;
                 userAsClient.state = linkSentBy.state;
@@ -103,12 +101,6 @@ module.exports = class ClientController {
                 userAsClient.GSTNo = linkSentBy.GSTNo;
                 userAsClient.userId = repeatedUser._id;
                 userAsClient.userKey = repeatedUser._id + linkSentBy.GSTNo;
-                // if (linkSentBy.file) {
-                //   //CLIENT
-
-
-                //   // userAsClient.file = linkSentBy.file;
-                // }
                 if (linkSentBy.password) {
                   userAsClient.password = Utils.md5(linkSentBy.password)
                 }
@@ -126,8 +118,9 @@ module.exports = class ClientController {
         } else {
           //Repeated User == NULL
           //Unique Emai Id in User Table
-
           if (req.files.salesFile) {
+            let saleFileName;
+            saleFileName = moment().format("YYYY-MM-DD");
             let userFile = req.files.salesFile[0].path;
             User.saleFilePath = userFile;
             let userWorkBook = XLSX.readFile(userFile);
@@ -141,8 +134,10 @@ module.exports = class ClientController {
             User.password = Utils.md5(req.body.password)
           }
           User.save().then((response) => {
+            // TODO User File Unlink
             finalId = response._id
             Client.save().then((resp) => {
+              //TODO Client File Unlink
               db.User.findOne({ _id: req.body.userId }, function(err, linkSentBy) {
                 if (err) {
                   res.status(500).send({ message: 'Internal Server Error' });
@@ -163,9 +158,6 @@ module.exports = class ClientController {
                   userAsClient.GSTNo = linkSentBy.GSTNo;
                   userAsClient.userId = finalId;
                   userAsClient.userKey = finalId + linkSentBy.GSTNo;
-                  // if (linkSentBy.file) {
-                  //   // userAsClient.file = linkSentBy.file;
-                  // }
                   if (linkSentBy.password) {
                     userAsClient.password = Utils.md5(linkSentBy.password)
                   }
@@ -268,15 +260,10 @@ module.exports = class ClientController {
         }
       }
     });
-
   }
 
   changeMatchStatus(req, res) {
-    db.Client.update({ "_id": req.params.id }, { $set: { fileCompareStatus: req.body.match } }).then((response) => {
-
-    }).catch((error) => {
-
-    })
+    db.Client.update({ "_id": req.params.id }, { $set: { fileCompareStatus: req.body.match } }).then((response) => {}).catch((error) => {})
   }
 
 }
