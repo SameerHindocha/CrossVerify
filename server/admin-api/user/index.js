@@ -3,6 +3,7 @@ const multer = require('multer');
 const fs = require('file-system');
 const _ = require('lodash');
 const XLSX = require('xlsx');
+const moment = require('moment');
 let session, storage, multerUpload;
 
 storage = multer.diskStorage({
@@ -27,7 +28,7 @@ module.exports = class UserController {
     app.post('/admin-api/user', multerUpload.fields([
       { name: 'saleFile', maxCount: 1 }
     ]), this.insertNewUser);
-    app.post('/admin-api/edit-user', multerUpload.fields('file'), this.updateUser);
+    app.put('/admin-api/edit-user', this.updateUser);
     app.post('/admin-api/file', multerUpload.fields([
       { name: 'purchaseFile', maxCount: 1 },
       { name: 'saleFile', maxCount: 1 }
@@ -35,10 +36,10 @@ module.exports = class UserController {
   }
 
   insertNewUser(req, res) {
-    let objName = "2025"
     let userRowObject;
     let postbody = req.body;
     let users = new db.User();
+    let userFile;
     users.companyName = postbody.companyName;
     users.address = postbody.address;
     users.state = postbody.state;
@@ -53,30 +54,29 @@ module.exports = class UserController {
     users.panNo = postbody.panNo;
     users.GSTNo = postbody.GSTNo;
     if (req.files.saleFile) {
-      let userFile, userWorkBook;
+      let objName;
+      objName = moment().format("YYYY-MM-DD");
+      let userWorkBook;
       userFile = req.files.saleFile[0].path;
       users.saleFilePath = userFile;
       userWorkBook = XLSX.readFile(userFile);
       userRowObject = XLSX.utils.sheet_to_json(userWorkBook.Sheets[userWorkBook.SheetNames[0]]);
-      // let saleObject = {}
       let saleObject = {
         [objName]: userRowObject
       }
-
-      // _.create(users.saleFile, { objName: userRowObject })
-      // console.log("saleObject", saleObject);
       users.saleFile = saleObject
-
     }
     db.User.findOne({ email: postbody.email }).then((response) => {
       if (response != null) {
         return res.status(409).send({ message: "Email is already registered" });
       } else {
-
         users.save(function(err) {
           if (err) {
             res.send(err);
           } else {
+            if (userFile) {
+              fs.unlink(userFile, function() {});
+            }
             res.json({ message: 'User Added Successfully' });
           }
         });
@@ -106,7 +106,6 @@ module.exports = class UserController {
     let filePath, sessionEmail, updatebody, userRowObject, userFile;
     session = req.session;
     if (session.isLoggedIn == 'Y') {
-      console.log("YES");
       sessionEmail = req.session.userProfile.email;
       updatebody = req.body;
       db.User.findOne({ "email": sessionEmail })
@@ -120,23 +119,11 @@ module.exports = class UserController {
             user.mobile1 = updatebody.mobile1;
             user.mobile2 = updatebody.mobile2;
             user.landline = updatebody.landline;
-            // if (user.saleFilePath) {
-            //   fileToDelete = user.saleFilePath;
-            // }
-            if (req.file) {
-              userFile = req.file.path
-              user.saleFilePath = userFile;
-              let userWorkBook = XLSX.readFile(userFile);
-              userRowObject = XLSX.utils.sheet_to_json(userWorkBook.Sheets[userWorkBook.SheetNames[0]]);
-              let newSaleObj = {
-                "samir": userRowObject
-              }
-              user.saleFile = newSaleObj;
-            }
           }
           user.save()
             .then((user) => {
               req.session.userProfile = user;
+              res.status(200).send({ message: "Updated successfully", user: user });
               db.Client.update({ "email": sessionEmail }, {
                   $set: {
                     "address": updatebody.address,
@@ -150,21 +137,7 @@ module.exports = class UserController {
                   }
                 }, { multi: true })
                 .then((response) => {
-                  if (req.file) {
-                    // fs.unlink(fileToDelete, function() {});
-                    db.Client.update({ 'userId': req.session.userProfile._id }, {
-                        $set: {
-                          "fileCompareStatus": null
-                        }
-                      }, { multi: true })
-                      .then((response) => {
-                        res.status(200).send({ message: "Updated successfully", user: user });
-                      }).catch((error) => {
-                        res.status(404).send({ message: 'Object Not Found' });
-                      })
-                  } else {
-                    res.status(200).send({ message: "Updated successfully", user: user });
-                  }
+
                 }).catch((error) => {
                   res.status(404).send({ message: 'Object Not Found' });
                 })
@@ -172,7 +145,6 @@ module.exports = class UserController {
               res.status(400).send({ message: "Error in updating user" })
             })
         }).catch((error) => {
-          console.log("error", error);
           res.status(404).send({ message: 'Object Not Found' });
         })
     } else {
@@ -195,14 +167,13 @@ module.exports = class UserController {
   };
 
   insertFile(req, res) {
-    // ISSUE Can't sent multiple response
+    //TODO  ISSUE Can't sent multiple response
     // SOLUTION Create Seprete api
     let users = new db.User();
     let client = new db.Client();
     let objName = req.body.dateOfFile;
     let obj;
     let sessionEmail = req.session.userProfile.email;
-
     if (req.files.saleFile) {
       let userFile, userWorkBook, userRowObject;
       userFile = req.files.saleFile[0].path;

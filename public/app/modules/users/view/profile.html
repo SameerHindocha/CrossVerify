@@ -89,14 +89,14 @@
               <span ng-if="!vm.user.landline">-</span>
             </div>
           </div>
-          <div class="inputGroupWrap col-sm-3">
+          <!--   <div class="inputGroupWrap col-sm-3">
             <div class="input-group input-group-icon">
               <label>File Uploaded</label>
               <br>
               <span ng-if="vm.user.saleFilePath"><a href="{{vm.saleFilePath}}"><i class="fa fa-download" aria-hidden="true"></i> Download file</a></span>
               <span ng-if="!vm.user.saleFilePath">No</span>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="row">
           <div class="col-md-12">
@@ -136,7 +136,11 @@
           <br/>
           <div class="inputGroupWrap col-sm-4">
             <label>Month</label>
-            <input type="text" name="dateOfFile" ng-model="vm.dateOfFile" placeholder="YYYY-MM-DD">
+            <br>
+            <!--   
+            <input type="text" name="dateOfFile" ng-model="vm.dateOfFile" placeholder="YYYY-MM-DD"> -->
+            <ng-combo-date-picker ng-model="vm.dateOfFile"></ng-combo-date-picker>
+            <!-- <input type="text" id="dateOfFile" data-format="DD-MM-YYYY" data-template="D MMM YYYY" name="dateOfFile" value="01-07-2017" ng-model="vm.dateOfFile"> -->
           </div>
           <div class="inputGroupWrap col-sm-4">
             <label>Sale File</label>

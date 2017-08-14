@@ -14,7 +14,7 @@
       getUserById: getUserById,
       updateUser: updateUser,
       gstStatus: gstStatus,
-      addUserSale: addUserSale,
+      // addUserSale: addUserSale,
       addFiles: addFiles
     };
 
@@ -67,14 +67,18 @@
       return defer.promise;
     }
 
-    function updateUser(urldata) {
-      let defer = $q.defer();
-      Upload.upload(urldata).then(function(response) {
-        defer.resolve(response);
+    function updateUser(data) {
+      let defered = $q.defer();
+      $http({
+        method: 'put',
+        url: '/admin-api/edit-user',
+        data: data
+      }).then(function(response) {
+        defered.resolve(response);
       }).catch(function(error) {
-        defer.reject(error);
+        defered.reject(error);
       });
-      return defer.promise;
+      return defered.promise;
     }
 
     function gstStatus(data) {
@@ -90,29 +94,12 @@
       return defer.promise;
     }
 
-    function addUserSale(data) {
-      console.log("data", data);
-      let defered = $q.defer();
-      $http({
-        method: 'put',
-        url: '/admin-api/user-sale/' + data.id,
-        data: data
-      }).then(function(response) {
-        defered.resolve(response.data);
-      }).catch(function(error) {
-        defered.reject(error);
-      });
-      return defered.promise;
-
-    }
-
-
-    // function addFiles(data) {
+    // function addUserSale(data) {
     //   console.log("data", data);
     //   let defered = $q.defer();
     //   $http({
-    //     method: 'post',
-    //     url: '/admin-api/file',
+    //     method: 'put',
+    //     url: '/admin-api/user-sale/' + data.id,
     //     data: data
     //   }).then(function(response) {
     //     defered.resolve(response.data);
@@ -133,7 +120,6 @@
       });
       return defer.promise;
     }
-
 
   }
 })();

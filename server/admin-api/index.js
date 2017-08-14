@@ -10,9 +10,7 @@ let byPassedEndpoints = [
   '/login',
   '/logout',
   '/gst-status',
-  '/compare-file',
   '/edit-user',
-  '/admin-api/user-sale',
   '/file'
 ];
 

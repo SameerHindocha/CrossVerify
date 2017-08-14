@@ -13,6 +13,8 @@
     "angular-route": "^1.6.5",
     "bootstrap": "^3.3.7",
     "bounce.js": "^0.8.2",
+    "moment": "^2.18.1",
+    "ng-combo-date-picker": "^1.5.1",
     "ng-file-upload": "^12.2.13",
     "ng-lodash": "^0.2.3",
     "ngclipboard": "^1.1.1",
