@@ -7,7 +7,8 @@ let byPassedEndpoints = [
   '/gst-status',
   '/user-data',
   '/client-status',
-  '/api/client-status/'
+  '/api/client-status/',
+  '/purchase-file'
 ];
 
 let fs = require('fs');

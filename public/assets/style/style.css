@@ -20,6 +20,12 @@ select {
   background-image: url('../images/login_background.jpg');
 }
 
+.file {
+  visibility: hidden;
+  position: absolute;
+}
+
+
 
 input:focus {
   outline: 0;
@@ -789,6 +795,7 @@ table tbody .fa-minus {
 #navigation .user>a {
   color: #fff;
 }
+
 
 
 

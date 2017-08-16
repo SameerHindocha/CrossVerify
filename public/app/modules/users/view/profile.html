@@ -89,14 +89,6 @@
               <span ng-if="!vm.user.landline">-</span>
             </div>
           </div>
-          <!--   <div class="inputGroupWrap col-sm-3">
-            <div class="input-group input-group-icon">
-              <label>File Uploaded</label>
-              <br>
-              <span ng-if="vm.user.saleFilePath"><a href="{{vm.saleFilePath}}"><i class="fa fa-download" aria-hidden="true"></i> Download file</a></span>
-              <span ng-if="!vm.user.saleFilePath">No</span>
-            </div>
-          </div> -->
         </div>
         <div class="row">
           <div class="col-md-12">
@@ -111,7 +103,7 @@
           </div>
           <div class="inputGroupWrap col-sm-3">
             <div class="input-group input-group-icon">
-              <label>Gst Number</label>
+              <label>GST Number</label>
               <br>
               <span>{{vm.user.GSTNo}}</span>
             </div>
@@ -135,12 +127,9 @@
           </div>
           <br/>
           <div class="inputGroupWrap col-sm-4">
-            <label>Month</label>
+            <label>Date</label>
             <br>
-            <!--   
-            <input type="text" name="dateOfFile" ng-model="vm.dateOfFile" placeholder="YYYY-MM-DD"> -->
-            <ng-combo-date-picker ng-model="vm.dateOfFile"></ng-combo-date-picker>
-            <!-- <input type="text" id="dateOfFile" data-format="DD-MM-YYYY" data-template="D MMM YYYY" name="dateOfFile" value="01-07-2017" ng-model="vm.dateOfFile"> -->
+            <ng-combo-date-picker ng-model="vm.dateOfFile" ng-min-date="2017-07-01" ng-attrs-date='{"class": "col-md-4"}' ng-attrs-month='{"class": "col-md-4"}' ng-attrs-year='{"class": "col-md-4"}'></ng-combo-date-picker>
           </div>
           <div class="inputGroupWrap col-sm-4">
             <label>Sale File</label>

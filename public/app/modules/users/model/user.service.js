@@ -14,8 +14,7 @@
       getUserById: getUserById,
       updateUser: updateUser,
       gstStatus: gstStatus,
-      // addUserSale: addUserSale,
-      addFiles: addFiles
+      addSaleFiles: addSaleFiles
     };
 
     function addUser(urldata) {
@@ -94,23 +93,8 @@
       return defer.promise;
     }
 
-    // function addUserSale(data) {
-    //   console.log("data", data);
-    //   let defered = $q.defer();
-    //   $http({
-    //     method: 'put',
-    //     url: '/admin-api/user-sale/' + data.id,
-    //     data: data
-    //   }).then(function(response) {
-    //     defered.resolve(response.data);
-    //   }).catch(function(error) {
-    //     defered.reject(error);
-    //   });
-    //   return defered.promise;
 
-    // }
-
-    function addFiles(urldata) {
+    function addSaleFiles(urldata) {
       console.log("urldata", urldata);
       let defer = $q.defer();
       Upload.upload(urldata).then(function(response) {

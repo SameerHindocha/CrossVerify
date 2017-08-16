@@ -4,9 +4,9 @@
     .module('userApp')
     .controller('ProfileController', controller);
 
-  controller.$inject = ['user', 'UserService', '$scope', 'lodash', '$rootScope', '$location'];
+  controller.$inject = ['user', 'UserService', 'ClientService', '$scope', 'lodash', '$rootScope', '$location'];
 
-  function controller(user, UserService, $scope, lodash, $rootScope, $location) {
+  function controller(user, UserService, ClientService, $scope, lodash, $rootScope, $location) {
     let vm = this;
     vm.UserService = UserService;
     vm.uploadFiles = uploadFiles;
@@ -55,31 +55,53 @@
     }
 
     function uploadFiles() {
-
       console.log(vm.dateOfFile);
-      if (vm.purchaseFile || vm.saleFile) {
-        let urldata, fileObj;
-        fileObj = {
-          purchaseFile: vm.purchaseFile,
+
+      console.log("$scope.ngMinModel", $scope.ngMinModel);
+      if (vm.saleFile) {
+        let fileObj = {
           saleFile: vm.saleFile,
           id: vm.id,
           dateOfFile: vm.dateOfFile.toString("yyyy-MM-dd")
         }
-        urldata = {
-          url: "admin-api/file",
+        let urldata = {
+          url: "admin-api/sale-file",
           headers: {
             'Content-Type': 'multipart/form-data'
           },
           data: fileObj
         };
-
-        UserService.addFiles(urldata).then((response) => {
+        console.log("sale urldata", urldata);
+        UserService.addSaleFiles(urldata).then((response) => {
           noty('success', response.data.message);
-
         }).catch((error) => {
           noty('error', error.data.message);
         });
       }
+
+      if (vm.purchaseFile) {
+        let fileObj = {
+          purchaseFile: vm.purchaseFile,
+          id: vm.id,
+          dateOfFile: vm.dateOfFile.toString("yyyy-MM-dd")
+        }
+        let urldata = {
+          url: "api/purchase-file",
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+          data: fileObj
+        };
+        console.log("purchase urldata", urldata);
+        ClientService.addPurchaseFiles(urldata).then((response) => {
+          noty('success', response.data.message);
+        }).catch((error) => {
+          noty('error', error.data.message);
+        });
+      }
+
+
+
     }
 
 

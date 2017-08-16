@@ -73,6 +73,10 @@
 
     function compareFiles() {
       let isMatch = false;
+
+      console.log("saleCompare", saleCompare);
+
+      console.log("purchaseCompare", purchaseCompare);
       // saleCompare = [
       //   { id: 1, name: 'john', age: 30, height: 6, Invoice_number: 10 },
       //   { id: 2, name: 'ben', age: 20, height: 5, Invoice_number: 11 }
@@ -81,11 +85,13 @@
       //   { id: 2, name: 'ben', age: 20, height: 5, Invoice_number: 11 },
       //   { id: 1, name: 'john', age: 30, height: 6, Invoice_number: 10 }
 
-      // ];
+      // ];purchaseCompare
       if (lodash.size(saleCompare) && lodash.size(purchaseCompare)) {
-        lodash.forEach(saleCompare, function(sale) {
-          lodash.forEach(purchaseCompare, function(purchase) {
-            if (sale.Invoice_number == purchase.Invoice_number) {
+        lodash.forEach(purchaseCompare, function(purchase) {
+          console.log("purchase", purchase);
+          lodash.forEach(saleCompare, function(sale) {
+            console.log("sale", sale);
+            if (purchase.Invoice_number == sale.Invoice_number) {
               isMatch = angular.equals(sale, purchase);
             }
           });

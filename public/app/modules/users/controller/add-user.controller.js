@@ -28,39 +28,39 @@
           writable: true
         });
       }
-      // postObj = {
-      //   companyName: vm.companyName,
-      //   state: vm.state,
-      //   city: vm.city,
-      //   pincode: vm.pincode,
-      //   email: vm.email,
-      //   ownerName: vm.ownerName,
-      //   address: vm.address,
-      //   mobile1: vm.mobile1,
-      //   mobile2: vm.mobile2,
-      //   landline: vm.landline,
-      //   panNo: vm.panNo.toUpperCase(),
-      //   GSTNo: vm.GSTNo.toUpperCase(),
-      //   password: vm.password,
-      //   saleFile: vm.saleFile
-      // };
-
       postObj = {
-        companyName: 'Abc Ltd',
-        state: 'Gujarat',
-        city: 'Ahmedabad',
-        pincode: '380000',
+        companyName: vm.companyName,
+        state: vm.state,
+        city: vm.city,
+        pincode: vm.pincode,
         email: vm.email,
-        ownerName: 'ABC',
-        address: 'Ahmedabad',
-        mobile1: '9876543210',
-        mobile2: '1234567890',
-        landline: '87654321',
-        panNo: '11111111',
+        ownerName: vm.ownerName,
+        address: vm.address,
+        mobile1: vm.mobile1,
+        mobile2: vm.mobile2,
+        landline: vm.landline,
+        panNo: vm.panNo.toUpperCase(),
         GSTNo: vm.GSTNo.toUpperCase(),
         password: vm.password,
         saleFile: vm.saleFile
       };
+
+      // postObj = {
+      //   companyName: 'Abc Ltd',
+      //   state: 'Gujarat',
+      //   city: 'Ahmedabad',
+      //   pincode: '380000',
+      //   email: vm.email,
+      //   ownerName: 'ABC',
+      //   address: 'Ahmedabad',
+      //   mobile1: '9876543210',
+      //   mobile2: '1234567890',
+      //   landline: '87654321',
+      //   panNo: '11111111',
+      //   GSTNo: vm.GSTNo.toUpperCase(),
+      //   password: vm.password,
+      //   saleFile: vm.saleFile
+      // };
 
       urldata = {
         url: "admin-api/user",

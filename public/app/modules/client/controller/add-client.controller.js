@@ -41,43 +41,44 @@
           writable: true
         });
       }
-      // postObj = {
-      //   companyName: vm.companyName,
-      //   state: vm.state,
-      //   city: vm.city,
-      //   pincode: vm.pincode,
-      //   email: vm.email,
-      //   ownerName: vm.ownerName,
-      //   address: vm.address,
-      //   mobile1: vm.mobile1,
-      //   mobile2: vm.mobile2,
-      //   landline: vm.landline,
-      //   panNo: vm.panNo,
-      //   GSTNo: vm.GSTNo,
-      //   userId: vm.sentUserId,
-      //   password: vm.password,
-      //   purchaseFile: vm.purchaseFile,
-      //   salesFile: vm.salesFile
-      // };
-
       postObj = {
-        companyName: 'XYZ Ltd',
-        state: 'Gujarat',
-        city: 'Ahmedabad',
-        pincode: '230000',
+        companyName: vm.companyName,
+        state: vm.state,
+        city: vm.city,
+        pincode: vm.pincode,
         email: vm.email,
-        ownerName: 'XYZ',
-        address: 'Ahmedabad',
-        mobile1: '9874561230',
-        mobile2: '8521479630',
-        landline: '85251479',
-        panNo: '22222222',
+        ownerName: vm.ownerName,
+        address: vm.address,
+        mobile1: vm.mobile1,
+        mobile2: vm.mobile2,
+        landline: vm.landline,
+        panNo: vm.panNo,
         GSTNo: vm.GSTNo,
         userId: vm.sentUserId,
         password: vm.password,
         purchaseFile: vm.purchaseFile,
         salesFile: vm.salesFile
       };
+
+
+      // postObj = {
+      //   companyName: 'XYZ Ltd',
+      //   state: 'Gujarat',
+      //   city: 'Ahmedabad',
+      //   pincode: '230000',
+      //   email: vm.email,
+      //   ownerName: 'XYZ',
+      //   address: 'Ahmedabad',
+      //   mobile1: '9874561230',
+      //   mobile2: '8521479630',
+      //   landline: '85251479',
+      //   panNo: '22222222',
+      //   GSTNo: vm.GSTNo,
+      //   userId: vm.sentUserId,
+      //   password: vm.password,
+      //   purchaseFile: vm.purchaseFile,
+      //   salesFile: vm.salesFile
+      // };
 
 
       urldata = {
@@ -120,7 +121,7 @@
         }).catch((error) => {
           console.log("error+123", error);
           vm.gstConflict = false;
-          noty('warning', error.data.message);
+          // noty('warning', error.data.message);
         })
       }
     }
@@ -153,7 +154,6 @@
             vm.mobile2 = parseInt(userData.mobile2);
             vm.landline = parseInt(userData.landline);
             vm.panNo = userData.panNo;
-            // vm.file = userData.file;
           }
           if (response.status === 100) {
             vm.companyName = '';
@@ -165,7 +165,6 @@
             vm.mobile1 = '';
             vm.mobile2 = '';
             vm.landline = '';
-            // vm.file = '';
           }
 
 

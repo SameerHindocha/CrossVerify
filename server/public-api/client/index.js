@@ -2,6 +2,7 @@ const Utils = require('../../libs/utils.js');
 const multer = require('multer');
 const _ = require('lodash');
 const XLSX = require('xlsx');
+const fs = require('file-system');
 const moment = require('moment');
 let session;
 let storage = multer.diskStorage({
@@ -31,6 +32,9 @@ module.exports = class ClientController {
       { name: 'salesFile', maxCount: 1 }
     ]), this.insertNewClient);
     app.put('/api/client-status/:id', this.changeMatchStatus);
+    app.post('/api/purchase-file', multerUpload.fields([
+      { name: 'purchaseFile', maxCount: 1 }
+    ]), this.insertPurchaseFile);
   }
 
   insertNewClient(req, res) {
@@ -113,6 +117,7 @@ module.exports = class ClientController {
               }
             })
           }).catch((error) => {
+            console.log("error", error);
             res.status(400).send({ message: 'Error in Registration2' });
           })
         } else {
@@ -264,6 +269,33 @@ module.exports = class ClientController {
 
   changeMatchStatus(req, res) {
     db.Client.update({ "_id": req.params.id }, { $set: { fileCompareStatus: req.body.match } }).then((response) => {}).catch((error) => {})
+  }
+
+  insertPurchaseFile(req, res) {
+
+    console.log("insertPurchaseFile. . . .  . . .");
+    let users = new db.User();
+    let client = new db.Client();
+    let objName = req.body.dateOfFile;
+    let obj;
+    let sessionEmail = req.session.userProfile.email;
+
+    if (req.files.purchaseFile) {
+      let clientFile = req.files.purchaseFile[0].path;
+      let clientWorkBook = XLSX.readFile(clientFile);
+      let clientRowObject = XLSX.utils.sheet_to_json(clientWorkBook.Sheets[clientWorkBook.SheetNames[0]]);
+      obj = {};
+      obj['purchaseFile.' + objName + ''] = clientRowObject;
+      db.Client.update({ "email": sessionEmail }, { $set: obj }, { multi: true })
+        .then((response) => {
+          fs.unlink(clientFile, function() {});
+          return res.send({ message: 'Purchase File Added Successfully' });
+        })
+        .catch((error) => {
+          console.log("error - - -- -  - - -----", error);
+          return res.send({ message: 'Error in Adding Purchase File' });
+        });
+    }
   }
 
 }
