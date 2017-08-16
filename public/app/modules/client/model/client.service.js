@@ -12,7 +12,8 @@
       gstStatus: gstStatus,
       fetchUserRecord: fetchUserRecord,
       getClientById: getClientById,
-      changeStatus: changeStatus
+      changeStatus: changeStatus,
+      addPurchaseFiles: addPurchaseFiles
     };
 
     function addClient(urldata) {
@@ -78,6 +79,17 @@
         defered.reject(error);
       });
       return defered.promise;
+    }
+
+    function addPurchaseFiles(urldata) {
+      console.log("urldata", urldata);
+      let defer = $q.defer();
+      Upload.upload(urldata).then(function(response) {
+        defer.resolve(response);
+      }).catch(function(error) {
+        defer.reject(error);
+      });
+      return defer.promise;
     }
 
 

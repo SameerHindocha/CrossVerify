@@ -44,7 +44,7 @@
                       </div>
                     </div>
                     <!-- ******* PAN NUMBER ******** -->
-                    <!--  <div class="form-group">
+                    <div class="form-group">
                       <div class="input-group inputGroupWrap input-group-icon">
                         <input type="text" id="panNo" name="panNo" class="form-control toUpper" ng-model="vm.panNo" placeholder="Pan Number" maxlength="10" minlength="10" required>
                         <span class="asterisk_input"> </span>
@@ -53,7 +53,7 @@
                       <div ng-hide="addClientForm.panNo.$valid || addClientForm.panNo.$pristine" class="alert alert-danger">
                         Invalid Pan Number
                       </div>
-                    </div> -->
+                    </div>
                     <!-- ***** GST ***** -->
                     <div class="form-group">
                       <div class="form-group inputGroupWrap input-group input-group-icon">
@@ -96,7 +96,7 @@
                   <button type="button" ng-click="vm.checkPassword();vm.fetchRecord()" class="btn btn-next btn-primary">Next</button>
                 </fieldset>
                 <!-- =======================PAGE 2============================ -->
-                <!--   <fieldset>
+                <fieldset>
                   <div class="form-top">
                     <div class="form-top-left">
                       <h3>Step 2 / 4</h3>
@@ -107,7 +107,7 @@
                     </div>
                   </div>
                   <div class="form-bottom">
-                    *******COMPANY NAME********
+                    <!-- *******COMPANY NAME******** -->
                     <div class="form-group">
                       <div class="input-group input-group-icon">
                         <input type="text" id="companyName" name="companyName" class="form-control" ng-model="vm.companyName" placeholder="Company Name" required>
@@ -118,7 +118,7 @@
                         Company Name is Required
                       </div>
                     </div>
-                    ******STATE*********
+                    <!-- ******STATE********* -->
                     <div class="form-group">
                       <div class="input-group input-group-icon">
                         <select name="state" id="state" class="form-control" ng-model="vm.state" required="">
@@ -132,7 +132,7 @@
                         State Name is Required
                       </div>
                     </div>
-                    ******CITY*********
+                    <!-- ******CITY********* -->
                     <div class="form-group">
                       <div class="input-group input-group-icon">
                         <input type="text" id="city" name="city" class="form-control" ng-model="vm.city" placeholder="City Name" required>
@@ -143,7 +143,7 @@
                         City Name is Required
                       </div>
                     </div>
-                    *******PINCODE********
+                    <!-- *******PINCODE******** -->
                     <div class="form-group">
                       <div class="input-group input-group-icon">
                         <input type="text" id="pincode" name="pincode" class="form-control" ng-model="vm.pincode" placeholder="Pincode" maxlength="6" minlength="6" required>
@@ -157,9 +157,9 @@
                     <button type="button" class="btn btn-previous btn-primary">Previous</button>
                     <button type="button" class="btn btn-next btn-primary">Next</button>
                   </div>
-                </fieldset> -->
+                </fieldset>
                 <!-- =======================PAGE 3============================ -->
-                <!-- <fieldset>
+                <fieldset>
                   <div class="form-top">
                     <div class="form-top-left">
                       <h3>Step 3 / 4</h3>
@@ -170,7 +170,7 @@
                     </div>
                   </div>
                   <div class="form-bottom">
-                    ******* OWNER NAME ********
+                    <!-- ******* OWNER NAME ******** -->
                     <div class="form-group">
                       <div class="form-group input-group input-group-icon">
                         <input type="text" id="ownerName" name="ownerName" class="form-control" ng-model="vm.ownerName" placeholder="Owner Name" required>
@@ -181,7 +181,7 @@
                         Owner Name is Required
                       </div>
                     </div>
-                    ******* ADDRESS ********
+                    <!-- ******* ADDRESS ******** -->
                     <div class="form-group">
                       <div class="form-group input-group input-group-icon">
                         <input type="text" id="address" name="address" class="form-control" ng-model="vm.address" placeholder="Address" required>
@@ -192,7 +192,7 @@
                         Address is Required
                       </div>
                     </div>
-                    ******* MOBILE 1 ********
+                    <!-- ******* MOBILE 1 ******** -->
                     <div class="form-group">
                       <div class="form-group input-group input-group-icon">
                         <input type="text" id="mobile1" name="mobile1" class="form-control" ng-model="vm.mobile1" placeholder="Mobile Number" maxlength="10" minlength="10" required>
@@ -203,14 +203,14 @@
                         Invalid Mobile Number
                       </div>
                     </div>
-                    ******* MOBILE 2 ********
+                    <!-- ******* MOBILE 2 ******** -->
                     <div class="form-group">
                       <div class="form-group input-group input-group-icon">
                         <input type="text" id="mobile2" name="mobile2" class="form-control" ng-model="vm.mobile2" placeholder="Alternate Mobile Number" maxlength="10" minlength="10">
                         <div class="input-icon"><i class="fa fa-mobile"></i></div>
                       </div>
                     </div>
-                    ******* LANDLINE ********
+                    <!-- ******* LANDLINE ******** -->
                     <div class="form-group">
                       <div class="form-group input-group input-group-icon">
                         <input type="number" id="landline" name="landline" class="form-control no-spin" ng-model="vm.landline" placeholder="Landline Number">
@@ -220,7 +220,7 @@
                     <button type="button" class="btn btn-previous btn-primary">Previous</button>
                     <button type="button" class="btn btn-next btn-primary">Next</button>
                   </div>
-                </fieldset> -->
+                </fieldset>
                 <!-- =======================PAGE 4============================ -->
                 <fieldset>
                   <div class="form-top">
@@ -235,7 +235,7 @@
                   <div class="form-bottom">
                     <!-- ******* UPLOAD FILE  ******** -->
                     <div class="form-group">
-                      Purchase
+                      <label> Purchase File </label>
                       <input type="file" class="filestyle" id="purchaseFile" ngf-select ng-model="vm.purchaseFile" name="purchaseFile" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
                       <div class="alert alert-danger" ng-show="addUserForm.purchaseFile.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
                       </div>
@@ -246,7 +246,7 @@
                         </button>
                       </div> -->
                       <div class="form-group" ng-if="vm.password">
-                        Sales
+                        <label>Sales File</label>
                         <input type="file" class="filestyle" id="salesFile" ngf-select ng-model="vm.salesFile" name="salesFile" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
                         <div class="alert alert-danger" ng-show="addUserForm.salesFile.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
                         </div>

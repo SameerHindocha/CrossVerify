@@ -29,10 +29,9 @@ module.exports = class UserController {
       { name: 'saleFile', maxCount: 1 }
     ]), this.insertNewUser);
     app.put('/admin-api/edit-user', this.updateUser);
-    app.post('/admin-api/file', multerUpload.fields([
-      { name: 'purchaseFile', maxCount: 1 },
+    app.post('/admin-api/sale-file', multerUpload.fields([
       { name: 'saleFile', maxCount: 1 }
-    ]), this.insertFile);
+    ]), this.insertSaleFile);
   }
 
   insertNewUser(req, res) {
@@ -77,7 +76,7 @@ module.exports = class UserController {
             if (userFile) {
               fs.unlink(userFile, function() {});
             }
-            res.json({ message: 'User Added Successfully' });
+            res.json({ message: 'User Registered Successfully' });
           }
         });
       }
@@ -166,7 +165,7 @@ module.exports = class UserController {
     });
   };
 
-  insertFile(req, res) {
+  insertSaleFile(req, res) {
     //TODO  ISSUE Can't sent multiple response
     // SOLUTION Create Seprete api
     let users = new db.User();
@@ -184,27 +183,27 @@ module.exports = class UserController {
       db.User.update({ "_id": req.body.id }, { $set: obj })
         .then((response) => {
           fs.unlink(userFile, function() {});
-          // return res.send({ message: 'File Added Successfully' });
+          return res.send({ message: 'Sale File Added Successfully' });
         })
         .catch((error) => {
-          // return res.send({ message: 'Error in Adding File' });
+          return res.send({ message: 'Error in Adding Sale File' });
         });
     }
-    if (req.files.purchaseFile) {
-      let clientFile = req.files.purchaseFile[0].path;
-      let clientWorkBook = XLSX.readFile(clientFile);
-      let clientRowObject = XLSX.utils.sheet_to_json(clientWorkBook.Sheets[clientWorkBook.SheetNames[0]]);
-      obj = {};
-      obj['purchaseFile.' + objName + ''] = clientRowObject;
-      db.Client.update({ "email": sessionEmail }, { $set: obj }, { multi: true })
-        .then((response) => {
-          fs.unlink(clientFile, function() {});
-          return res.send({ message: 'File Added Successfully' });
-        })
-        .catch((error) => {
-          return res.send({ message: 'Error in Adding File' });
-        });
-    }
+    // if (req.files.purchaseFile) {
+    //   let clientFile = req.files.purchaseFile[0].path;
+    //   let clientWorkBook = XLSX.readFile(clientFile);
+    //   let clientRowObject = XLSX.utils.sheet_to_json(clientWorkBook.Sheets[clientWorkBook.SheetNames[0]]);
+    //   obj = {};
+    //   obj['purchaseFile.' + objName + ''] = clientRowObject;
+    //   db.Client.update({ "email": sessionEmail }, { $set: obj }, { multi: true })
+    //     .then((response) => {
+    //       fs.unlink(clientFile, function() {});
+    //       return res.send({ message: 'File Added Successfully' });
+    //     })
+    //     .catch((error) => {
+    //       return res.send({ message: 'Error in Adding File' });
+    //     });
+    // }
   }
 
 }
