@@ -38,7 +38,7 @@ module.exports = class ClientController {
   }
 
   insertNewClient(req, res) {
-    let Client, userAsClient, User, finalId, userRowObject, clientRowObject;
+    let Client, userAsClient, User, finalId, userRowObject, clientRowObject, clientFile, userFile;
     Client = new db.Client();
     userAsClient = new db.Client();
     User = new db.User();
@@ -59,7 +59,7 @@ module.exports = class ClientController {
     if (req.files.purchaseFile) {
       let purchaseFileName;
       purchaseFileName = moment().format("YYYY-MM-DD");
-      let clientFile = req.files.purchaseFile[0].path;
+      clientFile = req.files.purchaseFile[0].path;
       Client.purchaseFilePath = clientFile;
       let clientWorkBook = XLSX.readFile(clientFile);
       clientRowObject = XLSX.utils.sheet_to_json(clientWorkBook.Sheets[clientWorkBook.SheetNames[0]]);
@@ -126,7 +126,7 @@ module.exports = class ClientController {
           if (req.files.salesFile) {
             let saleFileName;
             saleFileName = moment().format("YYYY-MM-DD");
-            let userFile = req.files.salesFile[0].path;
+            userFile = req.files.salesFile[0].path;
             User.saleFilePath = userFile;
             let userWorkBook = XLSX.readFile(userFile);
             userRowObject = XLSX.utils.sheet_to_json(userWorkBook.Sheets[userWorkBook.SheetNames[0]]);
@@ -140,9 +140,13 @@ module.exports = class ClientController {
           }
           User.save().then((response) => {
             // TODO User File Unlink
+            // fs.unlink(userFile, function() {});
+
             finalId = response._id
             Client.save().then((resp) => {
               //TODO Client File Unlink
+              // fs.unlink(clientFile, function() {});
+
               db.User.findOne({ _id: req.body.userId }, function(err, linkSentBy) {
                 if (err) {
                   res.status(500).send({ message: 'Internal Server Error' });
@@ -178,6 +182,7 @@ module.exports = class ClientController {
               res.status(400).send({ message: 'Error in Registration4' });
             })
           }).catch((error) => {
+            console.log("error", error);
             res.status(400).send({ message: 'Error in Registration5' });
           })
         }
@@ -272,19 +277,15 @@ module.exports = class ClientController {
   }
 
   insertPurchaseFile(req, res) {
-
-    console.log("insertPurchaseFile. . . .  . . .");
     let users = new db.User();
     let client = new db.Client();
     let objName = req.body.dateOfFile;
-    let obj;
+    let obj = {};
     let sessionEmail = req.session.userProfile.email;
-
     if (req.files.purchaseFile) {
       let clientFile = req.files.purchaseFile[0].path;
       let clientWorkBook = XLSX.readFile(clientFile);
       let clientRowObject = XLSX.utils.sheet_to_json(clientWorkBook.Sheets[clientWorkBook.SheetNames[0]]);
-      obj = {};
       obj['purchaseFile.' + objName + ''] = clientRowObject;
       db.Client.update({ "email": sessionEmail }, { $set: obj }, { multi: true })
         .then((response) => {
@@ -292,7 +293,6 @@ module.exports = class ClientController {
           return res.send({ message: 'Purchase File Added Successfully' });
         })
         .catch((error) => {
-          console.log("error - - -- -  - - -----", error);
           return res.send({ message: 'Error in Adding Purchase File' });
         });
     }

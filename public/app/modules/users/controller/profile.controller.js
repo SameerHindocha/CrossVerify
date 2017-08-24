@@ -13,16 +13,11 @@
     vm.id = JSON.parse(window.localStorage.getItem('currentUser'))._id;
     vm.dateOfFile = '07-02-2017'
     vm.user = user;
-    // $('#dateOfFile').combodate({
-    //   minYear: 2017,
-    //   maxYear: 2025
-    // });
     activate();
 
     function activate() {
       vm.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       $rootScope.userName = vm.currentUser.ownerName;
-
     }
 
     // Current time in India (moment object)
@@ -55,9 +50,6 @@
     }
 
     function uploadFiles() {
-      console.log(vm.dateOfFile);
-
-      console.log("$scope.ngMinModel", $scope.ngMinModel);
       if (vm.saleFile) {
         let fileObj = {
           saleFile: vm.saleFile,
@@ -71,7 +63,6 @@
           },
           data: fileObj
         };
-        console.log("sale urldata", urldata);
         UserService.addSaleFiles(urldata).then((response) => {
           noty('success', response.data.message);
         }).catch((error) => {
@@ -92,19 +83,13 @@
           },
           data: fileObj
         };
-        console.log("purchase urldata", urldata);
         ClientService.addPurchaseFiles(urldata).then((response) => {
           noty('success', response.data.message);
         }).catch((error) => {
           noty('error', error.data.message);
         });
       }
-
-
-
     }
-
-
 
   }
 })();

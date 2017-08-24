@@ -84,7 +84,7 @@ module.exports = class UserController {
       console.log("error", error);
       res.json(error);
     });
-  };
+  }
 
   getUserbyId(req, res) {
     session = req.session;
@@ -99,7 +99,7 @@ module.exports = class UserController {
     } else {
       res.redirect(500, '/logout');
     }
-  };
+  }
 
   updateUser(req, res) {
     let filePath, sessionEmail, updatebody, userRowObject, userFile;
@@ -149,7 +149,7 @@ module.exports = class UserController {
     } else {
       res.redirect(500, '/logout');
     }
-  };
+  }
 
   getGSTStatus(req, res) {
     db.User.findOne({ GSTNo: req.params.gstNo }, function(err, data) {
@@ -163,11 +163,9 @@ module.exports = class UserController {
         }
       }
     });
-  };
+  }
 
   insertSaleFile(req, res) {
-    //TODO  ISSUE Can't sent multiple response
-    // SOLUTION Create Seprete api
     let users = new db.User();
     let client = new db.Client();
     let objName = req.body.dateOfFile;
@@ -189,21 +187,7 @@ module.exports = class UserController {
           return res.send({ message: 'Error in Adding Sale File' });
         });
     }
-    // if (req.files.purchaseFile) {
-    //   let clientFile = req.files.purchaseFile[0].path;
-    //   let clientWorkBook = XLSX.readFile(clientFile);
-    //   let clientRowObject = XLSX.utils.sheet_to_json(clientWorkBook.Sheets[clientWorkBook.SheetNames[0]]);
-    //   obj = {};
-    //   obj['purchaseFile.' + objName + ''] = clientRowObject;
-    //   db.Client.update({ "email": sessionEmail }, { $set: obj }, { multi: true })
-    //     .then((response) => {
-    //       fs.unlink(clientFile, function() {});
-    //       return res.send({ message: 'File Added Successfully' });
-    //     })
-    //     .catch((error) => {
-    //       return res.send({ message: 'Error in Adding File' });
-    //     });
-    // }
+
   }
 
 }
