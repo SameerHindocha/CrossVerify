@@ -93,7 +93,6 @@
       return defer.promise;
     }
 
-
     function addSaleFiles(urldata) {
       console.log("urldata", urldata);
       let defer = $q.defer();
@@ -104,6 +103,8 @@
       });
       return defer.promise;
     }
+
+
 
   }
 })();
