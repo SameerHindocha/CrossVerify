@@ -27,6 +27,7 @@
     "file-system": "^2.2.2",
     "html-webpack-plugin": "^2.29.0",
     "method-override": "^2.3.9",
+    "moment": "^2.18.1",
     "mongodb": "^2.2.29",
     "mongodb-uri": "^0.9.7",
     "mongoose": "^4.10.8",

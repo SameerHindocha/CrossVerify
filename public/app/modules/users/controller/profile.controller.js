@@ -4,63 +4,92 @@
     .module('userApp')
     .controller('ProfileController', controller);
 
-  controller.$inject = ['user', 'UserService', '$scope', 'lodash', '$rootScope'];
+  controller.$inject = ['user', 'UserService', 'ClientService', '$scope', 'lodash', '$rootScope', '$location'];
 
-  function controller(user, UserService, $scope, lodash, $rootScope) {
+  function controller(user, UserService, ClientService, $scope, lodash, $rootScope, $location) {
     let vm = this;
-    vm.user = user;
     vm.UserService = UserService;
+    vm.uploadFiles = uploadFiles;
+    vm.id = JSON.parse(window.localStorage.getItem('currentUser'))._id;
+    vm.dateOfFile = '07-02-2017'
+    vm.user = user;
     activate();
 
     function activate() {
       vm.currentUser = JSON.parse(localStorage.getItem('currentUser'));
       $rootScope.userName = vm.currentUser.ownerName;
-      if (vm.user.file) {
-        vm.file = vm.user.file;
-        vm.file = vm.file.split('/').slice(7).join('/');
+    }
+
+    // Current time in India (moment object)
+    var momNow = moment.tz("Asia/Kolkata");
+    // Current time in India formatted (string)
+    let date = momNow.format("YYYY-MM-DD HH:mm:ss");
+    console.log(date);
+
+    $scope.finalvalues = function(updatedData) {
+      let setLocalStorageData, updatedResponseData;
+      UserService.updateUser(updatedData).then((response) => {
+        vm.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        updatedResponseData = response.data;
+        setLocalStorageData = vm.currentUser;
+        vm.user = updatedResponseData.user;
+        setLocalStorageData.ownerName = updatedResponseData.user.ownerName;
+        setLocalStorageData.state = updatedResponseData.user.state;
+        setLocalStorageData.city = updatedResponseData.user.city;
+        setLocalStorageData.pincode = updatedResponseData.user.pincode;
+        setLocalStorageData.address = updatedResponseData.user.address;
+        setLocalStorageData.mobile1 = updatedResponseData.user.mobile1;
+        setLocalStorageData.mobile2 = updatedResponseData.user.mobile2;
+        setLocalStorageData.landline = updatedResponseData.user.landline;
+        $rootScope.userName = updatedResponseData.user.ownerName;
+        vm.currentUser = localStorage.setItem("currentUser", JSON.stringify(setLocalStorageData));
+        noty('success', response.data.message);
+      }).catch((error) => {
+        noty('error', error);
+      })
+    }
+
+    function uploadFiles() {
+      if (vm.saleFile) {
+        let fileObj = {
+          saleFile: vm.saleFile,
+          id: vm.id,
+          dateOfFile: vm.dateOfFile.toString("yyyy-MM-dd")
+        }
+        let urldata = {
+          url: "admin-api/sale-file",
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+          data: fileObj
+        };
+        UserService.addSaleFiles(urldata).then((response) => {
+          noty('success', response.data.message);
+        }).catch((error) => {
+          noty('error', error.data.message);
+        });
+      }
+
+      if (vm.purchaseFile) {
+        let fileObj = {
+          purchaseFile: vm.purchaseFile,
+          id: vm.id,
+          dateOfFile: vm.dateOfFile.toString("yyyy-MM-dd")
+        }
+        let urldata = {
+          url: "api/purchase-file",
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+          data: fileObj
+        };
+        ClientService.addPurchaseFiles(urldata).then((response) => {
+          noty('success', response.data.message);
+        }).catch((error) => {
+          noty('error', error.data.message);
+        });
       }
     }
 
-    $scope.finalvalues = function(updatedData) {
-      let splitArray, fileType, urldata, setLocalStorageData, updatedResponseData;
-      if (updatedData.file) {
-        splitArray = updatedData.file.name.split('.');
-        fileType = lodash.last(splitArray);
-        Object.defineProperty(updatedData.file, 'name', {
-          value: Math.floor(Math.random() * (1000000000000 - 3) + 100000) + '.' + fileType,
-          writable: true
-        });
-      }
-      urldata = {
-        url: "admin-api/edit-user",
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        data: updatedData
-      };
-      UserService.updateUser(urldata).then((response) => {
-        if (response.status === 200) {
-          noty('success', response.data.message);
-          vm.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-          updatedResponseData = response.data;
-          setLocalStorageData = vm.currentUser;
-          vm.user = updatedResponseData.user;
-          setLocalStorageData.ownerName = updatedResponseData.user.ownerName;
-          setLocalStorageData.state = updatedResponseData.user.state;
-          setLocalStorageData.city = updatedResponseData.user.city;
-          setLocalStorageData.pincode = updatedResponseData.user.pincode;
-          setLocalStorageData.address = updatedResponseData.user.address;
-          setLocalStorageData.mobile1 = updatedResponseData.user.mobile1;
-          setLocalStorageData.mobile2 = updatedResponseData.user.mobile2;
-          setLocalStorageData.landline = updatedResponseData.user.landline;
-          setLocalStorageData.file = updatedResponseData.user.file;
-          $rootScope.userName = updatedResponseData.user.ownerName;
-          vm.currentUser = localStorage.setItem("currentUser", JSON.stringify(setLocalStorageData));
-        }
-      }).catch((error) => {
-        console.log("error", error);
-        noty('error', error.data.message);
-      })
-    }
   }
 })();

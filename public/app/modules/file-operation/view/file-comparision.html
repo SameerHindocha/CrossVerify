@@ -1,84 +1,178 @@
 <header>
 </header>
 <h1>File Comparision</h1>
-<!-- <div class="col-md-12">
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th class="active">Company</th>
-              <th class="active">Duration</th>
-              <th class="active">Place</th>
-              <th class="active">Salary</th>
-            </tr>
-          </thead>
-          </table>
-          </div>
-          </div> -->
-<div class="col-md-12">
+<div class="col-md-12" ng-if="vm.showSaleTable">
+  <b>User File Detail</b>
   <div class="table-responsive">
-    <table class="table table-bordered">
+    <table class="table" style="display: inline-block;">
       <thead>
         <tr>
-          <th class="active">Field</th>
-          <th class="active">Company 1</th>
-          <th class="active">Company 2</th>
-          <th class="active">Status</th>
-          <!-- <th class="active">Salary</th> -->
+          <th class="active">Invoice_Date</th>
+          <th class="active">Invoice_number</th>
+          <th class="active">Invoice_Category</th>
+          <th class="active">Type</th>
+          <th class="active">Supply_Type</th>
+          <th class="active">Customer_Billing_Name</th>
+          <th class="active">Customer_Billing_Address</th>
+          <th class="active">Customer_Billing_City</th>
+          <th class="active">Customer_Billing_PinCode</th>
+          <th class="active">Customer_Billing_State</th>
+          <th class="active">Customer_Billing_StateCode</th>
+          <th class="active">Customer_Billing_GSTIN</th>
+          <th class="active">Item_Category</th>
+          <th class="active">Item_Total_Before_Discount</th>
+          <th class="active">Item_Discount</th>
+          <th class="active">Nil_Rated_Amount</th>
+          <th class="active">Exempted_Amount</th>
+          <th class="active">Non_GST_Amount</th>
+          <th class="active">Item_Taxable_Value</th>
+          <th class="active">CGST_Rate</th>
+          <th class="active">CGST_Amount</th>
+          <th class="active">SGST_Rate</th>
+          <th class="active">SGST_Amount</th>
+          <th class="active">IGST_Rate</th>
+          <th class="active">IGST_Amount</th>
+          <th class="active">TCS</th>
+          <th class="active">Cess_Rate</th>
+          <th class="active">Cess_Amount</th>
+          <th class="active">Other_Charges</th>
+          <th class="active">Roundoff</th>
+          <th class="active">Item_Total_Including_GST</th>
+          <th class="active">Taxable_Value_on_which_TCS_has_been_deducted</th>
+          <th class="active">Mobile_number</th>
+          <th class="active">Email_address</th>
         </tr>
       </thead>
-      <tr ng-repeat="field in vm.userRowObject">
-        <td>{{field.Name}}</td>
-        <td>{{field}}</td>
-        <td>{{field.Name}}</td>
-        <td align="center">
-          <span class="mobileTitle">Comparision Status</span>
-          <span ng-if="client.fileCompareStatus">
-                <i class=" fa fa-check fileCompareStatusGreen" aria-hidden="true"></i>
-              </span>
-          <span ng-if="client.fileCompareStatus==false">
-              <i class="fa fa-times fileCompareStatusRed" aria-hidden="true "></i>
-              </span>
-        </td>
-        <!-- <td>{{field.Company}}</td> -->
-        <!--  <td>{{field.Duration}}</td>
-        <td>{{field.Place}}</td>
-        <td>{{field.Sal}}</td> -->
-        <!-- <td>{{field.Company}}</td> -->
-        <!--  <td>{{field.Duration}}</td>
-        <td>{{field.Place}}</td>
-        <td>{{field.Sal}}</td> -->
+      <tr ng-repeat="saleFileData in vm.saleFileData" align="center">
+        <td>{{saleFileData.Invoice_Date}}</td>
+        <td>{{saleFileData.Invoice_number}}</td>
+        <td>{{saleFileData.Invoice_Category}}</td>
+        <td>{{saleFileData.Type}}</td>
+        <td>{{saleFileData.Supply_Type}}</td>
+        <td>{{saleFileData.Customer_Billing_Name}}</td>
+        <td>{{saleFileData.Customer_Billing_Address}}</td>
+        <td>{{saleFileData.Customer_Billing_City}}</td>
+        <td>{{saleFileData.Customer_Billing_PinCode}}</td>
+        <td>{{saleFileData.Customer_Billing_State}}</td>
+        <td>{{saleFileData.Customer_Billing_StateCode}}</td>
+        <td>{{saleFileData.Customer_Billing_GSTIN}}</td>
+        <td>{{saleFileData.Item_Category}}</td>
+        <td>{{saleFileData.Item_Total_Before_Discount}}</td>
+        <td>{{saleFileData.Item_Discount}}</td>
+        <td>{{saleFileData.Nil_Rated_Amount}}</td>
+        <td>{{saleFileData.Exempted_Amount}}</td>
+        <td>{{saleFileData.Non_GST_Amount}}</td>
+        <td>{{saleFileData.Item_Taxable_Value}}</td>
+        <td>{{saleFileData.CGST_Rate}}</td>
+        <td>{{saleFileData.CGST_Amount}}</td>
+        <td>{{saleFileData.SGST_Rate}}</td>
+        <td>{{saleFileData.SGST_Amount}}</td>
+        <td>{{saleFileData.IGST_Rate}}</td>
+        <td>{{saleFileData.IGST_Amount}}</td>
+        <td>{{saleFileData.TCS}}</td>
+        <td>{{saleFileData.Cess_Rate}}</td>
+        <td>{{saleFileData.Cess_Amount}}</td>
+        <td>{{saleFileData.Other_Charges}}</td>
+        <td>{{saleFileData.Roundoff}}</td>
+        <td>{{saleFileData.Item_Total_Including_GST}}</td>
+        <td>{{saleFileData.Taxable_Value_on_which_TCS_has_been_deducted}}</td>
+        <td>{{saleFileData.Mobile_number}}</td>
+        <td>{{saleFileData.Email_address}}</td>
       </tr>
     </table>
   </div>
+</div>
+<div class="col-md-12" ng-if="vm.showPurchaseTable">
   <br>
-  <hr>
   <br>
-  <!--   <div class="table-responsive">
-    <table class="table table-bordered">
+  <b>Client File Detail</b>
+  <div class="table-responsive">
+    <table class="table" style="display: inline-block;">
       <thead>
         <tr>
-          <th class="active">Name</th>
-          <th class="active">Company</th>
-          <th class="active">Duration</th>
-          <th class="active">Place</th>
-          <th class="active">Salary</th>
+          <th class="active">Invoice_Date</th>
+          <th class="active">Invoice_number</th>
+          <th class="active">Invoice_Category</th>
+          <th class="active">Type</th>
+          <th class="active">Supply_Type</th>
+          <th class="active">Supplier_Name</th>
+          <th class="active">Supplier_Address</th>
+          <th class="active">Supplier_City</th>
+          <th class="active">Supplier_PinCode</th>
+          <th class="active">Supplier_State</th>
+          <th class="active">Supplier_StateCode</th>
+          <th class="active">Supplier_GSTIN</th>
+          <th class="active">Item_Category</th>
+          <th class="active">Item_Total_Before_Discount</th>
+          <th class="active">Item_Discount</th>
+          <th class="active">Item_Taxable_Value</th>
+          <th class="active">CGST_Rate</th>
+          <th class="active">CGST_Amount</th>
+          <th class="active">SGST_Rate</th>
+          <th class="active">SGST_Amount</th>
+          <th class="active">IGST_Rate</th>
+          <th class="active">IGST_Amount</th>
+          <th class="active">TCS</th>
+          <th class="active">Cess_Rate</th>
+          <th class="active">Cess_Amount</th>
+          <th class="active">Item_Total_Including_GST</th>
+          <th class="active">Flag_Reverse_Charge</th>
+          <th class="active">Percent_Reverse_Charge_Rate</th>
+          <th class="active">Reverse_charge_liability</th>
+          <th class="active">Reverse_charge_paid</th>
+          <th class="active">Flag_Cancelled</th>
+          <th class="active">Mobile_number</th>
+          <th class="active">Email_address</th>
         </tr>
       </thead>
-      <tr ng-repeat="field in vm.clientRowObject">
-        <td>{{field.Name}}</td>
-        <td>{{field.Company}}</td>
-        <td>{{field.Duration}}</td>
-        <td>{{field.Place}}</td>
-        <td>{{field.Sal}}</td>
+      <tr ng-repeat="purchaseFileData in vm.purchaseFileData" align="center">
+        <td>{{purchaseFileData.Invoice_Date}}</td>
+        <td>{{purchaseFileData.Invoice_Number}}</td>
+        <td>{{purchaseFileData.Invoice_Category}}</td>
+        <td>{{purchaseFileData.Type}}</td>
+        <td>{{purchaseFileData.Supply_Type}}</td>
+        <td>{{purchaseFileData.Supplier_Name}}</td>
+        <td>{{purchaseFileData.Supplier_Address}}</td>
+        <td>{{purchaseFileData.Supplier_City}}</td>
+        <td>{{purchaseFileData.Supplier_PinCode}}</td>
+        <td>{{purchaseFileData.Supplier_State}}</td>
+        <td>{{purchaseFileData.Supplier_StateCode}}</td>
+        <td>{{purchaseFileData.Supplier_GSTIN}}</td>
+        <td>{{purchaseFileData.Item_Category}}</td>
+        <td>{{purchaseFileData.Item_Total_Before_Discount}}</td>
+        <td>{{purchaseFileData.Item_Discount}}</td>
+        <td>{{purchaseFileData.Item_Taxable_Value}}</td>
+        <td>{{purchaseFileData.CGST_Rate}}</td>
+        <td>{{purchaseFileData.CGST_Amount}}</td>
+        <td>{{purchaseFileData.SGST_Rate}}</td>
+        <td>{{purchaseFileData.SGST_Amount}}</td>
+        <td>{{purchaseFileData.IGST_Rate}}</td>
+        <td>{{purchaseFileData.IGST_Amount}}</td>
+        <td>{{purchaseFileData.TCS}}</td>
+        <td>{{purchaseFileData.CESS_Rate}}</td>
+        <td>{{purchaseFileData.CESS_Amount}}</td>
+        <td>{{purchaseFileData.Item_Total_Including_GST}}</td>
+        <td>{{purchaseFileData.Flag_Reverse_Charge}}</td>
+        <td>{{purchaseFileData.Percent_Reverse_Charge_Rate}}</td>
+        <td>{{purchaseFileData.Reverse_charge_liability}}</td>
+        <td>{{purchaseFileData.Reverse_charge_paid}}</td>
+        <td>{{purchaseFileData.Flag_Cancelled}}</td>
+        <td>{{purchaseFileData.Mobile_number}}</td>
+        <td>{{purchaseFileData.Email_address}}</td>
       </tr>
     </table>
-  </div> -->
+  </div>
 </div>
-</div>
-<button type="button" class="btn btn-primary" ng-click="vm.compareFiles() ">Compare</button>
-<div ng-if="vm.showStatus">
-  <h2>Difference:</h2> {{vm.difference}}
-</div>
-<span ng-if="vm.matchStatus && vm.showStatus"><h1><i class="fa fa-check " aria-hidden="true "></i> Ststus :  Matched</h1></span><span ng-if="vm.matchStatus==false && vm.showStatus "><h1><i class="fa fa-times " aria-hidden="true"></i>Ststus :  Not Matched</span></h1>
+<button type="button" class="btn btn-primary" ng-click="vm.compareFiles()">Compare</button>
+<span ng-if="vm.status">
+  <h1>
+    <i class="fa fa-check" aria-hidden="true "></i>
+       Matched
+  </h1>
 </span>
+<span ng-if="vm.status==false">
+  <h1>
+    <i class="fa fa-times" aria-hidden="true"></i>
+     Not Matched
+  </h1>
+ </span>

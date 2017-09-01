@@ -13,7 +13,8 @@
       deleteUser: deleteUser,
       getUserById: getUserById,
       updateUser: updateUser,
-      gstStatus: gstStatus
+      gstStatus: gstStatus,
+      addSaleFiles: addSaleFiles
     };
 
     function addUser(urldata) {
@@ -65,14 +66,18 @@
       return defer.promise;
     }
 
-    function updateUser(urldata) {
-      let defer = $q.defer();
-      Upload.upload(urldata).then(function(response) {
-        defer.resolve(response);
+    function updateUser(data) {
+      let defered = $q.defer();
+      $http({
+        method: 'put',
+        url: '/admin-api/edit-user',
+        data: data
+      }).then(function(response) {
+        defered.resolve(response);
       }).catch(function(error) {
-        defer.reject(error);
+        defered.reject(error);
       });
-      return defer.promise;
+      return defered.promise;
     }
 
     function gstStatus(data) {
@@ -87,6 +92,19 @@
       });
       return defer.promise;
     }
+
+    function addSaleFiles(urldata) {
+      console.log("urldata", urldata);
+      let defer = $q.defer();
+      Upload.upload(urldata).then(function(response) {
+        defer.resolve(response);
+      }).catch(function(error) {
+        defer.reject(error);
+      });
+      return defer.promise;
+    }
+
+
 
   }
 })();

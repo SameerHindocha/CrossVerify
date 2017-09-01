@@ -1,7 +1,7 @@
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
+let Mixed = Schema.Types.Mixed;
 module.exports = (mongoose) => {
-
   var ClientSchema = new Schema({
     companyName: {
       type: String,
@@ -60,11 +60,14 @@ module.exports = (mongoose) => {
       type: String,
       required: [true, 'User Key is required.']
     },
-    file: {
+    purchaseFilePath: {
       type: String
     },
     fileCompareStatus: {
       type: Boolean
+    },
+    purchaseFile: {
+      type: Mixed
     }
   }, { timestamps: true }, { strict: true });
   return mongoose.model('Client', ClientSchema);

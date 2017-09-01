@@ -24,7 +24,7 @@
           address: $scope.data.address,
           mobile1: parseInt($scope.data.mobile1),
           mobile2: parseInt($scope.data.mobile2),
-          landline: parseInt($scope.data.landline)
+          landline: parseInt($scope.data.landline),
         }
 
         $scope.openAddPopup = function() {

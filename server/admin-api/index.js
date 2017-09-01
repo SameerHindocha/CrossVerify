@@ -10,8 +10,8 @@ let byPassedEndpoints = [
   '/login',
   '/logout',
   '/gst-status',
-  '/compare-file',
-  '/edit-user'
+  '/edit-user',
+  '/sale-file',
 ];
 
 let fs = require('fs');

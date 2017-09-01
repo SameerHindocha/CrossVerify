@@ -67,18 +67,6 @@
               <label>Landline No</label>
               <input type="number" name="landline" class="form-control no-spin" ng-model="details.landline" placeholder="Landline Number">
             </div>
-            <div class="col-md-12">
-              <label>Document</label>
-              <input type="file" class="filestyle" id="file" ngf-select ng-model="details.file" name="file" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
-              <div class="alert alert-danger" ng-show="updateUserForm.file.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
-              </div>
-              <br>
-              <div>
-                </i>
-                <button type="button" class="btn btn-danger" ng-click="details.file=null" ng-if="details.file"><i class="fa fa-times" aria-hidden="true"></i> Remove
-                </button>
-              </div>
-            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="send()" ng-disabled="updateUserForm.ownerName.$invalid || updateUserForm.city.$invalid || updateUserForm.pincode.$invalid || updateUserForm.address.$invalid || updateUserForm.mobile1.$invalid || updateUserForm.mobile2.$invalid">Save</button>

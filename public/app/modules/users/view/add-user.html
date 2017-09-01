@@ -10,8 +10,8 @@
   <div class="row">
     <div class="col-md-12">
       <h2>
-                User Registration
-            </h2>
+        User Registration
+      </h2>
     </div>
     <div class="col-md-12 registrationForm">
       <form name="addUserForm">
@@ -192,17 +192,18 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-            <h4>Document</h4>
-            <input type="file" ngf-select ng-model="vm.file" name="file" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
-            <div class="alert alert-danger" ng-show="addUserForm.file.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
+            <h4>Sale File</h4>
+            <input type="file" ngf-select ng-model="vm.saleFile" name="saleFilePath" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
+            <div class="alert alert-danger" ng-show="addUserForm.saleFilePath.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
             </div>
             <br>
-            <img ng-show="addUserForm.file.$valid" ngf-thumbnail="vm.file" class="thumb">
-            <button type="button" class="btn btn-danger" ng-click="vm.file=null" ng-if="vm.file"><i class="fa fa-times" aria-hidden="true"></i> Remove
+            <img ng-show="addUserForm.saleFilePath.$valid" ngf-thumbnail="vm.saleFilePath" class="thumb">
+            <button type="button" class="btn btn-danger" ng-click="vm.saleFilePath=null" ng-if="vm.saleFilePath"><i class="fa fa-times" aria-hidden="true"></i> Remove
             </button>
           </div>
         </div>
-        <button class="btn btn-primary" ng-disabled="vm.gstConflict || addUserForm.companyName.$invalid || addUserForm.state.$invalid || addUserForm.city.$invalid || addUserForm.pincode.$invalid || addUserForm.ownerName.$invalid || addUserForm.address.$invalid || addUserForm.mobile1.$invalid || addUserForm.panNo.$invalid || addUserForm.tinNo.$invalid || addUserForm.GSTNo.$invalid || addUserForm.email.$invalid || addUserForm.password.$invalid || addUserForm.confirmPassword.$invalid || addUserForm.file.$invalid" ng-click="vm.addUser()">Save</button>
+        <!-- <button class="btn btn-primary" ng-click="vm.addUser()">Save</button> -->
+        <button class="btn btn-primary" ng-disabled="vm.gstConflict || addUserForm.companyName.$invalid || addUserForm.state.$invalid || addUserForm.city.$invalid || addUserForm.pincode.$invalid || addUserForm.ownerName.$invalid || addUserForm.address.$invalid || addUserForm.mobile1.$invalid || addUserForm.panNo.$invalid || addUserForm.tinNo.$invalid || addUserForm.GSTNo.$invalid || addUserForm.email.$invalid || addUserForm.password.$invalid || addUserForm.confirmPassword.$invalid || addUserForm.saleFilePath.$invalid" ng-click="vm.addUser()">Save</button>
       </form>
     </div>
   </div>

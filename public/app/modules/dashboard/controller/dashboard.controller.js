@@ -76,7 +76,8 @@
     }
 
     function openFileComparisionPage(client) {
-      $location.path('/file-compare/' + client._id);
+      $rootScope.clientData = client;
+      $location.path('/file-compare/' + client._id + '/' + client.GSTNo);
     }
 
     function search() {
@@ -94,6 +95,9 @@
         vm.clients = vm.filteredList;
       }
     }
+
+
+
 
     $('#clip').tooltip({
       trigger: 'click',

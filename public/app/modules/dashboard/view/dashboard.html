@@ -10,7 +10,7 @@
 <div class="container-fluid detailTable">
   <div class="row">
     <div class="col-md-6 search-group">
-      <input type="search" class="form-control" ng-model="vm.searchText" placeholder="Search by Company name or Gst number" type="search" ng-change="vm.search()" />
+      <input type="search" class="form-control" ng-model="vm.searchText" placeholder="Search by Company name or GST number" type="search" ng-change="vm.search()" />
       <div class="search-icon"><i class=" fa fa-search"></i></div>
     </div>
     <div class="col-md-6 actionButtons text-right">
@@ -78,7 +78,7 @@
               <td><span class="mobileTitle">Pan No</span> {{client.panNo }} </td>
               <td><span class="mobileTitle">GST No</span> {{client.GSTNo }} </td>
               <td><span class="mobileTitle">File Comparision</span>
-                <input type="button" class="btn btn-primary" value="Compare" ng-click="vm.openFileComparisionPage(client)" ng-disabled="!client.file ||  !vm.getCurrentUserForEmail.file">
+                <input type="button" class="btn btn-primary" value="Compare" ng-click="vm.openFileComparisionPage(client)" ng-disabled="!client.purchaseFilePath ||  !vm.getCurrentUserForEmail.saleFilePath">
               </td>
               <td align="center">
                 <!-- <span class="mobileTitle">Comparision Status</span> -->

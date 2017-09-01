@@ -20,10 +20,10 @@
 
     function addUser() {
       let splitArray, fileType, postObj, urldata;
-      if (vm.file) {
-        splitArray = vm.file.name.split('.');
+      if (vm.saleFile) {
+        splitArray = vm.saleFile.name.split('.');
         fileType = lodash.last(splitArray);
-        Object.defineProperty(vm.file, 'name', {
+        Object.defineProperty(vm.saleFile, 'name', {
           value: Math.floor(Math.random() * (1000000000000 - 3) + 100000) + '.' + fileType,
           writable: true
         });
@@ -42,8 +42,26 @@
         panNo: vm.panNo.toUpperCase(),
         GSTNo: vm.GSTNo.toUpperCase(),
         password: vm.password,
-        file: vm.file
+        saleFile: vm.saleFile
       };
+
+      // postObj = {
+      //   companyName: 'Abc Ltd',
+      //   state: 'Gujarat',
+      //   city: 'Ahmedabad',
+      //   pincode: '380000',
+      //   email: vm.email,
+      //   ownerName: 'ABC',
+      //   address: 'Ahmedabad',
+      //   mobile1: '9876543210',
+      //   mobile2: '1234567890',
+      //   landline: '87654321',
+      //   panNo: '11111111',
+      //   GSTNo: vm.GSTNo.toUpperCase(),
+      //   password: vm.password,
+      //   saleFile: vm.saleFile
+      // };
+
       urldata = {
         url: "admin-api/user",
         headers: {
@@ -79,5 +97,7 @@
         })
       }
     }
+
+
   }
 })();
