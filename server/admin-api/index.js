@@ -4,14 +4,25 @@
 let byPassedEndpoints = [
   '/admin-api',
   '/user',
-  '/share-form',
+  '/send-mail',
   '/send-sms',
   '/checkLogin',
   '/login',
   '/logout',
   '/gst-status',
   '/edit-user',
-  '/sale-file',
+  // '/sale-file',
+  '/filter-invoices-by-month',
+  '/update-contact-detail',
+  '/update-sale-file',
+  '/update-purchase-file',
+  '/change-status',
+  '/update-client-info',
+  '/send-confirmation-mail',
+  '/send-confirmation-sms',
+  '/post-file-data',
+  '/read-file-data',
+  '/send-otp'
 ];
 
 let fs = require('fs');

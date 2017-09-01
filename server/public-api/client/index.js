@@ -68,20 +68,22 @@ module.exports = class ClientController {
       }
       Client.purchaseFile = purchaseObject;
     }
-    User.companyName = req.body.companyName;
-    User.address = req.body.address;
-    User.state = req.body.state;
-    User.city = req.body.city;
-    User.pincode = req.body.pincode;
-    User.email = req.body.email;
-    User.ownerName = req.body.ownerName;
-    User.mobile1 = req.body.mobile1;
-    User.mobile2 = req.body.mobile2;
-    User.landline = req.body.landline;
-    User.panNo = req.body.panNo;
-    User.GSTNo = req.body.GSTNo;
+
     if (req.body.password) {
       Client.password = Utils.md5(req.body.password);
+
+      User.companyName = req.body.companyName;
+      User.address = req.body.address;
+      User.state = req.body.state;
+      User.city = req.body.city;
+      User.pincode = req.body.pincode;
+      User.email = req.body.email;
+      User.ownerName = req.body.ownerName;
+      User.mobile1 = req.body.mobile1;
+      User.mobile2 = req.body.mobile2;
+      User.landline = req.body.landline;
+      User.panNo = req.body.panNo;
+      User.GSTNo = req.body.GSTNo;
       db.User.findOne({ email: req.body.email }, function(err, repeatedUser) {
         if (repeatedUser) {
           Client.save().then((resp) => {
@@ -105,9 +107,9 @@ module.exports = class ClientController {
                 userAsClient.GSTNo = linkSentBy.GSTNo;
                 userAsClient.userId = repeatedUser._id;
                 userAsClient.userKey = repeatedUser._id + linkSentBy.GSTNo;
-                if (linkSentBy.password) {
-                  userAsClient.password = Utils.md5(linkSentBy.password)
-                }
+                // if (linkSentBy.password) {
+                userAsClient.password = Utils.md5(linkSentBy.password)
+                // }
                 userAsClient.save().then((response) => {
                   res.send({ message: "Registered Successfully" })
                 }).catch((error) => {

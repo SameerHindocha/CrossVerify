@@ -1,0 +1,80 @@
+<header></header>
+File Upload
+<fieldset class="profile">
+  <div class="col-md-12 registrationForm registrationFormDisplay">
+    <div class="row">
+      <div class="col-md-12">
+        <h4>File Uploads</h4>
+      </div>
+      <br/>
+      <div class="inputGroupWrap col-sm-4">
+        <label>Date</label>
+        <br>
+        <ng-combo-date-picker ng-model="vm.dateOfFile" ng-min-date="2017-07-01" ng-attrs-date='{"class": "col-md-4 hidden"}' ng-attrs-month='{"class": "col-md-4"}' ng-attrs-year='{"class": "col-md-4"}'></ng-combo-date-picker>
+      </div>
+      <div class="inputGroupWrap col-sm-4">
+        <label>Sale File</label>
+        <input type="file" class="filestyle" id="saleFile" ngf-select ng-model="vm.saleFile" name="saleFile" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
+        <div class="alert alert-danger" ng-show="updateUserForm.saleFile.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
+        </div>
+        <br>
+        <div>
+          </i>
+          <!--   <button type="button" class="btn btn-danger" ng-click="vm.saleFile=null" ng-if="vm.saleFile"><i class="fa fa-times" aria-hidden="true"></i> Remove
+          </button> -->
+        </div>
+      </div>
+      <div class="inputGroupWrap col-sm-4">
+        <label>Purchase File</label>
+        <input type="file" class="filestyle" id="purchaseFile" ngf-select ng-model="vm.purchaseFile" name="purchaseFile" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
+        <div class="alert alert-danger" ng-show="updateUserForm.purchaseFile.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
+        </div>
+        <br>
+        <div>
+          </i>
+          <!-- <button type="button" class="btn btn-danger" ng-click="vm.purchaseFile=null" ng-if="vm.purchaseFile"><i class="fa fa-times" aria-hidden="true"></i> Remove
+</button> -->
+        </div>
+      </div>
+    </div>
+    <input type="button" class="btn btn-primary" value="Submit" ng-click="vm.uploadFiles();showFieldset=true">
+    <br>
+    <br>
+  </div>
+</fieldset>
+<br>
+<br>
+<fieldset ng-if="showFieldset">
+  <div class="row" id="Sale">
+    <div class="col-md-12">
+      <h3><label>Set SaleFile Header Values</label></h3>
+    </div>
+    <div class="col-md-12 headerDropdown">
+      <div class="col-md-2 headerDropdownSelectWrap" ng-repeat="defaultSaleLabel in vm.defaultSalesHeaderValues">
+        <label style="display: block;">{{defaultSaleLabel}}</label>
+        <select id="{{$index}}" style="width: 100%;">
+          <option class="input-error" disabled="" selected>Select</option>
+          <option ng-repeat="field in vm.salesHeaderFields" ng-selected="{{field.h === vm.defaultSalesHeaderValues[$parent.$index]}}">{{field.h}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <br>
+  <div class="row" id="Purchase">
+    <div class="col-md-12">
+      <h3><label>Set PurchaseFile Header Values</label></h3>
+    </div>
+    <div class="col-md-12 headerDropdown">
+      <div class="col-md-2 headerDropdownSelectWrap" ng-repeat="defaultPurchaseLabel in vm.defaultPurchaseHeaderValues">
+        <label style="display: block;">{{defaultPurchaseLabel}}</label>
+        <select id="{{$index}}" style="width: 100%;">
+          <option disabled="" selected>Select</option>
+          <option ng-repeat="field in vm.purchaseHeaderFields" ng-selected="{{field.h === vm.defaultPurchaseHeaderValues[$parent.$index]}}">{{field.h}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <br>
+  <input type="button" class="btn btn-primary" value="Finish" ng-click="vm.postFileData()">
+</fieldset>

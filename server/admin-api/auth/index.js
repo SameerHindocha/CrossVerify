@@ -22,7 +22,6 @@ module.exports = class AuthController {
     Password = Utils.md5(req.body.Password);
     db.User.findOne({ email: Email, password: Password })
       .then(function(userData) {
-        console.log("userData", userData);
         if (userData) {
           sessionObj = {
             _id: userData._id,
@@ -42,7 +41,6 @@ module.exports = class AuthController {
             saleFilePath: userData.saleFilePath,
             saleFile: userData.saleFile
           }
-          console.log("userData", userData);
 
           req.session.isLoggedIn = 'Y';
           session.email = userData.email;

@@ -96,7 +96,7 @@
                   <button type="button" ng-click="vm.checkPassword();vm.fetchRecord()" class="btn btn-next btn-primary">Next</button>
                 </fieldset>
                 <!-- =======================PAGE 2============================ -->
-                <!--              <fieldset>
+                             <fieldset>
                   <div class="form-top">
                     <div class="form-top-left">
                       <h3>Step 2 / 4</h3>
@@ -119,19 +119,19 @@
                       </div>
                     </div>
                     ******STATE*********
-                    <div class="form-group">
-                      <div class="input-group input-group-icon">
-                        <select name="state" id="state" class="form-control" ng-model="vm.state" required="">
-                          <option disabled="" value="">Please select State</option>
-                          <option ng-repeat="state in vm.states">{{state}}</option>
-                        </select>
-                        <span class="asterisk_input"> </span>
-                        <div class="input-icon"><i class="fa fa-location-arrow"></i></div>
-                      </div>
-                      <div ng-hide="addClientForm.state.$valid || addClientForm.state.$pristine" class="alert alert-danger">
-                        State Name is Required
-                      </div>
-                    </div>
+                 <div class="form-group">
+  <div class="input-group input-group-icon">
+    <select name="state" id="state" class="form-control" ng-model="vm.state" required="">
+      <option disabled="" value="">Please select State</option>
+      <option ng-repeat="state in vm.states">{{state}}</option>
+    </select>
+    <span class="asterisk_input"> </span>
+    <div class="input-icon"><i class="fa fa-location-arrow"></i></div>
+  </div>
+  <div ng-hide="addClientForm.state.$valid || addClientForm.state.$pristine" class="alert alert-danger">
+    State Name is Required
+  </div>
+</div>
                     ******CITY*********
                     <div class="form-group">
                       <div class="input-group input-group-icon">
@@ -157,7 +157,7 @@
                     <button type="button" class="btn btn-previous btn-primary">Previous</button>
                     <button type="button" class="btn btn-next btn-primary">Next</button>
                   </div>
-                </fieldset> -->
+                </fieldset>
                 <!-- =======================PAGE 3============================ -->
                 <!--           <fieldset>
                   <div class="form-top">

@@ -5,8 +5,13 @@ let session;
 
 module.exports = class ShareFormController {
   constructor(app) {
-    app.get('/admin-api/share-form/:email', this.sendMail);
+    app.get('/admin-api/send-mail/:email', this.sendMail);
     app.get('/admin-api/send-sms/:email', this.sendSMS);
+    app.get('/admin-api/send-confirmation-mail/:email', this.sendConfirmationMail);
+    app.get('/admin-api/send-confirmation-sms/:mobile', this.sendConfirmationSMS);
+    app.post('/admin-api/send-otp/:mobile', this.sendOTP);
+
+
   }
 
   sendMail(req, res) {
@@ -27,7 +32,7 @@ CrossVerify is a free portal where you can register your company ,unique link wi
   If you are already registered with CrossVerify.in, and your client asks for your company details you just need to login on the link sent by your client ,all your detials will be auto submitted to your client and their details will be auto fetched to your company database
                     </h4>
 
-                   <h4>Warm Regards,<h4>
+                   <h4>Warm Regards,</h4>
                    <h4>${req.session.userProfile.companyName} </h4>`,
       };
       SendMail.MailFunction(emailObj, req.session.userProfile.email).then(function(data) {
@@ -59,4 +64,76 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
       res.redirect(500, '/logout');
     }
   }
+
+  sendConfirmationMail(req, res) {
+
+
+    let emailObj;
+    let email = req.params.email;
+    session = req.session;
+    if (req.session.isLoggedIn == 'Y') {
+      emailObj = {
+        subject: `This is a Confirmation Email`, // Subject line
+        html: `<h4>We ${req.session.userProfile.companyName}  request you to fill your Company DETAILS with GSTIN ,WHICH WILL BE NEEDED ( WITHOUT SPELLING ERROR).
+      </h4>We humbly request to fill up this form and submit it as early as possible to update your details with our company.
+                    <h4> PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS.</h4><br>
+                    <a href='http://${global.config.server.url}:${global.config.server.port}/#/client/add/${req.session.userProfile._id}' class='alert-link'>Click here to fill the Cross Verify registration form</a></br></br>
+                    <br /><br />
+                
+
+                   <h4>Warm Regards,<h4>
+                   <h4>${req.session.userProfile.companyName} </h4>`,
+      };
+
+      SendMail.MailFunction(emailObj, email).then(function(data) {
+        res.send({ message: "Confirmation Email has been sent successfully to your registered Email" })
+      }, function(err) {
+        res.send(err)
+      });
+    } else {
+      res.redirect(500, '/logout');
+    }
+
+  }
+
+  sendConfirmationSMS(req, res) {
+    console.log("req.params-------------------->>>", req.params);
+
+    let uri, link, msg, data;
+    session = req.session;
+    if (req.session.isLoggedIn == 'Y') {
+      uri = `http://${global.config.server.url}:${global.config.server.port}/#/client/add/${req.session.userProfile._id}`
+      link = encodeURIComponent(uri);
+      msg = `We  ${req.session.userProfile.companyName} request you to fill your Company DETAILS with GSTIN ,WHICH WILL BE NEEDED ( WITHOUT SPELLING ERROR) . WE HUMBALLY REQUEST TO FILL UP THIS FORM AND SUBMIT IT AS EARLY AS POSSIBLE TO UPDATE YOUR DETAILS WITH OUR Company.
+
+PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
+      msg += link;
+      data = {
+        mobile: req.params.mobile,
+        message: msg
+      }
+      SendSMS.SMSFunction(data, req, res);
+    } else {
+      res.redirect(500, '/logout');
+    }
+
+
+  }
+
+  sendOTP(req, res) {
+
+    let uri, link, msg, data;
+    session = req.session;
+    msg = `Your OTP is :  ` + req.body.otp
+    console.log("msg", msg);
+    data = {
+      mobile: req.params.mobile,
+      message: msg
+    }
+    // SendSMS.SMSFunction(data, req, res);
+
+  }
+
+
+
 }

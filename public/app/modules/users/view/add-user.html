@@ -47,7 +47,7 @@
           <!-- ******CITY********* -->
           <div class="inputGroupWrap col-md-6">
             <div class="input-group input-group-icon">
-              <input type="text" name="city" class="form-control" ng-model="vm.city" placeholder="City Name" required>
+              <input type="text" name="city" class="form-control  " ng-model="vm.city" placeholder="City Name" required>
               <span class="asterisk_input"> </span>
               <div class="input-icon"><i class="fa fa-map-marker"></i></div>
             </div>
@@ -190,7 +190,7 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <!--     <div class="row">
           <div class="col-md-12">
             <h4>Sale File</h4>
             <input type="file" ngf-select ng-model="vm.saleFile" name="saleFilePath" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
@@ -201,9 +201,9 @@
             <button type="button" class="btn btn-danger" ng-click="vm.saleFilePath=null" ng-if="vm.saleFilePath"><i class="fa fa-times" aria-hidden="true"></i> Remove
             </button>
           </div>
-        </div>
+        </div> -->
         <!-- <button class="btn btn-primary" ng-click="vm.addUser()">Save</button> -->
-        <button class="btn btn-primary" ng-disabled="vm.gstConflict || addUserForm.companyName.$invalid || addUserForm.state.$invalid || addUserForm.city.$invalid || addUserForm.pincode.$invalid || addUserForm.ownerName.$invalid || addUserForm.address.$invalid || addUserForm.mobile1.$invalid || addUserForm.panNo.$invalid || addUserForm.tinNo.$invalid || addUserForm.GSTNo.$invalid || addUserForm.email.$invalid || addUserForm.password.$invalid || addUserForm.confirmPassword.$invalid || addUserForm.saleFilePath.$invalid" ng-click="vm.addUser()">Save</button>
+        <button class="btn btn-primary" ng-disabled="vm.gstConflict || addUserForm.companyName.$invalid || addUserForm.state.$invalid || addUserForm.city.$invalid || addUserForm.pincode.$invalid || addUserForm.ownerName.$invalid || addUserForm.address.$invalid || addUserForm.mobile1.$invalid || addUserForm.panNo.$invalid || addUserForm.tinNo.$invalid || addUserForm.GSTNo.$invalid || addUserForm.email.$invalid || addUserForm.password.$invalid || addUserForm.confirmPassword.$invalid" ng-click="vm.addUser()">Save</button>
       </form>
     </div>
   </div>

@@ -58,6 +58,9 @@ module.exports = (mongoose) => {
     },
     saleFile: {
       type: Mixed
+    },
+    purchaseFile: {
+      type: Mixed
     }
 
   }, { timestamps: true }, { strict: true });

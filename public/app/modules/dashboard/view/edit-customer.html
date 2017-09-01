@@ -1,0 +1,91 @@
+<header></header>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>
+        Update Client Detail
+      </h2>
+    </div>
+    <div class="col-md-12 registrationForm">
+      <form name="addUserForm">
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Information</h4>
+          </div>
+          <div class="inputGroupWrap col-md-6">
+            <div class="input-group input-group-icon">
+              <input type="text" name="clientCompanyName" class="form-control" ng-model="vm.clientCompanyName" placeholder=" Company Name">
+              <div class="input-icon">
+                <i class="fa fa-briefcase"></i>
+              </div>
+            </div>
+          </div>
+          <!-- *******EMAIL******** -->
+          <div class="inputGroupWrap col-md-6">
+            <div class="input-group input-group-icon">
+              <input type="email" name="clientEmail" class="form-control" ng-model="vm.clientEmail" placeholder="Email Address">
+              <div class="input-icon"><i class="fa fa-envelope-o"></i></div>
+            </div>
+          </div>
+          <!-- *******GST NO******** -->
+          <div class="inputGroupWrap col-md-6">
+            <div class="input-group input-group-icon">
+              <input type="text" name="clientGSTNo" class="form-control toUpper" ng-model="vm.clientGSTNo" placeholder="GST Number">
+              <div class="input-icon"><i class="fa fa-id-card-o"></i></div>
+            </div>
+          </div>
+          <!-- *******ADDRESS******** -->
+          <div class="inputGroupWrap col-md-6">
+            <div class="input-group input-group-icon">
+              <input type="text" name="clientAddress" class="form-control" ng-model="vm.clientAddress" placeholder="Address">
+              <div class="input-icon"><i class="fa fa-address-card"></i></div>
+            </div>
+          </div>
+          <!-- ******STATE********* -->
+          <div class="inputGroupWrap col-md-6">
+            <div class="input-group input-group-icon">
+              <select name="clientState" class="form-control" ng-model="vm.clientState1" ng-options="state for state in vm.clientState">
+                <option value="">Please select State</option>
+              </select>
+              <!--   <select class="form-control">
+                <option disabled="" >Select</option>
+                <option ng-repeat="field in vm.clientState" ng-selected="vm.clientState1">{{field}}</option>
+              </select> -->
+              <div class="input-icon "><i class="fa fa-location-arrow "></i></div>
+            </div>
+          </div>
+          <!-- ******CITY********* -->
+          <div class="inputGroupWrap col-md-6 ">
+            <div class="input-group input-group-icon ">
+              <input type="text " name="clientCity " class="form-control " ng-model="vm.clientCity " placeholder="City Name ">
+              <div class="input-icon "><i class="fa fa-map-marker "></i></div>
+            </div>
+          </div>
+          <!-- *******PINCODE******** -->
+          <div class="inputGroupWrap col-md-6 ">
+            <div class="input-group input-group-icon ">
+              <input type="number " name="clientPincode " class="form-control no-spin " ng-model="vm.clientPincode " placeholder="Pincode " maxlength="6 " minlength="6 ">
+              <div class="input-icon "><i class="fa fa-thumb-tack "></i></div>
+            </div>
+          </div>
+          <!-- *******OWNER NAME******** -->
+          <!--      <div class="inputGroupWrap col-md-6 ">
+            <div class="input-group input-group-icon ">
+              <input type="text " name="clientOwnerName " class="form-control " ng-model="vm.clientOwnerName " placeholder="Owner Name ">
+              <div class="input-icon "><i class="fa fa-user "></i></div>
+            </div>
+          </div> -->
+          <!-- *******MOBILE ******** -->
+          <div class="inputGroupWrap col-md-6 ">
+            <div class="input-group input-group-icon ">
+              <input type="number " name="clientMobile " class="form-control no-spin " ng-model="vm.clientMobile " placeholder="Mobile Number ">
+              <div class="input-icon "><i class="fa fa-mobile "></i></div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <button class="btn btn-primary " ng-click="vm.updateClient() ">Update Client Info</button>
+    </form>
+  </div>
+</div>
+</div>

@@ -14,18 +14,34 @@
       getUserById: getUserById,
       updateUser: updateUser,
       gstStatus: gstStatus,
-      addSaleFiles: addSaleFiles
+      // addSaleFiles: addSaleFiles,
+      readFiles: readFiles,
+      updateContact: updateContact,
+      postFileData: postFileData
     };
 
-    function addUser(urldata) {
-      let defer = $q.defer();
-      Upload.upload(urldata).then(function(response) {
-        defer.resolve(response);
+    function addUser(data) {
+      let defered = $q.defer();
+      $http({
+        method: 'post',
+        url: '/admin-api/user',
+        data: data
+      }).then(function(response) {
+        defered.resolve(response);
       }).catch(function(error) {
-        defer.reject(error);
+        defered.reject(error);
       });
-      return defer.promise;
+      return defered.promise;
     }
+    // function addUser(urldata) {
+    //   let defer = $q.defer();
+    //   Upload.upload(urldata).then(function(response) {
+    //     defer.resolve(response);
+    //   }).catch(function(error) {
+    //     defer.reject(error);
+    //   });
+    //   return defer.promise;
+    // }
 
     function listUser() {
       let defered = $q.defer();
@@ -93,7 +109,17 @@
       return defer.promise;
     }
 
-    function addSaleFiles(urldata) {
+    // function addSaleFiles(urldata) {
+    //   console.log("urldata", urldata);
+    //   let defer = $q.defer();
+    //   Upload.upload(urldata).then(function(response) {
+    //     defer.resolve(response);
+    //   }).catch(function(error) {
+    //     defer.reject(error);
+    //   });
+    //   return defer.promise;
+    // }
+    function readFiles(urldata) {
       console.log("urldata", urldata);
       let defer = $q.defer();
       Upload.upload(urldata).then(function(response) {
@@ -103,6 +129,36 @@
       });
       return defer.promise;
     }
+
+    function updateContact(data) {
+      console.log("data", data);
+      let defer = $q.defer();
+      $http({
+        method: 'put',
+        url: '/admin-api/update-contact-detail',
+        data: data
+      }).then(function(response) {
+        defer.resolve(response);
+      }).catch(function(error) {
+        defer.reject(error);
+      });
+      return defer.promise;
+    }
+
+    function postFileData(data) {
+      let defer = $q.defer();
+      $http({
+        method: 'put',
+        url: '/admin-api/post-file-data',
+        data: data
+      }).then(function(response) {
+        defer.resolve(response);
+      }).catch(function(error) {
+        defer.reject(error);
+      });
+      return defer.promise;
+    }
+
 
 
 

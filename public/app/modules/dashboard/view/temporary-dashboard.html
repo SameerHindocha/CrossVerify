@@ -1,0 +1,14 @@
+<h2>Bana Refinary Pvt Ltd have Sent Rapidops Solutions you to confirm sale/purchase for the month of {{vm.month}}</h2>
+<br>
+<div class="input-group">
+  <h2>Please Confirm Your Mobile Number xxxxxx{{vm.mobile}}</h2>
+  <span class="input-group-btn">
+  <button class="btn btn-primary" ng-click="vm.sendOTP()">Send OTP</button>
+   </span>
+</div>
+<div class="input-group">
+  <input id="partitioned" type="text" maxlength="4" ng-model="vm.confirmOTP" />
+  <span class="input-group-btn">
+<button class="btn btn-primary" ng-click="vm.verifyOTP(vm.confirmOTP)">Submit OTP</button>  
+ </span>
+</div>

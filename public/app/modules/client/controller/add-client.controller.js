@@ -61,7 +61,6 @@
       //   salesFile: vm.salesFile
       // };
 
-
       postObj = {
         companyName: 'XYZ Ltd',
         state: 'Gujarat',
@@ -80,7 +79,6 @@
         purchaseFile: vm.purchaseFile,
         salesFile: vm.salesFile
       };
-
 
       urldata = {
         url: "api/client",
@@ -167,11 +165,8 @@
             vm.mobile2 = '';
             vm.landline = '';
           }
-
-
         }).catch((error) => {
           console.log("error", error.status);
-
         })
       }
     }

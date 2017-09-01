@@ -11,11 +11,12 @@ module.exports = {
         res.status(400).send({ message: 'Internal error in sending SMS' })
       } else {
         split = body.split('|');
+        console.log("split", split);
         splittedResponse = _.trim(split[0]);
         if (splittedResponse === "success") {
-          res.status(200).send({ message: 'Link has been sent successfully to your registered Mobile Number' })
+          res.status(200).send({ message: 'SMS has been sent successfully.' })
         } else if (splittedResponse === "error") {
-          res.status(400).send({ message: 'Error in sending link via SMS' })
+          res.status(400).send({ message: 'Error in sending SMS' })
         }
       }
     });
