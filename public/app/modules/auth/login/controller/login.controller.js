@@ -32,9 +32,8 @@
         Password: vm.data2
       };
       AuthService.Login(postObj).then((response) => {
-        console.log("response-------******* ", response);
         window.localStorage.setItem('currentUser', JSON.stringify(response.data.userData));
-        noty('success', response.data.message);
+        // noty('success', response.data.message);
         $location.path('/dashboard');
       }).catch((Error) => {
         vm.error = Error.data.message;

@@ -4,12 +4,13 @@
     .module('fileApp')
     .controller('fileUploadController', controller);
 
-  controller.$inject = ['UserService', '$location', '$route', 'lodash', '$rootScope', '$sce'];
+  controller.$inject = ['UserService', '$location', '$route', 'lodash', '$rootScope', '$sce', '$timeout'];
 
-  function controller(UserService, $location, $route, lodash, $rootScope, $sce) {
+  function controller(UserService, $location, $route, lodash, $rootScope, $sce, $timeout) {
     let vm = this;
     vm.uploadFiles = uploadFiles;
     vm.postFileData = postFileData;
+    vm.removeInputErrorClass = removeInputErrorClass;
     vm.dateOfFile = new Date();
     $rootScope.userData = {
       Mobile_Number: '',
@@ -40,6 +41,10 @@
 
     function activate() {}
 
+    function removeInputErrorClass(event) {
+      event.srcElement.className = '';
+    }
+
     function uploadFiles() {
       let contactDetail = [];
       if (vm.saleFile && vm.purchaseFile) {
@@ -62,6 +67,21 @@
           vm.salesHeaderFields = response.data.salesHeaderFields;
           vm.purchaseData = response.data.purchaseData;
           vm.saleData = response.data.saleData;
+
+          $timeout(function() {
+            $('#Sale').find('select').each(function() {
+              if ($(this)[0].value != vm.defaultSalesHeaderValues[$(this)[0].id]) {
+                $(this).addClass("input-error");
+              }
+            });
+          }, 500)
+          $timeout(function() {
+            $('#Purchase').find('select').each(function() {
+              if ($(this)[0].value != vm.defaultPurchaseHeaderValues[$(this)[0].id]) {
+                $(this).addClass("input-error");
+              }
+            });
+          }, 500)
           // noty('success', response.data.message);
           // $location.path('/user/upload-contact');
           // $rootScope.missingDataArray = [];
@@ -76,50 +96,18 @@
       }
     }
 
-    // function postFileData() {
-    //   console.log("CAlles");
-    //   let newPurchaseData = [];
-    //   let newSaleData = [];
-    //   lodash.forEach(vm.saleData, function(record) {
-    //     let newSaleObject = {};
-    //     $('#Sale').find('select').each(function() {
-    //       if (record[$(this)[0].value]) {
-    //         let saleHeaderId = vm.defaultSalesHeaderValues[$(this)[0].id];
-    //         newSaleObject[saleHeaderId] = record[$(this)[0].value];
-    //       }
-    //     });
-    //     newSaleData.push(newSaleObject);
-    //   });
-    //   lodash.forEach(vm.purchaseData, function(record) {
-    //     let newPurchaseObject = {};
-    //     $('#Purchase').find('select').each(function() {
-    //       if (record[$(this)[0].value]) {
-    //         let purchaseHeaderId = vm.defaultPurchaseHeaderValues[$(this)[0].id];
-    //         newPurchaseObject[purchaseHeaderId] = record[$(this)[0].value];
-    //       }
-    //     });
-    //     newPurchaseData.push(newPurchaseObject);
-    //   });
-    //   let postObj = {
-    //     newSaleData: newSaleData,
-    //     newPurchaseData: newPurchaseData,
-    //     date: vm.dateOfFile.toString("yyyy-MM")
-    //   }
-    //   UserService.postFileData(postObj).then((response) => {
-    //     noty('success', response.data.message);
-    //     $location.path('user/upload-contact');
-    //   }).catch((error) => {
-    //     noty('error', error.data.message);
-    //   })
-    // }
+
 
     function postFileData() {
       let newPurchaseData = [];
       let newSaleData = [];
+      let postSaleDataFlag = false;
+      let postPurchaseDataFlag = false;
       lodash.forEach(vm.saleData, function(record) {
         let newSaleObject = {};
         $('#Sale').find('select').each(function() {
           if (record[$(this)[0].value]) {
+            console.log("record[$(this)[0]", record[$(this)[0]]);
             let saleHeaderId = vm.defaultSalesHeaderValues[$(this)[0].id];
             newSaleObject[saleHeaderId] = record[$(this)[0].value];
           }
@@ -142,43 +130,78 @@
         newPurchaseData: newPurchaseData,
         date: vm.dateOfFile.toString("yyyy-MM")
       }
-      UserService.postFileData(postObj).then((response) => {
-        $rootScope.missingDataArrayForSale = [];
-        $rootScope.missingDataArrayForPurchase = [];
-
-        lodash.forEach(response.data.saleFileData, function(row) {
-
-          console.log("response.data.saleFileData", response.data.saleFileData);
-          if (!row.Mobile_Number || !row.Email_Address) {
-            $rootScope.missingDataArrayForSale.push(row);
-          }
-        })
-        lodash.forEach(response.data.purchaseFileData, function(row) {
-          if (!row.Mobile_Number || !row.Email_Address) {
-            $rootScope.missingDataArrayForPurchase.push(row);
-          }
-        })
-        if ($rootScope.missingDataArrayForSale.length > 0 || $rootScope.missingDataArrayForPurchase.length > 0) {
-          console.log("$rootScope.missingDataArrayForSale", $rootScope.missingDataArrayForSale);
-          console.log("$rootScope.missingDataArrayForPurchase", $rootScope.missingDataArrayForPurchase);
-
-          $location.path('/user/upload-contact');
-        } else {
-          $location.path('/user/dashboard');
-
+      lodash.forEach(newSaleData, function(record) {
+        if (!record.Invoice_Number) {
+          postSaleDataFlag = true;
         }
-
-        noty('success', response.data.message);
-      }).catch((error) => {
-        noty('error', error.data.message);
       })
+      lodash.forEach(newPurchaseData, function(record) {
+        if (!record.Invoice_Number) {
+          postPurchaseDataFlag = true;
+        }
+      })
+      if (postSaleDataFlag == true) {
+        noty('error', 'Invoice number missing for some record/records in sale file');
+      }
+      if (postPurchaseDataFlag == true) {
+        noty('error', 'Invoice number missing in some record/records in purchase file');
+      }
+      if (postSaleDataFlag == false && postPurchaseDataFlag == false) {
+        UserService.postFileData(postObj).then((response) => {
+          $rootScope.missingDataArrayForSale = [];
+          $rootScope.missingDataArrayForPurchase = [];
+          lodash.forEach(response.data.saleFileData, function(row) {
+            let pushSaleFlag = true;
+            if (!row.Mobile_Number || !row.Email_Address) {
+              if (lodash.size($rootScope.missingDataArrayForSale)) {
+                lodash.forEach($rootScope.missingDataArrayForSale, function(value) {
+                  if (row.Customer_Billing_GSTIN == value.Customer_Billing_GSTIN) {
+                    pushSaleFlag = false;
+                  }
+                })
+                if (pushSaleFlag == true) {
+                  $rootScope.missingDataArrayForSale.push(row);
+                }
+              } else {
+                $rootScope.missingDataArrayForSale.push(row);
+              }
+            }
+          })
+          lodash.forEach(response.data.purchaseFileData, function(row) {
+            let pushPurchaseFlag = true;
+            if (!row.Mobile_Number || !row.Email_Address) {
+              if (lodash.size($rootScope.missingDataArrayForPurchase)) {
+                lodash.forEach($rootScope.missingDataArrayForPurchase, function(value) {
+                  if (row.Supplier_GSTIN == value.Supplier_GSTIN) {
+                    pushPurchaseFlag = false;
+                  }
+                })
+                if (pushPurchaseFlag == true) {
+                  $rootScope.missingDataArrayForPurchase.push(row);
+                }
+              } else {
+                $rootScope.missingDataArrayForPurchase.push(row);
+              }
+            }
+          })
+          if ($rootScope.missingDataArrayForSale.length > 0 || $rootScope.missingDataArrayForPurchase.length > 0) {
+            $location.path('/user/upload-contact');
+          } else {
+            $location.path('/user/dashboard');
+          }
+          // noty('success', response.data.message);
+        }).catch((error) => {
+          console.log("error", error);
+          // noty('error', error.data.message);
+        })
+      }
     }
 
-
-    $rootScope.updateContact = function(missingDataArrayForSale) {
+    $rootScope.updateContact = function(missingDataArrayForSale, missingDataArrayForPurchase) {
       let updateObj = {
         dateOfFile: $rootScope.uploadDate,
-        updatedSaleFileData: missingDataArrayForSale
+        updatedSaleFileData: missingDataArrayForSale,
+        updatedPurchaseFileData: missingDataArrayForPurchase
       }
       UserService.updateContact(updateObj).then((response) => {
         noty('success', response.data.message);
@@ -187,59 +210,6 @@
         noty('error', error.data.message);
       })
     }
-    // $rootScope.updateContact = function(missingDataArray) {
-    //   let updateObj = {
-    //     dateOfFile: $rootScope.uploadDate,
-    //     updatedSaleFileData: missingDataArray
-    //   }
-    //   UserService.updateContact(updateObj).then((response) => {
-    //     noty('success', response.data.message);
-    //   }).catch((error) => {
-    //     noty('error', error.data.message);
-    //   })
 
-    // }
   }
 })();
-
-
-
-
-
-
-/*
-    function uploadFiles() {
-      let contactDetail = [];
-      if (vm.saleFile && vm.purchaseFile) {
-        $rootScope.uploadDate = vm.dateOfFile.toString("yyyy-MM");
-        let fileObj = {
-          saleFile: vm.saleFile,
-          purchaseFile: vm.purchaseFile,
-          id: vm.id,
-          dateOfFile: vm.dateOfFile.toString("yyyy-MM")
-        }
-        let urldata = {
-          url: "admin-api/sale-file",
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          },
-          data: fileObj
-        };
-        UserService.addSaleFiles(urldata).then((response) => {
-          noty('success', response.data.message);
-          $location.path('/user/upload-contact');
-          console.log("response", response);
-          $rootScope.missingDataArray = [];
-          lodash.forEach(response.data.saleFileObject, function(saleFile) {
-            if (!saleFile.Mobile_Number || !saleFile.Email_Address) {
-              $rootScope.missingDataArray.push(saleFile);
-            }
-          })
-        }).catch((error) => {
-          console.log("error", error);
-          noty('error', error.data.message);
-        });
-      }
-
-    }
- */

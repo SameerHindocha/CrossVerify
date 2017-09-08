@@ -14,12 +14,20 @@
       filterInvoicesByMonth: filterInvoicesByMonth,
       editSaleFile: editSaleFile,
       editPurchaseFile: editPurchaseFile,
-      changeStatus: changeStatus,
+      selfVerify: selfVerify,
       updateClientInfo: updateClientInfo,
       sendConfirmationMail: sendConfirmationMail,
       sendConfirmationSMS: sendConfirmationSMS,
-      sendOTP: sendOTP
+      sendOTPViaEmail: sendOTPViaEmail,
+      sendOTPViaSMS: sendOTPViaSMS,
+      sendMonthlyEmail: sendMonthlyEmail,
+      sendMonthlySMS: sendMonthlySMS,
+      checkUser: checkUser,
+      addTemporaryData: addTemporaryData,
+      addTemporaryPurchaseData: addTemporaryPurchaseData
     };
+
+
 
     function shareLinkService(data) {
       let defer = $q.defer();
@@ -33,6 +41,56 @@
       });
       return defer.promise;
     }
+
+    function sendSMSService(data) {
+      let defer = $q.defer();
+      $http({
+        method: 'get',
+        url: '/admin-api/send-sms/' + data.email
+      }).then(function(response) {
+        defer.resolve(response);
+      }).catch(function(error) {
+        defer.reject(error);
+      });
+      return defer.promise;
+    }
+
+
+
+
+
+
+
+    function sendMonthlyEmail(data) {
+      let defer = $q.defer();
+      $http({
+        method: 'post',
+        url: '/admin-api/send-monthly-mail',
+        data: data
+      }).then(function(response) {
+        defer.resolve(response);
+      }).catch(function(error) {
+        defer.reject(error);
+      });
+      return defer.promise;
+    }
+
+    function sendMonthlySMS(data) {
+      let defer = $q.defer();
+      $http({
+        method: 'post',
+        url: '/admin-api/send-monthly-sms',
+        data: data
+      }).then(function(response) {
+        defer.resolve(response);
+      }).catch(function(error) {
+        defer.reject(error);
+      });
+      return defer.promise;
+    }
+
+
+
 
 
     function sendConfirmationMail(data) {
@@ -50,21 +108,11 @@
 
 
 
-    function sendSMSService(data) {
-      let defer = $q.defer();
-      $http({
-        method: 'get',
-        url: '/admin-api/send-sms/' + data.email
-      }).then(function(response) {
-        defer.resolve(response);
-      }).catch(function(error) {
-        defer.reject(error);
-      });
-      return defer.promise;
-    }
+
+
+
 
     function sendConfirmationSMS(data) {
-      console.log("sendConfirmationSMS", data);
       let defer = $q.defer();
       $http({
         method: 'get',
@@ -77,12 +125,26 @@
       return defer.promise;
     }
 
-    function sendOTP(data) {
-      console.log("sendConfirmationSMS", data);
+
+    function sendOTPViaEmail(data) {
       let defer = $q.defer();
       $http({
         method: 'post',
-        url: '/admin-api/send-otp/' + data.mobile,
+        url: '/admin-api/send-otp-email',
+        data: data
+      }).then(function(response) {
+        defer.resolve(response);
+      }).catch(function(error) {
+        defer.reject(error);
+      });
+      return defer.promise;
+    }
+
+    function sendOTPViaSMS(data) {
+      let defer = $q.defer();
+      $http({
+        method: 'post',
+        url: '/admin-api/send-otp-sms',
         data: data
       }).then(function(response) {
         defer.resolve(response);
@@ -150,11 +212,11 @@
 
 
 
-    function changeStatus(data) {
+    function selfVerify(data) {
       let defer = $q.defer();
       $http({
         method: 'put',
-        url: '/admin-api/change-status',
+        url: '/admin-api/self-verify',
         data: data
       }).then(function(response) {
         defer.resolve(response);
@@ -177,6 +239,54 @@
       });
       return defer.promise;
     }
+
+
+    function checkUser(data) {
+      let defer = $q.defer();
+      $http({
+        method: 'get',
+        url: '/admin-api/check-user/' + data.gst
+      }).then(function(response) {
+        defer.resolve(response);
+      }).catch(function(error) {
+        defer.reject(error);
+      });
+      return defer.promise;
+    }
+
+
+    function addTemporaryData(data) {
+      console.log("data 12 3 1  2", data);
+      let defer = $q.defer();
+      $http({
+        method: 'post',
+        url: '/api/add-temporary-data',
+        data: data
+      }).then(function(response) {
+        defer.resolve(response);
+      }).catch(function(error) {
+        defer.reject(error);
+      });
+      return defer.promise;
+    }
+
+    function addTemporaryPurchaseData(data) {
+      console.log("/add-temporary-purchase-data", data);
+      let defer = $q.defer();
+      $http({
+        method: 'post',
+        url: '/api/add-temporary-purchase-data',
+        data: data
+      }).then(function(response) {
+        defer.resolve(response);
+      }).catch(function(error) {
+        defer.reject(error);
+      });
+      return defer.promise;
+    }
+
+
+
 
 
   }

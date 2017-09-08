@@ -1,14 +1,217 @@
-<h2>Bana Refinary Pvt Ltd have Sent Rapidops Solutions you to confirm sale/purchase for the month of {{vm.month}}</h2>
+<h2>{{vm.senderCompany}} have Sent Rapidops Solutions you to confirm {{vm.fileCategory}} for the month of {{vm.month}}</h2>
 <br>
 <div class="input-group">
-  <h2>Please Confirm Your Mobile Number xxxxxx{{vm.mobile}}</h2>
-  <span class="input-group-btn">
-  <button class="btn btn-primary" ng-click="vm.sendOTP()">Send OTP</button>
-   </span>
+  <h2>Please Confirm Your Mobile Number xxxxxx{{vm.hideMobile}}</h2>
+  <!-- <span class="input-group-btn"> -->
+  <!-- <button class="btn btn-primary" ng-click="vm.sendOTP()">Send OTP</button> -->
+  <label>Send OTP via</label>
+  <ul class="nav navbar-nav share Links" id="share">
+    <li>
+      <a data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+          <span class="caret"></span>
+     </a>
+      <ul class="dropdown-menu">
+        <li>
+          <a ng-click="vm.sendOTPViaEmail()">
+              <i class="fa fa-envelope-o"></i> Email
+            </a>
+        </li>
+        <li>
+          <a ng-click="vm.sendOTPViaSMS()">
+              <i class="fa fa-mobile"></i> SMS
+            </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  <!-- </span> -->
 </div>
 <div class="input-group">
   <input id="partitioned" type="text" maxlength="4" ng-model="vm.confirmOTP" />
   <span class="input-group-btn">
 <button class="btn btn-primary" ng-click="vm.verifyOTP(vm.confirmOTP)">Submit OTP</button>  
- </span>
+</span>
+</div>
+<div ng-if="vm.verify==true">
+  <div>
+    <ng-combo-date-picker ng-model="vm.selectedMonth" ng-change="vm.filterByMonth()" ng-min-date="2017-07-01" ng-attrs-date='{"class": "col-md-1 hidden"}' ng-attrs-month='{"class": "col-md-1"}' ng-attrs-year='{"class": "col-md-1"}'></ng-combo-date-picker>
+  </div>
+  <br>
+  <br>
+  <br>
+  <uib-tabset active="activeJustified" justified="true">
+    <uib-tab index="0" heading="Sales Invoice Information">
+      <div>
+        <br>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-bordered" style="width:100%">
+              <tr>
+                <th>Summery</th>
+                <th>Total Sale Invoice from {{}} to {{}}
+                  <br>{{}}
+                </th>
+                <th class="verified">
+                  Verified
+                  <br>{{}}
+                </th>
+                <th class="notVerified">Not Verified
+                  <br> {{}}
+                </th>
+                <th class="mismatched">Mismatched
+                  <br> {{}}
+                </th>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6 search-group">
+            <input type="search" class="form-control" placeholder="Search by Customer Billing Name or GST number" type="search" ng-model="vm.saleSearchText" ng-change="vm.searchSaleGrid()" />
+            <div class="search-icon"><i class=" fa fa-search"></i></div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr class="info">
+                <th class="active">Invoice No</th>
+                <th class="active">Date</th>
+                <th class="active">Customer</th>
+                <th class="active">State</th>
+                <th class="active">Invoice_Type</th>
+                <th class="active">Goods/Services</th>
+                <th class="active">GSTIN</th>
+                <th class="active">Total_Invoice_Value</th>
+                <th class="active"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-class="saleFile.status" ng-repeat="record in vm.saleGridData" ng-if="vm.saleGridData.length > 0">
+                <td><span class="mobileTitle">Invoice No</span> {{record.Invoice_Number}} </td>
+                <td><span class="mobileTitle">Date</span> {{record.Invoice_Date}} </td>
+                <td><span class="mobileTitle">Customer</span> {{record.Supplier_Name }} </td>
+                <td><span class="mobileTitle">State</span> {{record.Supplier_State }} </td>
+                <td><span class="mobileTitle">Invoice_Type</span> {{record.Invoice_Category }} </td>
+                <td><span class="mobileTitle">Goods/Services</span>
+                </td>
+                <td><span class="mobileTitle">GSTIN</span> {{record.Supplier_GSTIN }} </td>
+                <td><span class="mobileTitle">Total_Invoice_Value</span> {{record.Item_Total_Including_GST }} </td>
+                <td><span class="mobileTitle">Customer</span>
+                  <div class="row">
+                    <div style="display: inline" class="col-md-6">
+                      <input type="button" id="correct" class="btn btn-success" value="Correct" ng-show="purchaseFile.status!='verified'" ng-click="vm.correctPurchase(vm.confirmationData.Invoice_Number,vm.confirmationData.Customer_Billing_GSTIN,$event)">
+                    </div>
+                    <div style="display: inline" class="col-md-6">
+                      <input type="button" id="wrong" class="btn btn-danger" value="Wrong" ng-show="purchaseFile.status!='verified'" ng-click="vm.correctPurchase(vm.confirmationData.Invoice_Number,vm.confirmationData.Customer_Billing_GSTIN,$event)">
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr ng-if="vm.saleGridData.length < 1">
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>No data Found</th>
+                <!--     <th></th>
+                   <th></th>
+                   <th></th>
+                   <th></th> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </uib-tab>
+    <uib-tab index="1" heading="Purchase Invoice Information">
+      <div>
+        <br>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-bordered" style="width:100%">
+              <tr>
+                <th>Summery</th>
+                <th>Total Purchase Invoice from {{}} to {{}}
+                  <br>{{}}
+                </th>
+                <th class="verified">
+                  Verified
+                  <br>{{}}
+                </th>
+                <th class="notVerified">Not Verified
+                  <br> {{}}
+                </th>
+                <th class="mismatched">Mismatched
+                  <br> {{}}
+                </th>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6 search-group">
+            <input type="search" class="form-control" placeholder="Search by Customer Billing Name or GST number" type="search" ng-model="vm.purchaseSearchText" ng-change="vm.searchPurchaseGrid()" />
+            <div class="search-icon"><i class=" fa fa-search"></i></div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr class="info">
+                <th class="active">Invoice No</th>
+                <th class="active">Date</th>
+                <th class="active">Customer</th>
+                <th class="active">State</th>
+                <th class="active">Invoice_Type</th>
+                <th class="active">Goods/Services</th>
+                <th class="active">GSTIN</th>
+                <th class="active">Total_Invoice_Value</th>
+                <th class="active"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-class="saleFile.status" ng-repeat="record in vm.purchaseGridData" ng-if="vm.purchaseGridData.length > 0">
+                <td><span class="mobileTitle">Invoice No</span> {{record.Invoice_Number}} </td>
+                <td><span class="mobileTitle">Date</span> {{record.Invoice_Date}} </td>
+                <td><span class="mobileTitle">Customer</span> {{record.Customer_Billing_Name }} </td>
+                <td><span class="mobileTitle">State</span> {{record.Customer_Billing_State }} </td>
+                <td><span class="mobileTitle">Invoice_Type</span> {{record.Invoice_Category }} </td>
+                <td><span class="mobileTitle">Goods/Services</span>
+                </td>
+                <td><span class="mobileTitle">GSTIN</span> {{record.Customer_Billing_GSTIN }} </td>
+                <td><span class="mobileTitle">Total_Invoice_Value</span> {{record.Item_Total_Including_GST }} </td>
+                <td><span class="mobileTitle">Customer</span>
+                  <div class="row">
+                    <div style="display: inline" class="col-md-6">
+                      <input type="button" id="correct" class="btn btn-success" value="Correct" ng-show="purchaseFile.status!='verified'" ng-click="vm.correctPurchase(vm.confirmationData.Invoice_Number,vm.confirmationData.Customer_Billing_GSTIN,$event)">
+                    </div>
+                    <div style="display: inline" class="col-md-6">
+                      <input type="button" id="wrong" class="btn btn-danger" value="Wrong" ng-show="purchaseFile.status!='verified'" ng-click="vm.correctPurchase(vm.confirmationData.Invoice_Number,vm.confirmationData.Customer_Billing_GSTIN,$event)">
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr ng-if="vm.purchaseGridData.length < 1">
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>No data Found</th>
+                <!--     <th></th>
+                   <th></th>
+                   <th></th>
+                   <th></th> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </uib-tab>
+  </uib-tabset>
 </div>

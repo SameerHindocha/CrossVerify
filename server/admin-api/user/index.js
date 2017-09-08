@@ -24,80 +24,25 @@ multerUpload = multer({ storage: storage });
 module.exports = class UserController {
   constructor(app) {
     app.get('/admin-api/user/:id', this.getUserbyId);
-
     app.get('/admin-api/gst-status/:gstNo', this.getGSTStatus);
     app.post('/admin-api/user', this.insertNewUser);
     app.put('/admin-api/edit-user', this.updateUser);
-    // app.post('/admin-api/sale-file', multerUpload.fields([
-    //   { name: 'saleFile', maxCount: 1 },
-    //   { name: 'purchaseFile', maxCount: 1 }
-    // ]), this.insertSaleFile);
     app.get('/admin-api/filter-invoices-by-month/:month', this.filterInvoicesByMonth);
     app.put('/admin-api/update-contact-detail', this.updateContactDetail);
     app.put('/admin-api/update-sale-file', this.updateSaleFile);
     app.put('/admin-api/update-purchase-file', this.updatePurchaseFile);
-    app.put('/admin-api/change-status', this.changeStatus);
+    app.put('/admin-api/self-verify', this.selfVerify);
     app.put('/admin-api/update-client-info', this.updateClient);
     app.put('/admin-api/post-file-data', this.insertFileData);
     app.post('/admin-api/read-file-data', multerUpload.fields([
       { name: 'saleFile', maxCount: 1 },
       { name: 'purchaseFile', maxCount: 1 }
     ]), this.readFileData);
-
+    app.get('/admin-api/check-user/:gstNo', this.checkUserByGST);
 
   }
 
-  // insertNewUser(req, res) {
-  //   let userRowObject;
-  //   let postbody = req.body;
-  //   let users = new db.User();
-  //   let userFile;
-  //   users.companyName = postbody.companyName;
-  //   users.address = postbody.address;
-  //   users.state = postbody.state;
-  //   users.city = postbody.city;
-  //   users.pincode = postbody.pincode;
-  //   users.email = postbody.email;
-  //   users.password = Utils.md5(postbody.password);
-  //   users.ownerName = postbody.ownerName;
-  //   users.mobile1 = postbody.mobile1;
-  //   users.mobile2 = postbody.mobile2;
-  //   users.landline = postbody.landline;
-  //   users.panNo = postbody.panNo;
-  //   users.GSTNo = postbody.GSTNo;
-  //   if (req.files.saleFile) {
-  //     let objName;
-  //     objName = moment().format("YYYY-MM-DD");
-  //     let userWorkBook;
-  //     userFile = req.files.saleFile[0].path;
-  //     users.saleFilePath = userFile;
-  //     userWorkBook = XLSX.readFile(userFile);
-  //     userRowObject = XLSX.utils.sheet_to_json(userWorkBook.Sheets[userWorkBook.SheetNames[0]]);
-  //     let saleObject = {
-  //       [objName]: userRowObject
-  //     }
-  //     users.saleFile = saleObject
-  //   }
-  //   db.User.findOne({ email: postbody.email }).then((response) => {
-  //     if (response != null) {
-  //       return res.status(409).send({ message: "Email is already registered" });
-  //     } else {
-  //       users.save(function(err) {
-  //         if (err) {
-  //           res.send(err);
-  //         } else {
-  //           if (userFile) {
-  //             fs.unlink(userFile, function() {});
-  //           }
-  //           res.json({ message: 'User Registered Successfully' });
-  //         }
-  //       });
-  //     }
-  //   }).catch((error) => {
-  //     console.log("error", error);
-  //     res.json(error);
-  //   });
-  // }
+
   insertNewUser(req, res) {
     let postbody = req.body;
     let users = new db.User();
@@ -127,10 +72,10 @@ module.exports = class UserController {
         });
       }
     }).catch((error) => {
-      console.log("error", error);
       res.json(error);
     });
   }
+
   getUserbyId(req, res) {
     session = req.session;
     if (req.session.isLoggedIn == 'Y') {
@@ -145,7 +90,6 @@ module.exports = class UserController {
       res.redirect(500, '/logout');
     }
   }
-
 
   updateUser(req, res) {
     let filePath, sessionEmail, updatebody, userRowObject, userFile;
@@ -211,51 +155,15 @@ module.exports = class UserController {
     });
   }
 
-  // insertSaleFile(req, res) {
-  //   let users = new db.User();
-  //   let client = new db.Client();
-  //   let objName = req.body.dateOfFile;
-  //   let obj;
-  //   let sessionEmail = req.session.userProfile.email;
-  //   if (req.files.saleFile && req.files.purchaseFile) {
-  //     let userFile, userWorkBook, userRowObject;
-  //     userFile = req.files.saleFile[0].path;
-  //     userWorkBook = XLSX.readFile(userFile);
-  //     userRowObject = XLSX.utils.sheet_to_json(userWorkBook.Sheets[userWorkBook.SheetNames[0]]);
-  //     obj = {};
-  //     obj['saleFile.' + objName + ''] = userRowObject;
-  //     db.User.update({ "_id": req.session.userProfile._id }, { $set: obj })
-  //       .then((response) => {
-  //         fs.unlink(userFile, function() {});
-  //         // return res.send({ message: 'Sale File Added Successfully', data: userRowObject });
-  //         if (req.files.purchaseFile) {
-  //           obj = {};
-  //           let clientFile = req.files.purchaseFile[0].path;
-  //           let clientWorkBook = XLSX.readFile(clientFile);
-  //           let clientRowObject = XLSX.utils.sheet_to_json(clientWorkBook.Sheets[clientWorkBook.SheetNames[0]]);
-  //           obj['purchaseFile.' + objName + ''] = clientRowObject;
-  //           db.User.update({ "email": sessionEmail }, { $set: obj }, { multi: true })
-  //             .then((response) => {
-  //               fs.unlink(clientFile, function() {});
-  //               return res.send({ message: 'Purchase File and Sale File Added Successfully', saleFileObject: userRowObject, purchaseFileObject: clientRowObject });
-  //             })
-  //             .catch((error) => {
-  //               return res.send({ message: 'Error in Adding Purchase File' });
-  //             });
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         return res.send({ message: 'Error in Adding Sale File' });
-  //       });
-  //   }
-  // }
-
   readFileData(req, res) {
     if (req.files.saleFile && req.files.purchaseFile) {
       let saleFile, saleHeaderWorkBook, saleWorkBook, saleData, purchaseFile, purchaseHeaderWorkBook, purchaseWorkBook, purchaseData;
       saleFile = req.files.saleFile[0].path;
       saleHeaderWorkBook = XLSX.readFile(saleFile, { 'sheetRows': 1 });
       let salesHeaderFields = saleHeaderWorkBook.Sheets[saleHeaderWorkBook.SheetNames[0]];
+      if (_.size(salesHeaderFields) <= 3) {
+        return res.send({ status: '501', message: 'Error in sale file header' })
+      }
       delete salesHeaderFields['!fullref'];
       delete salesHeaderFields['!margins'];
       delete salesHeaderFields['!ref'];
@@ -264,12 +172,15 @@ module.exports = class UserController {
       purchaseFile = req.files.purchaseFile[0].path;
       purchaseHeaderWorkBook = XLSX.readFile(purchaseFile, { 'sheetRows': 1 });
       let purchaseHeaderFields = purchaseHeaderWorkBook.Sheets[purchaseHeaderWorkBook.SheetNames[0]];
+      if (_.size(purchaseHeaderFields) <= 3) {
+        return res.send({ status: '501', message: 'Error in purchase file header' })
+      }
       delete purchaseHeaderFields['!fullref'];
       delete purchaseHeaderFields['!margins'];
       delete purchaseHeaderFields['!ref'];
       purchaseWorkBook = XLSX.readFile(purchaseFile);
       purchaseData = XLSX.utils.sheet_to_json(purchaseWorkBook.Sheets[purchaseWorkBook.SheetNames[0]]);
-      res.send({ salesHeaderFields: salesHeaderFields, purchaseHeaderFields: purchaseHeaderFields, saleData: saleData, purchaseData: purchaseData });
+      res.send({ status: '200', salesHeaderFields: salesHeaderFields, purchaseHeaderFields: purchaseHeaderFields, saleData: saleData, purchaseData: purchaseData });
     }
   }
 
@@ -278,19 +189,11 @@ module.exports = class UserController {
     let saleFileData = req.body.newSaleData;
     let purchaseFileData = req.body.newPurchaseData;
     db.User.findById({ _id: req.session.userProfile._id }).then((user) => {
-      console.log("user123", user);
-      // user['saleFile.' + date + ''] = saleFileData;
-
       let obj = {};
       obj['saleFile.' + date + ''] = saleFileData;
       obj['purchaseFile.' + date + ''] = purchaseFileData;
-
-      console.log("obj-*-- - -", obj);
-
       db.User.update({ "_id": req.session.userProfile._id }, { $set: obj }).then((response) => {
-        // res.send({ data: response, message: 'Files uploaded Successfully' })
         res.send({ saleFileData: saleFileData, purchaseFileData: purchaseFileData, message: 'Files uploaded Successfully' })
-
       }).catch((error) => {
         res.send(error);
       })
@@ -321,7 +224,6 @@ module.exports = class UserController {
               filteredPurchaseFileData = data.purchaseFile[key];
             }
           });
-
           res.send({ filteredSaleFileData: filteredSaleFileData, filteredPurchaseFileData: filteredPurchaseFileData });
         }
       });
@@ -329,7 +231,6 @@ module.exports = class UserController {
       res.redirect(500, '/logout');
     }
   }
-
 
   updateSaleFile(req, res) {
     let date = req.body.date;
@@ -387,7 +288,6 @@ module.exports = class UserController {
       }
       db.User.update({ "_id": req.session.userProfile._id }, { $set: user }).then((response) => {
         res.send({ data: response, message: 'Record updated Successfully' })
-
       }).catch((error) => {
         res.send(error);
       })
@@ -396,15 +296,27 @@ module.exports = class UserController {
 
   updateContactDetail(req, res) {
     let updatedSaleFileData = req.body.updatedSaleFileData;
+    let updatePurchaseFileData = req.body.updatedPurchaseFileData;
     let date = req.body.dateOfFile;
     let sessionEmail = req.session.userProfile.email;
     if (req.session.isLoggedIn == 'Y') {
       db.User.findOne({ "email": sessionEmail }).then((user) => {
         _.forEach(user.saleFile[date], function(storedRecord) {
           if (!storedRecord.Email_Address || !storedRecord.Mobile_Number) {
-            let storedInvoiceNo = storedRecord.Invoice_Number;
+            let storedGST = storedRecord.Customer_Billing_GSTIN;
             _.forEach(updatedSaleFileData, function(updatedRecord) {
-              if (updatedRecord.Invoice_Number === storedInvoiceNo) {
+              if (updatedRecord.Customer_Billing_GSTIN == storedGST) {
+                storedRecord.Email_Address = updatedRecord.Email_Address;
+                storedRecord.Mobile_Number = updatedRecord.Mobile_Number;
+              }
+            })
+          }
+        })
+        _.forEach(user.purchaseFile[date], function(storedRecord) {
+          if (!storedRecord.Email_Address || !storedRecord.Mobile_Number) {
+            let storedGST = storedRecord.Supplier_GSTIN;
+            _.forEach(updatePurchaseFileData, function(updatedRecord) {
+              if (updatedRecord.Supplier_GSTIN === storedGST) {
                 storedRecord.Email_Address = updatedRecord.Email_Address;
                 storedRecord.Mobile_Number = updatedRecord.Mobile_Number;
               }
@@ -424,10 +336,12 @@ module.exports = class UserController {
     }
   }
 
-  changeStatus(req, res) {
+
+
+  selfVerify(req, res) {
     let date = req.body.date;
-    if (req.session.isLoggedIn == 'Y') {
-      db.User.findOne({ "GSTNo": req.body.GSTIN }).then((user) => {
+    db.User.findOne({ "GSTNo": req.body.GSTIN }).then((user) => {
+      if (req.body.flag == 0) {
         _.forEach(user.saleFile[date], function(record) {
           if (record.Invoice_Number == req.body.Invoice_Number) {
             record.status = req.body.status;
@@ -440,46 +354,111 @@ module.exports = class UserController {
             }
           })
         }
-        db.User.update({ "GSTNo": req.body.GSTIN }, { $set: user }).then((response) => {
-          res.send({ data: response, message: 'Status Changed Successfully' })
-        }).catch((error) => {
-          res.send(error);
+      }
+      if (req.body.flag == 1) {
+        _.forEach(user.purchaseFile[date], function(record) {
+          if (record.Invoice_Number == req.body.Invoice_Number) {
+            record.status = req.body.status;
+          }
         })
-      }).catch((err) => {
-        return res.send({ message: 'Object Not Found' });
+      }
+      // if (req.body.fromPurchase) {
+      //   _.forEach(user.purchaseFile[date], function(purchaseRecord) {
+      //     if (purchaseRecord.Invoice_Number == req.body.Invoice_Number) {
+      //       purchaseRecord.status = req.body.status;
+      //     }
+      //   })
+      // }
+      db.User.update({ "GSTNo": req.body.GSTIN }, { $set: user }).then((response) => {
+        res.send({ data: response, message: 'Status Changed Successfully' })
+      }).catch((error) => {
+        res.send(error);
       })
-    } else {
-      res.redirect(500, '/logout');
-    }
+    }).catch((err) => {
+      return res.send({ message: 'Object Not Found' });
+    })
   }
+
+
+  // changePurchaseStatus(req, res) {
+  //   let date = req.body.date;
+  //   db.User.findOne({ "GSTNo": req.body.GSTIN }).then((user) => {
+  //     _.forEach(user.purchaseFile[date], function(record) {
+  //       if (record.Invoice_Number == req.body.Invoice_Number && record. == ) {
+  //         record.status = req.body.status;
+  //       }
+  //     })
+  //     // if (req.body.fromPurchase) {
+  //     //   _.forEach(user.purchaseFile[date], function(purchaseRecord) {
+  //     //     if (purchaseRecord.Invoice_Number == req.body.Invoice_Number) {
+  //     //       purchaseRecord.status = req.body.status;
+  //     //     }
+  //     //   })
+  //     // }
+  //     db.User.update({ "GSTNo": req.body.GSTIN }, { $set: user }).then((response) => {
+  //       res.send({ data: response, message: 'Status Changed Successfully' })
+  //     }).catch((error) => {
+  //       res.send(error);
+  //     })
+  //   }).catch((err) => {
+  //     return res.send({ message: 'Object Not Found' });
+  //   })
+  // }
 
   updateClient(req, res) {
     let date = req.body.date;
     let sessionEmail = req.session.userProfile.email;
+    let flag = req.body.flag;
     db.User.findOne({ "email": sessionEmail }).then((user) => {
-      if (user.saleFile[date]) {
-        _.forEach(user.saleFile[date], function(record) {
-          if (record.Invoice_Number == req.body.Invoice_Number) {
-            record.Customer_Billing_Name = req.body.clientCompanyName;
-            record.Email_Address = req.body.clientEmail;
-            record.Customer_Billing_GSTIN = req.body.clientGSTNo;
-            record.Customer_Billing_Address = req.body.clientAddress;
-            record.Customer_Billing_State = req.body.clientState;
-            record.Customer_Billing_City = req.body.clientCity;
-            record.Customer_Billing_PinCode = req.body.clientPincode;
-            // record. = req.body.clientOwnerName;
-            record.Mobile_Number = req.body.clientMobile;
-          }
-        })
+      if (flag == 0) {
+        if (user.saleFile[date]) {
+          _.forEach(user.saleFile[date], function(record) {
+            if (record.Invoice_Number == req.body.Invoice_Number) {
+              record.Customer_Billing_Name = req.body.clientCompanyName;
+              record.Email_Address = req.body.clientEmail;
+              record.Customer_Billing_GSTIN = req.body.clientGSTNo;
+              record.Customer_Billing_Address = req.body.clientAddress;
+              record.Customer_Billing_State = req.body.clientState;
+              record.Customer_Billing_City = req.body.clientCity;
+              record.Customer_Billing_PinCode = req.body.clientPincode;
+              // record. = req.body.clientOwnerName;
+              record.Mobile_Number = req.body.clientMobile;
+            }
+          })
+        }
+      }
+      if (flag == 1) {
+        if (user.purchaseFile[date]) {
+          _.forEach(user.purchaseFile[date], function(record) {
+            if (record.Invoice_Number == req.body.Invoice_Number) {
+              record.Supplier_Name = req.body.clientCompanyName;
+              record.Email_Address = req.body.clientEmail;
+              record.Supplier_GSTIN = req.body.clientGSTNo;
+              record.Supplier_Address = req.body.clientAddress;
+              record.Supplier_State = req.body.clientState;
+              record.Supplier_City = req.body.clientCity;
+              record.Supplier_PinCode = req.body.clientPincode;
+              // record. = req.body.clientOwnerName;
+              record.Mobile_Number = req.body.clientMobile;
+            }
+          })
+        }
       }
       db.User.update({ "_id": req.session.userProfile._id }, { $set: user }).then((response) => {
         res.send({ data: response, message: 'Record updated Successfully' })
-
       }).catch((error) => {
         res.send(error);
       })
     })
   }
 
+  checkUserByGST(req, res) {
+    let gst = req.params.gstNo;
+    db.User.findOne({ "GSTNo": gst }).then((user) => {
+      res.send({ user: user });
+    }).catch((error) => {
+      res.send(error);
+    })
+  }
 
 }

@@ -4,12 +4,11 @@
     .module('userApp')
     .controller('ProfileController', controller);
 
-  controller.$inject = ['user', 'UserService', 'ClientService', '$scope', 'lodash', '$rootScope', '$location'];
+  controller.$inject = ['user', 'UserService', '$scope', 'lodash', '$rootScope', '$location'];
 
-  function controller(user, UserService, ClientService, $scope, lodash, $rootScope, $location) {
+  function controller(user, UserService, $scope, lodash, $rootScope, $location) {
     let vm = this;
     vm.UserService = UserService;
-    vm.uploadFiles = uploadFiles;
     vm.id = JSON.parse(window.localStorage.getItem('currentUser'))._id;
     vm.dateOfFile = '07-02-2017'
     vm.user = user;
@@ -49,47 +48,7 @@
       })
     }
 
-    function uploadFiles() {
-      if (vm.saleFile) {
-        let fileObj = {
-          saleFile: vm.saleFile,
-          id: vm.id,
-          dateOfFile: vm.dateOfFile.toString("yyyy-MM-dd")
-        }
-        let urldata = {
-          url: "admin-api/sale-file",
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          },
-          data: fileObj
-        };
-        UserService.addSaleFiles(urldata).then((response) => {
-          noty('success', response.data.message);
-        }).catch((error) => {
-          noty('error', error.data.message);
-        });
-      }
 
-      if (vm.purchaseFile) {
-        let fileObj = {
-          purchaseFile: vm.purchaseFile,
-          id: vm.id,
-          dateOfFile: vm.dateOfFile.toString("yyyy-MM-dd")
-        }
-        let urldata = {
-          url: "api/purchase-file",
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          },
-          data: fileObj
-        };
-        ClientService.addPurchaseFiles(urldata).then((response) => {
-          noty('success', response.data.message);
-        }).catch((error) => {
-          noty('error', error.data.message);
-        });
-      }
-    }
 
   }
 })();

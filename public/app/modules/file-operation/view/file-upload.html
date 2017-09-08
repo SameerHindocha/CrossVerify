@@ -20,8 +20,6 @@ File Upload
         <br>
         <div>
           </i>
-          <!--   <button type="button" class="btn btn-danger" ng-click="vm.saleFile=null" ng-if="vm.saleFile"><i class="fa fa-times" aria-hidden="true"></i> Remove
-          </button> -->
         </div>
       </div>
       <div class="inputGroupWrap col-sm-4">
@@ -32,8 +30,6 @@ File Upload
         <br>
         <div>
           </i>
-          <!-- <button type="button" class="btn btn-danger" ng-click="vm.purchaseFile=null" ng-if="vm.purchaseFile"><i class="fa fa-times" aria-hidden="true"></i> Remove
-</button> -->
         </div>
       </div>
     </div>
@@ -44,7 +40,9 @@ File Upload
 </fieldset>
 <br>
 <br>
-<fieldset ng-if="showFieldset">
+<!-- <div loader-css="ball-pulse" style="background-color: red" ng-if="showFieldset && !vm.salesHeaderFields && !vm.purchaseHeaderFields"></div> -->
+<!-- <div loader-css="ball-pulse" style="background-color: red" ng-if="showFieldset && !vm.salesHeaderFields && !vm.purchaseHeaderFields"></div> -->
+<fieldset ng-if="showFieldset && vm.salesHeaderFields && vm.purchaseHeaderFields">
   <div class="row" id="Sale">
     <div class="col-md-12">
       <h3><label>Set SaleFile Header Values</label></h3>
@@ -52,8 +50,8 @@ File Upload
     <div class="col-md-12 headerDropdown">
       <div class="col-md-2 headerDropdownSelectWrap" ng-repeat="defaultSaleLabel in vm.defaultSalesHeaderValues">
         <label style="display: block;">{{defaultSaleLabel}}</label>
-        <select id="{{$index}}" style="width: 100%;">
-          <option class="input-error" disabled="" selected>Select</option>
+        <select id="{{$index}}" style="width: 100%;" ng-click="vm.removeInputErrorClass($event)">
+          <option class="input-error" selected>Select</option>
           <option ng-repeat="field in vm.salesHeaderFields" ng-selected="{{field.h === vm.defaultSalesHeaderValues[$parent.$index]}}">{{field.h}}</option>
         </select>
       </div>
@@ -68,8 +66,8 @@ File Upload
     <div class="col-md-12 headerDropdown">
       <div class="col-md-2 headerDropdownSelectWrap" ng-repeat="defaultPurchaseLabel in vm.defaultPurchaseHeaderValues">
         <label style="display: block;">{{defaultPurchaseLabel}}</label>
-        <select id="{{$index}}" style="width: 100%;">
-          <option disabled="" selected>Select</option>
+        <select id="{{$index}}" style="width: 100%;" ng-click="vm.removeInputErrorClass($event)">
+          <option selected>Select</option>
           <option ng-repeat="field in vm.purchaseHeaderFields" ng-selected="{{field.h === vm.defaultPurchaseHeaderValues[$parent.$index]}}">{{field.h}}</option>
         </select>
       </div>

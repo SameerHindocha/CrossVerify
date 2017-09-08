@@ -3,12 +3,15 @@
  */
 let byPassedEndpoints = [
   '/api',
-  '/client',
-  '/gst-status',
-  '/user-data',
-  '/client-status',
-  '/api/client-status/',
-  '/purchase-file'
+  // '/client',
+  // '/gst-status',
+  // '/user-data',
+  // '/client-status',
+  // '/api/client-status/',
+  // '/purchase-file',
+  '/add-temporary-data',
+  '/add-temporary-sale-data',
+  '/add-temporary-purchase-data'
 ];
 
 let fs = require('fs');

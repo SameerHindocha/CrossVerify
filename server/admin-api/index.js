@@ -16,13 +16,17 @@ let byPassedEndpoints = [
   '/update-contact-detail',
   '/update-sale-file',
   '/update-purchase-file',
-  '/change-status',
+  '/self-verify',
   '/update-client-info',
   '/send-confirmation-mail',
   '/send-confirmation-sms',
   '/post-file-data',
   '/read-file-data',
-  '/send-otp'
+  '/send-otp-sms',
+  '/send-otp-email',
+  '/send-monthly-mail',
+  '/send-monthly-sms',
+  '/check-user'
 ];
 
 let fs = require('fs');

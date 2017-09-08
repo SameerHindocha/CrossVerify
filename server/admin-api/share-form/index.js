@@ -9,8 +9,10 @@ module.exports = class ShareFormController {
     app.get('/admin-api/send-sms/:email', this.sendSMS);
     app.get('/admin-api/send-confirmation-mail/:email', this.sendConfirmationMail);
     app.get('/admin-api/send-confirmation-sms/:mobile', this.sendConfirmationSMS);
-    app.post('/admin-api/send-otp/:mobile', this.sendOTP);
-
+    app.post('/admin-api/send-otp-sms', this.sendOTPSMS);
+    app.post('/admin-api/send-otp-email', this.sendOTPEmail);
+    app.post('/admin-api/send-monthly-mail', this.sendMonthlyMail);
+    app.post('/admin-api/send-monthly-sms', this.sendMonthlySMS);
 
   }
 
@@ -120,18 +122,78 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
 
   }
 
-  sendOTP(req, res) {
+  sendOTPSMS(req, res) {
 
     let uri, link, msg, data;
     session = req.session;
     msg = `Your OTP is :  ` + req.body.otp
     console.log("msg", msg);
     data = {
-      mobile: req.params.mobile,
+      mobile: req.body.mobile,
       message: msg
     }
-    // SendSMS.SMSFunction(data, req, res);
+    SendSMS.SMSFunction(data, req, res);
 
+  }
+
+  sendOTPEmail(req, res) {
+    let emailObj;
+    let email = req.body.email;
+    session = req.session;
+    emailObj = {
+      subject: `This is a Monthly Email`, // Subject line
+      html: 'Your OTP is ' + req.body.otp,
+    };
+    console.log("emailObj", emailObj);
+
+    console.log("email", email);
+    SendMail.MailFunction(emailObj, email).then(function(data) {
+      res.send({ message: "Confirmation Email has been sent successfully to your registered Email" })
+    }, function(err) {
+      res.send(err)
+    });
+
+  }
+
+
+
+  sendMonthlyMail(req, res) {
+    let emailObj;
+    let email = req.body.email;
+    let link = 'http://' + global.config.server.url + ':' + global.config.server.port + '/#/' + req.body.link;
+    session = req.session;
+    if (req.session.isLoggedIn == 'Y') {
+      emailObj = {
+        subject: `This is a Monthly Email`, // Subject line
+        html: `
+        <a href=${link}>
+        <h4>${link}</h4>`,
+      };
+      console.log("emailObj", emailObj);
+
+      console.log("email", email);
+      SendMail.MailFunction(emailObj, email).then(function(data) {
+        res.send({ message: "Confirmation Email has been sent successfully to your registered Email" })
+      }, function(err) {
+        res.send(err)
+      });
+    } else {
+      res.redirect(500, '/logout');
+    }
+  }
+
+  sendMonthlySMS(req, res) {
+    let uri, link, msg, data;
+    session = req.session;
+    uri = 'http://' + global.config.server.url + ':' + global.config.server.port + '/#/' + req.body.link;
+    link = encodeURIComponent(uri);
+    msg = `This is a Monthly SMS  ` + link
+    console.log("msg", msg);
+    data = {
+      mobile: req.body.mobile,
+      message: msg
+    }
+    SendSMS.SMSFunction(data, req, res);
   }
 
 

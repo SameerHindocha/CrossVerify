@@ -14,7 +14,7 @@ function headerDirective(AuthService, $location, $rootScope) {
       function Logout() {
         AuthService.logout().then((response) => {
           window.localStorage.removeItem('currentUser');
-          noty('success', response.data.message);
+          // noty('success', response.data.message);
           $location.path('/login');
         }).catch((error) => {
           noty('error', "Error logging out");

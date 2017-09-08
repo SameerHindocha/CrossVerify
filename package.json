@@ -36,6 +36,7 @@
     "nexmo": "^2.0.2",
     "nodemailer": "^4.0.1",
     "nodemailer-smtp-transport": "^2.7.4",
+    "otplib": "^6.0.3",
     "q": "^1.5.0",
     "request": "^2.81.0",
     "textmagic-rest-client": "0.0.5",

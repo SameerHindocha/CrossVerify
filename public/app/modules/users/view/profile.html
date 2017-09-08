@@ -118,45 +118,5 @@
         </div>
       </div>
     </fieldset>
-    <br>
-    <fieldset class="profile">
-      <div class="col-md-12 registrationForm registrationFormDisplay">
-        <div class="row">
-          <div class="col-md-12">
-            <h4>File Uploads</h4>
-          </div>
-          <br/>
-          <div class="inputGroupWrap col-sm-4">
-            <label>Date</label>
-            <br>
-            <ng-combo-date-picker ng-model="vm.dateOfFile" ng-min-date="2017-07-01" ng-attrs-date='{"class": "col-md-4"}' ng-attrs-month='{"class": "col-md-4"}' ng-attrs-year='{"class": "col-md-4"}'></ng-combo-date-picker>
-          </div>
-          <div class="inputGroupWrap col-sm-4">
-            <label>Sale File</label>
-            <input type="file" class="filestyle" id="saleFile" ngf-select ng-model="vm.saleFile" name="saleFile" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
-            <div class="alert alert-danger" ng-show="updateUserForm.saleFile.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
-            </div>
-            <br>
-            <div>
-              </i>
-              <!--   <button type="button" class="btn btn-danger" ng-click="vm.saleFile=null" ng-if="vm.saleFile"><i class="fa fa-times" aria-hidden="true"></i> Remove
-            </button> -->
-            </div>
-          </div>
-          <div class="inputGroupWrap col-sm-4">
-            <label>Purchase File</label>
-            <input type="file" class="filestyle" id="purchaseFile" ngf-select ng-model="vm.purchaseFile" name="purchaseFile" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
-            <div class="alert alert-danger" ng-show="updateUserForm.purchaseFile.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
-            </div>
-            <br>
-            <div>
-              </i>
-              <!-- <button type="button" class="btn btn-danger" ng-click="vm.purchaseFile=null" ng-if="vm.purchaseFile"><i class="fa fa-times" aria-hidden="true"></i> Remove
-</button> -->
-            </div>
-          </div>
-        </div>
-        <input type="button" class="btn btn-primary" value="Upload File" ng-click="vm.uploadFiles()">
-    </fieldset>
-    </div>
   </div>
+</div>
