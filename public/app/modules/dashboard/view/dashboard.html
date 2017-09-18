@@ -2,84 +2,80 @@
 <div class="container-fluid dashboardHeader">
   <div class="row">
     <div class="col-md-12">
-      <h2 class="welcomeMessage">Welcome, {{vm.companyName}}</h2>
+      <h2 class="welcomeMessage">
+        Welcome, {{vm.companyName}}
+        <span>GSTIN No. {{vm.currentUserGSTIN}}</span>
+      </h2>
       <h1 class="text-center">Invoice Details</h1>
     </div>
   </div>
 </div>
 <div class="container-fluid detailTable">
-  <div class="row">
-    <div clas="col-md-6">
-      <ng-combo-date-picker ng-model="vm.filterByMonth" ng-change="vm.getInvoicesByMonth()" ng-min-date="2017-07-01" ng-attrs-date='{"class": "col-md-1 hidden"}' ng-attrs-month='{"class": "col-md-1"}' ng-attrs-year='{"class": "col-md-1"}'></ng-combo-date-picker>
+  <div class="row datePickerWrap">
+    <div class="col-xs-7">
+      <ng-combo-date-picker ng-model="vm.filterByMonth" ng-change="vm.getInvoicesByMonth()" ng-min-date="2017-07-01" ng-attrs-date='{"class": "col-md-1 hidden"}'></ng-combo-date-picker>
     </div>
-    <div class="col-md-6 actionButtons text-right pull-right">
-      <!-- <label>Share this link to me</label> -->
-      <!-- <label class="shareLinkText">{{vm.link}} -->
-      <!--   <button id="clip" class="btn" ngclipboard data-clipboard-text="{{vm.link}}" ngclipboard ngclipboard-success="vm.onSuccess(e);" ngclipboard-error="vm.onError(e);">
-          <i class="fa fa-clipboard" aria-hidden="true"></i>
-        </button> -->
-      <!-- </label> -->
-      <!-- <ul class="nav navbar-nav share Links" id="share">
-        <li>
-          <a data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-share-alt" aria-hidden="true"></i>
-            <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">
-            <li>
-              <a ng-click="vm.sendLink()">
-                <i class="fa fa-envelope-o"></i> Email
-              </a>
-            </li>
-            <li>
-              <a ng-click="vm.sendSMS()">
-                <i class="fa fa-mobile"></i> SMS
-              </a>
-            </li>
-          </ul>
-        </li>
-      </ul> -->
-      <button id="import" class="btn" ng-click="vm.redirectToImportPage()">
-        <i class="fa fa-download" aria-hidden="true"></i> import
+    <div class="col-xs-5 actionButtons text-right">
+      <button id="import" class="btn btn-default" ng-click="vm.redirectToImportPage()">
+        <i class="fa fa-upload" aria-hidden="true"></i> import
       </button>
     </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <div class="row">
-      <uib-tabset active="activeJustified" justified="true">
+  </div>
+  <div class="row tabWrap">
+    <div class="col-md-12">
+      <uib-tabset active="activeJustified">
         <uib-tab index="0" heading="Sales Invoice">
-          <br>
-          <table class="table table-bordered" style="width:100%">
-            <tr>
-              <th>Summary</th>
-              <th>Total Purchase Invoice from {{vm.saleInvoiceFrom}} to {{vm.saleInvoiceTo}}
-                <br>{{vm.totalSaleInvoice}}
-              </th>
-              <th class="verified">
-                Verified
-                <br>{{vm.verifiedSale}}
-              </th>
-              <th class="notVerified">Not Verified
-                <br> {{vm.notVerifiedSale}}
-              </th>
-              <th class="mismatched">Mismatched
-                <br> {{vm.mismatchedSale}}
-              </th>
-            </tr>
-          </table>
-          <br>
-          <div class="col-md-6 search-group">
+          <div class="invoiceSummaryWrap">
+            <div class="invoiceSummary salesInvoiceSummary row">
+              <div class="col-md-3">
+                <div class="invoiceSummaryCell invoiceSummaryCellTotal">
+                  <div class="invoiceSummaryTitle">
+                    Total Sale Invoice
+                  </div>
+                  <div class="invoiceSummaryValue">
+                    {{vm.totalSaleInvoice}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="invoiceSummaryCell invoiceSummaryCellVerified">
+                  <div class="invoiceSummaryTitle">
+                    Verified
+                  </div>
+                  <div class="invoiceSummaryValue">
+                    {{vm.verifiedSale}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="invoiceSummaryCell invoiceSummaryCellNotVerified">
+                  <div class="invoiceSummaryTitle">
+                    Not Verified
+                  </div>
+                  <div class="invoiceSummaryValue">
+                    {{vm.notVerifiedSale}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="invoiceSummaryCell invoiceSummaryCellMismatched">
+                  <div class="invoiceSummaryTitle">
+                    Mismatched
+                  </div>
+                  <div class="invoiceSummaryValue">
+                    {{vm.mismatchedSale}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="search-group">
             <input type="search" class="form-control" ng-model="vm.saleSearchText" placeholder="Search by Customer Billing Name or GST number" type="search" ng-change="vm.searchSaleGrid()" />
             <div class="search-icon"><i class=" fa fa-search"></i></div>
           </div>
-          <div class="col-md-12">
+          <div class="invoiceTable">
             <div class="table-responsive">
-              <div ng-if="!vm.invoiceData.data.filteredSaleFileData">
-                <span>{{vm.noRecord}}</span>
-              </div>
-              <table class="table">
+              <table class="table table-hover">
                 <thead>
                   <tr class="info">
                     <th class="active"></th>
@@ -87,30 +83,26 @@
                     <th class="active">Date</th>
                     <th class="active">Customer</th>
                     <th class="active">State</th>
-                    <th class="active">Invoice_Type</th>
-                    <th class="active">Goods/Services</th>
+                    <th class="active">Invoice Type</th>
+                    <th class="active">Goods / Services</th>
                     <th class="active">GSTIN</th>
-                    <th class="active">Total_Invoice_Value</th>
+                    <th class="active">Total Invoice Value</th>
                     <th class="active">Share Link</th>
                     <th class="active">Self Verify</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr ng-if="vm.invoiceData.data.filteredSaleFileData.length > 0" ng-repeat="saleFile in vm.invoiceData.data.filteredSaleFileData" ng-class="saleFile.status" id="saleFileData">
+                <tbody ng-if="vm.saleInvoiceData.length > 0">
+                  <tr ng-repeat="saleFile in vm.saleInvoiceData" ng-class="saleFile.status" id="saleFileData">
                     <td>
-                      <update-invoice data="saleFile" on-update="finalvalues(details)"></update-invoice>
+                      <update-invoice title="Update Invoice" data="saleFile" on-update="finalvalues(details)"></update-invoice>
                       <!--   <i id="plus-button" class="fa fa-plus-circle" aria-hidden="true" ng-click="vm.showMoreSaleDetail(saleFile)"></i> -->
                     </td>
                     <td><span class="mobileTitle">Invoice No</span> {{saleFile.Invoice_Number}} </td>
                     <td><span class="mobileTitle">Date</span> {{saleFile.Invoice_Date}} </td>
                     <td><span class="mobileTitle">Customer</span>
-                      <div class="row">
-                        <div style="display: inline" class="col-md-10">
-                          {{saleFile.Customer_Billing_Name }}
-                        </div>
-                        <div style="display: inline" class="col-md-2">
-                          <i class="fa fa-pencil-square-o" id="saleEdit" aria-hidden="true" ng-click="vm.editCustomer(saleFile.Invoice_Number,$event)"></i>
-                        </div>
+                      <div class="custName">
+                        {{saleFile.Customer_Billing_Name }}
+                        <i title="Edit Client Detail" class="fa fa-pencil-square-o" id="saleEdit" aria-hidden="true" ng-click="vm.editCustomer(saleFile._id,$event)"></i>
                       </div>
                     </td>
                     <td><span class="mobileTitle">State</span> {{saleFile.Customer_Billing_State }} </td>
@@ -119,155 +111,80 @@
                     </td>
                     <td><span class="mobileTitle">GSTIN</span> {{saleFile.Customer_Billing_GSTIN }} </td>
                     <td><span class="mobileTitle">Total_Invoice_Value</span> {{saleFile.Item_Total_Including_GST }} </td>
-                    <td><span class="mobileTitle"></span>
-                      <div class="row">
-                        <div style="display: inline" class="col-md-6">
-                          <button class="btn btn-primary" id="saleEmail" ng-disabled="!saleFile.Customer_Billing_GSTIN" ng-click="vm.sendMonthlyEmail(saleFile.Customer_Billing_GSTIN,saleFile.Invoice_Number,$event)">
-                            <i class="fa fa-envelope-o"></i> Via Email
-                          </button>
-                        </div>
-                        <div style="display: inline" class="col-md-6">
-                          <button class="btn btn-primary" id="saleSMS" ng-disabled="!saleFile.Customer_Billing_GSTIN" ng-click="vm.sendMonthlySMS(saleFile.Customer_Billing_GSTIN,saleFile.Invoice_Number,$event)">
-                            <i class="fa fa-mobile"></i> Via SMS
-                          </button>
-                        </div>
+                    <td><span class="mobileTitle">Share Link</span>
+                      <div class="shareButtons">
+                        <button class="btn btn-primary" id="saleEmail" ng-disabled="!saleFile.Customer_Billing_GSTIN || !saleFile.Email_Address" ng-click="vm.sendMonthlyEmail(saleFile.Customer_Billing_GSTIN,saleFile.Invoice_Number,$event,saleFile.Email_Address)">
+                          <i class="fa fa-envelope-o"></i> Via Email
+                        </button>
+                        <button class="btn btn-primary" id="saleSMS" ng-disabled="!saleFile.Customer_Billing_GSTIN || !saleFile.Mobile_Number" ng-click="vm.sendMonthlySMS(saleFile.Customer_Billing_GSTIN,saleFile.Invoice_Number,saleFile.Mobile_Number,$event)">
+                          <i class="fa fa-mobile"></i> Via SMS
+                        </button>
                       </div>
                     </td>
-                    <td>
-                      <input type="button" id="saleSelfVerify" class="btn btn-primary" value="Self Verify" ng-show="saleFile.status!='verified'" ng-click="vm.selfVerify(saleFile.Invoice_Number,$event, saleFile.Customer_Billing_GSTIN,$event)">
+                    <td class="selfVerifyBtnWrap">
+                      <input type="button" id="saleSelfVerify" class="btn btn-primary" value="Self Verify" ng-show="saleFile.status!='verified'" ng-click="vm.selfVerify(saleFile._id,$event)">
                     </td>
-                  </tr>
-                  <tr ng-if="!vm.invoiceData">
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th>No data Found</th>
-                    <!-- <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
- -->
                   </tr>
                 </tbody>
               </table>
+              <div class="noDataMessage" ng-if="vm.saleInvoiceData.length < 1">
+                No data Found
+              </div>
             </div>
           </div>
-          <br>
-          <table ng-if="vm.fileDetail" id="editableTable" class="table table-bordered">
-            <tr>
-              <!-- <th>Invoice_Date</th> -->
-              <!-- <th>Invoice_Number</th> -->
-              <!-- <th>Invoice_Category</th> -->
-              <!-- <th>Type</th> -->
-              <!-- <th>Supply_Type</th> -->
-              <!-- <th>Customer_Billing_Name</th> -->
-              <!-- <th>Customer_Billing_Address</th> -->
-              <!-- <th>Customer_Billing_City</th> -->
-              <!-- <th>Customer_Billing_PinCode</th> -->
-              <!-- <th>Customer_Billing_State</th> -->
-              <!-- <th>Customer_Billing_StateCode</th> -->
-              <!-- <th>Customer_Billing_GSTIN</th> -->
-              <!-- <th>Item_Category</th> -->
-              <!-- <th>Item_Total_Before_Discount</th> -->
-              <!-- <th>Item_Discount</th> -->
-              <!-- <th>Nil_Rated_Amount</th> -->
-              <!-- <th>Exempted_Amount</th> -->
-              <!-- <th>Non_GST_Amount</th> -->
-              <th>Item_Taxable_Value</th>
-              <th>CGST_Rate</th>
-              <th>CGST_Amount</th>
-              <th>SGST_Rate</th>
-              <th>SGST_Amount</th>
-              <th>IGST_Rate</th>
-              <th>IGST_Amount</th>
-              <th>TCS</th>
-              <th>Cess_Rate</th>
-              <th>Cess_Amount</th>
-              <th>Other Charges</th>
-              <th>Roundoff</th>
-              <th>Item_Total_Including_GST</th>
-              <!-- <th>Taxable Value on which TCS has been deducted</th> -->
-              <!-- <th>Mobile_number</th> -->
-              <!-- <th>Email_address</th> -->
-              <th>Edit</th>
-            </tr>
-            <tr id="saleEditableRow">
-              <td>
-                <input readonly="true" type="text" ng-model="vm.fileDetail.Item_Taxable_Value" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.fileDetail.CGST_Rate" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.fileDetail.CGST_Amount" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.fileDetail.SGST_Rate" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.fileDetail.SGST_Amount" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.fileDetail.IGST_Rate" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.fileDetail.IGST_Amount" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.fileDetail.TCS" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.fileDetail.Cess_Rate" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.fileDetail.Cess_Amount" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.fileDetail.Other_Charges" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.fileDetail.Roundoff" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.fileDetail.Item_Total_Including_GST" />
-              </td>
-              <td>
-                <button id="saleEditbtn" ng-click="vm.editSaleRow(vm.fileDetail)">Edit</button>
-              </td>
-            </tr>
-          </table>
-          <br>
         </uib-tab>
         <uib-tab index="1" heading="Purchase Invoice">
-          <br>
-          <table class="table table-bordered" style="width:100%">
-            <tr>
-              <th>Summary</th>
-              <th>Total Purchase Invoice
-                <br>{{vm.totalPurchaseInvoice}}
-              </th>
-              <th class="verified">
-                Verified
-                <br>{{vm.verifiedPurchase}}
-              </th>
-              <th class="notVerified">Not Verified
-                <br> {{vm.notVerifiedPurchase}}
-              </th>
-              <th class="mismatched">Mismatched
-                <br> {{vm.mismatchedPurchase}}
-              </th>
-            </tr>
-          </table>
-          <br>
-          <div class="col-md-6 search-group">
+          <div class="invoiceSummaryWrap">
+            <div class="invoiceSummary row">
+              <div class="col-md-3">
+                <div class="invoiceSummaryCell invoiceSummaryCellTotal">
+                  <div class="invoiceSummaryTitle">
+                    Total Purchase Invoice
+                  </div>
+                  <div class="invoiceSummaryValue">
+                    {{vm.totalPurchaseInvoice}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="invoiceSummaryCell invoiceSummaryCellVerified">
+                  <div class="invoiceSummaryTitle">
+                    Verified
+                  </div>
+                  <div class="invoiceSummaryValue">
+                    {{vm.verifiedPurchase}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="invoiceSummaryCell invoiceSummaryCellNotVerified">
+                  <div class="invoiceSummaryTitle">
+                    Not Verified
+                  </div>
+                  <div class="invoiceSummaryValue">
+                    {{vm.notVerifiedPurchase}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="invoiceSummaryCell invoiceSummaryCellMismatched">
+                  <div class="invoiceSummaryTitle">
+                    Mismatched
+                  </div>
+                  <div class="invoiceSummaryValue">
+                    {{vm.mismatchedPurchase}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="search-group">
             <input type="search" class="form-control" ng-model="vm.purchaseSearchText" placeholder="Search by Company name or GST number" type="search" ng-change="vm.searchPurchaseGrid()" />
             <div class="search-icon"><i class=" fa fa-search"></i></div>
           </div>
-          <div class="col-md-12">
+          <div class="invoiceTable">
             <div class="table-responsive">
-              <table class="table  table-bordered">
+              <table class="table table-hover">
                 <thead>
                   <tr class="info">
                     <th class="active"></th>
@@ -275,31 +192,27 @@
                     <th class="active">Date</th>
                     <th class="active">Customer</th>
                     <th class="active">State</th>
-                    <th class="active">Invoice_Type</th>
-                    <th class="active">Goods/Services</th>
+                    <th class="active">Invoice Type</th>
+                    <th class="active">Goods / Services</th>
                     <th class="active">GSTIN</th>
-                    <th class="active">Total_Invoice_Value</th>
+                    <th class="active">Total Invoice Value</th>
                     <th class="active">Share Link</th>
                     <th class="active">Correct</th>
                     <th class="active">Wrong</th>
                     <th class="active">Self Verify</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <!--                   <tr ng-repeat="purchaseFile in  vm.invoiceData.data.filteredPurchaseFileData" ng-class="purchaseFile.status" id="purchaseFileData" ng-if="purchaseFile.Invoice_Number"> -->
-                  <tr ng-repeat="purchaseFile in  vm.invoiceData.data.filteredPurchaseFileData" ng-class="purchaseFile.status" id="purchaseFileData">
-                    <td><i id="plus-button2" class="fa fa-plus-circle" aria-hidden="true" ng-click="vm.showMorePurchaseDetail(purchaseFile)"></i>
+                <tbody ng-if="vm.purchaseInvoiceData.length > 0">
+                  <tr ng-repeat="purchaseFile in  vm.purchaseInvoiceData" ng-class="purchaseFile.status" id="purchaseFileData">
+                    <td>
+                      <update-invoice title="Update Invoice" data="purchaseFile" on-update="finalvalues(details)"></update-invoice>
                     </td>
                     <td><span class="mobileTitle">Invoice No</span> {{purchaseFile.Invoice_Number}} </td>
                     <td><span class="mobileTitle">Date</span> {{purchaseFile.Invoice_Date}} </td>
                     <td><span class="mobileTitle">Customer</span>
-                      <div class="row">
-                        <div style="display: inline" class="col-md-10">
-                          {{purchaseFile.Supplier_Name}}
-                        </div>
-                        <div style="display: inline" class="col-md-2">
-                          <i class="fa fa-pencil-square-o" id="purchaseEdit" aria-hidden="true" ng-click="vm.editCustomer(purchaseFile.Invoice_Number,$event)"></i>
-                        </div>
+                      <div class="custName">
+                        {{purchaseFile.Supplier_Name}}
+                        <i title="Edit Client Detail" class="fa fa-pencil-square-o" id="purchaseEdit" aria-hidden="true" ng-click="vm.editCustomer(purchaseFile._id,$event)"></i>
                       </div>
                     </td>
                     <td><span class="mobileTitle">State</span> {{purchaseFile.Supplier_State }} </td>
@@ -307,119 +220,33 @@
                     <td><span class="mobileTitle">Goods/Services</span> {{purchaseFile.email }} </td>
                     <td><span class="mobileTitle">GSTIN</span> {{purchaseFile.Supplier_GSTIN }} </td>
                     <td><span class="mobileTitle">Total_Invoice_Value</span> {{purchaseFile.Item_Total_Including_GST }} </td>
-                    <td><span class="mobileTitle"></span>
-                      <div class="row">
-                        <div style="display: inline" class="col-md-5">
-                          <button class="btn btn-primary" id="purchaseEmail" ng-disabled="!purchaseFile.Supplier_GSTIN" ng-click="vm.sendMonthlyEmail(purchaseFile.Supplier_GSTIN,purchaseFile.Invoice_Number,$event)">
-                            <i class="fa fa-envelope-o"></i> Via Email
-                          </button>
-                        </div>
-                        <div style="display: inline" class="col-md-5">
-                          <button class="btn btn-primary" id="purchaseSMS" ng-disabled="!purchaseFile.Supplier_GSTIN" ng-click="vm.sendMonthlySMS(purchaseFile.Supplier_GSTIN,purchaseFile.Invoice_Number,$event)">
-                            <i class="fa fa-mobile"></i> Via SMS
-                          </button>
-                        </div>
+                    <td><span class="mobileTitle">Share Link</span>
+                      <div class="shareButtons">
+                        <button class="btn btn-primary" id="purchaseEmail" ng-disabled="!purchaseFile.Supplier_GSTIN || !purchaseFile.Email_Address" ng-click="vm.sendMonthlyEmail(purchaseFile.Supplier_GSTIN,purchaseFile.Invoice_Number,$event,purchaseFile.Email_Address)">
+                          <i class="fa fa-envelope-o"></i> Via Email
+                        </button>
+                        <button class="btn btn-primary" id="purchaseSMS" ng-disabled="!purchaseFile.Supplier_GSTIN || !purchaseFile.Mobile_Number" ng-click="vm.sendMonthlySMS(purchaseFile.Supplier_GSTIN,purchaseFile.Invoice_Number,purchaseFile.Mobile_Number,$event)">
+                          <i class="fa fa-mobile"></i> Via SMS
+                        </button>
                       </div>
                     </td>
-                    <td>
-                      <input type="button" id="correct" class="btn btn-success" value="Correct" ng-show="purchaseFile.status!='verified'" ng-click="vm.correct(purchaseFile.Invoice_Number,purchaseFile.Supplier_GSTIN,$event)">
+                    <td class="correctBtn">
+                      <input type="button" id="correct" ng-disabled="!purchaseFile.Supplier_GSTIN" class="btn btn-success" value="Correct" ng-show="purchaseFile.status!='verified'" ng-click="vm.correct(purchaseFile.Invoice_Number,purchaseFile.Supplier_GSTIN,$event)">
                     </td>
-                    <td>
-                      <input type="button" id="wrong" class="btn btn-danger" value="Wrong" ng-show="purchaseFile.status!='verified'" ng-click="vm.correct(purchaseFile.Invoice_Number,purchaseFile.Supplier_GSTIN,$event)">
+                    <td class="wrongBtn">
+                      <input type="button" id="wrong" ng-disabled="!purchaseFile.Supplier_GSTIN" class="btn btn-danger" value="Wrong" ng-show="purchaseFile.status!='verified'" ng-click="vm.correct(purchaseFile.Invoice_Number,purchaseFile.Supplier_GSTIN,$event)">
                     </td>
-                    <td>
-                      <input type="button" id="purchaseSelfVerify" class="btn btn-primary" value="Self Verify" ng-show="purchaseFile.status!='verified'" ng-click="vm.selfVerify(purchaseFile.Invoice_Number,$event, purchaseFile.Supplier_GSTIN,$event)">
+                    <td class="selfVerifyBtnWrap">
+                      <input type="button" id="purchaseSelfVerify" class="btn btn-primary" value="Self Verify" ng-show="purchaseFile.status!='verified'" ng-click="vm.selfVerify(purchaseFile._id,$event)">
                     </td>
                   </tr>
                 </tbody>
               </table>
+              <div class="noDataMessage" ng-if="vm.purchaseInvoiceData.length < 1">
+                No data Found
+              </div>
             </div>
           </div>
-          <br>
-          <table ng-if="vm.purchaseFileDetail" id="purchaseEditableTable" class="table table-bordered">
-            <tr>
-              <!-- <th>Invoice_Date</th> -->
-              <!-- <th>Invoice_number</th> -->
-              <!-- <th>Invoice_Category</th> -->
-              <!-- <th>Type</th> -->
-              <!-- <th>Supply_Type</th> -->
-              <!-- <th>Customer_Billing_Name</th> -->
-              <!-- <th>Customer_Billing_Address</th> -->
-              <!-- <th>Customer_Billing_City</th> -->
-              <!-- <th>Customer_Billing_PinCode</th> -->
-              <!-- <th>Customer_Billing_State</th> -->
-              <!-- <th>Customer_Billing_StateCode</th> -->
-              <!-- <th>Customer_Billing_GSTIN</th> -->
-              <!-- <th>Item_Category</th> -->
-              <!-- <th>Item_Total_Before_Discount</th> -->
-              <!-- <th>Item_Discount</th> -->
-              <!-- <th>Nil_Rated_Amount</th> -->
-              <!-- <th>Exempted_Amount</th> -->
-              <!-- <th>Non_GST_Amount</th> -->
-              <th>Item_Taxable_Value</th>
-              <th>CGST_Rate</th>
-              <th>CGST_Amount</th>
-              <th>SGST_Rate</th>
-              <th>SGST_Amount</th>
-              <th>IGST_Rate</th>
-              <th>IGST_Amount</th>
-              <th>TCS</th>
-              <th>Cess_Rate</th>
-              <th>Cess_Amount</th>
-              <th>Other_Charges</th>
-              <th>Roundoff</th>
-              <th>Item_Total_Including_GST</th>
-              <!-- <th>Taxable Value on which TCS has been deducted</th> -->
-              <!-- <th>Mobile_number</th> -->
-              <!-- <th>Email_address</th> -->
-              <th>Edit</th>
-            </tr>
-            <tr id="purchaseEditableRow">
-              <td>
-                <input readonly="true" type="text" ng-model="vm.purchaseFileDetail.Item_Taxable_Value" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.purchaseFileDetail.CGST_Rate" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.purchaseFileDetail.CGST_Amount" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.purchaseFileDetail.SGST_Rate" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.purchaseFileDetail.SGST_Amount" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.purchaseFileDetail.IGST_Rate" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.purchaseFileDetail.IGST_Amount" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.purchaseFileDetail.TCS" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.purchaseFileDetail.Cess_Rate" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.purchaseFileDetail.Cess_Amount" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.purchaseFileDetail.Other_Charges" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.purchaseFileDetail.Roundoff" />
-              </td>
-              <td>
-                <input readonly="true" type="text" ng-model="vm.purchaseFileDetail.Item_Total_Including_GST" />
-              </td>
-              <td>
-                <button id="purchaseEditbtn" ng-click="vm.editpurchaseRow(vm.purchaseFileDetail)">Edit</button>
-              </td>
-            </tr>
-          </table>
-          <br>
         </uib-tab>
       </uib-tabset>
     </div>

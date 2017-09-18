@@ -14,7 +14,6 @@
       getUserById: getUserById,
       updateUser: updateUser,
       gstStatus: gstStatus,
-      // addSaleFiles: addSaleFiles,
       readFiles: readFiles,
       updateContact: updateContact,
       postFileData: postFileData
@@ -33,15 +32,6 @@
       });
       return defered.promise;
     }
-    // function addUser(urldata) {
-    //   let defer = $q.defer();
-    //   Upload.upload(urldata).then(function(response) {
-    //     defer.resolve(response);
-    //   }).catch(function(error) {
-    //     defer.reject(error);
-    //   });
-    //   return defer.promise;
-    // }
 
     function listUser() {
       let defered = $q.defer();
@@ -109,18 +99,7 @@
       return defer.promise;
     }
 
-    // function addSaleFiles(urldata) {
-    //   console.log("urldata", urldata);
-    //   let defer = $q.defer();
-    //   Upload.upload(urldata).then(function(response) {
-    //     defer.resolve(response);
-    //   }).catch(function(error) {
-    //     defer.reject(error);
-    //   });
-    //   return defer.promise;
-    // }
     function readFiles(urldata) {
-      console.log("urldata", urldata);
       let defer = $q.defer();
       Upload.upload(urldata).then(function(response) {
         defer.resolve(response);
@@ -131,7 +110,6 @@
     }
 
     function updateContact(data) {
-      console.log("data", data);
       let defer = $q.defer();
       $http({
         method: 'put',
@@ -158,9 +136,6 @@
       });
       return defer.promise;
     }
-
-
-
 
   }
 })();

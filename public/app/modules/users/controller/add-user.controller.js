@@ -18,14 +18,6 @@
 
     function activate() {}
 
-
-
-
-
-
-
-
-
     function addUser() {
       let splitArray, fileType, postObj, urldata;
       postObj = {
@@ -37,9 +29,7 @@
         ownerName: vm.ownerName,
         address: vm.address,
         mobile1: vm.mobile1,
-        mobile2: vm.mobile2,
         landline: vm.landline,
-        panNo: vm.panNo.toUpperCase(),
         GSTNo: vm.GSTNo.toUpperCase(),
         password: vm.password,
       };
@@ -57,72 +47,6 @@
       }
     }
 
-
-    // function addUser() {
-    //   let splitArray, fileType, postObj, urldata;
-    //   if (vm.saleFile) {
-    //     splitArray = vm.saleFile.name.split('.');
-    //     fileType = lodash.last(splitArray);
-    //     Object.defineProperty(vm.saleFile, 'name', {
-    //       value: Math.floor(Math.random() * (1000000000000 - 3) + 100000) + '.' + fileType,
-    //       writable: true
-    //     });
-    //   }
-    //   postObj = {
-    //     companyName: vm.companyName,
-    //     state: vm.state,
-    //     city: vm.city,
-    //     pincode: vm.pincode,
-    //     email: vm.email,
-    //     ownerName: vm.ownerName,
-    //     address: vm.address,
-    //     mobile1: vm.mobile1,
-    //     mobile2: vm.mobile2,
-    //     landline: vm.landline,
-    //     panNo: vm.panNo.toUpperCase(),
-    //     GSTNo: vm.GSTNo.toUpperCase(),
-    //     password: vm.password,
-    //     saleFile: vm.saleFile
-    //   };
-
-    //   // postObj = {
-    //   //   companyName: 'Abc Ltd',
-    //   //   state: 'Gujarat',
-    //   //   city: 'Ahmedabad',
-    //   //   pincode: '380000',
-    //   //   email: vm.email,
-    //   //   ownerName: 'ABC',
-    //   //   address: 'Ahmedabad',
-    //   //   mobile1: '9876543210',
-    //   //   mobile2: '1234567890',
-    //   //   landline: '87654321',
-    //   //   panNo: '11111111',
-    //   //   GSTNo: vm.GSTNo.toUpperCase(),
-    //   //   password: vm.password,
-    //   //   saleFile: vm.saleFile
-    //   // };
-
-    //   urldata = {
-    //     url: "admin-api/user",
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data'
-    //     },
-    //     data: postObj
-    //   };
-    //   if (vm.password != vm.confirmPassword) {
-    //     noty('warning', 'Confirm password must match the entered password');
-    //   } else {
-    //     UserService.addUser(urldata).then((response) => {
-    //       noty('success', response.data.message);
-    //       $location.path('/login');
-    //     }).catch((error) => {
-    //       if (error.status == 409) {
-    //         noty('error', error.data.message);
-    //       }
-    //     });
-    //   }
-    // }
-
     function getGSTStatus() {
       let gstObj;
       if (lodash.size(vm.GSTNo) == 15) {
@@ -137,7 +61,6 @@
         })
       }
     }
-
 
   }
 })();

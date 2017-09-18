@@ -7,8 +7,10 @@ var config = {
     "debug": true
   },
   "server": {
-    "url": "localhost",
-    "port": "8020"
+    "url": "120.72.91.62",
+    "port": "8082"
+    // "prodServerHost": "",
+    // "prodServerPort": "8082"
   },
   "gupShupSMS": {
     "userId": "2000144979",
@@ -19,8 +21,8 @@ var config = {
     "port": 465,
     "secure": true,
     "debug": true,
-    "username": "tapasvi.vaghela@rapidops.com",
-    "password": "t7600434720",
+    "username": "tapasvi.vaghela@rapidops.com", //crossverify.com@gmail.com
+    "password": "t7600434720", //crossverify101
     "fromAddress": "tapasvi.vaghela@rapidops.com"
   }
 }

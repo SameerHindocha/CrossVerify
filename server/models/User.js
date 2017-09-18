@@ -56,6 +56,9 @@ module.exports = (mongoose) => {
     saleFilePath: {
       type: String
     },
+    premiumUser: {
+      type: Boolean
+    },
     saleFile: {
       type: Mixed
     },

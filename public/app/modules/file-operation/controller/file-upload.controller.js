@@ -39,14 +39,23 @@
 
     activate();
 
-    function activate() {}
+    function activate() {
+      getPreviousMonth();
+      $('.selectpicker').selectpicker();
+    }
 
     function removeInputErrorClass(event) {
+      console.log('in remove input error');
       event.srcElement.className = '';
     }
 
     function uploadFiles() {
       let contactDetail = [];
+      vm.purchaseHeaderFields;
+      vm.salesHeaderFields;
+      vm.purchaseData = [];
+      vm.saleData = [];
+      vm.displayLabel = false;
       if (vm.saleFile && vm.purchaseFile) {
         $rootScope.uploadDate = vm.dateOfFile.toString("yyyy-MM");
         let fileObj = {
@@ -63,22 +72,29 @@
           data: fileObj
         };
         UserService.readFiles(urldata).then((response) => {
+
           vm.purchaseHeaderFields = response.data.purchaseHeaderFields;
           vm.salesHeaderFields = response.data.salesHeaderFields;
           vm.purchaseData = response.data.purchaseData;
           vm.saleData = response.data.saleData;
 
+
           $timeout(function() {
-            $('#Sale').find('select').each(function() {
-              if ($(this)[0].value != vm.defaultSalesHeaderValues[$(this)[0].id]) {
+            $('.selectpicker').selectpicker('refresh');
+          }, 500);
+
+          $timeout(function() {
+            $('#Sale').find('button').each(function() {
+              if ($(this).find('.filter-option').text() != vm.defaultSalesHeaderValues[$(this).attr('data-id')]) {
                 $(this).addClass("input-error");
               }
             });
           }, 500)
           $timeout(function() {
-            $('#Purchase').find('select').each(function() {
-              if ($(this)[0].value != vm.defaultPurchaseHeaderValues[$(this)[0].id]) {
+            $('#Purchase').find('button').each(function() {
+              if ($(this).find('.filter-option').text() != vm.defaultPurchaseHeaderValues[$(this).attr('data-id')]) {
                 $(this).addClass("input-error");
+                vm.displayLabel = true;
               }
             });
           }, 500)
@@ -96,7 +112,17 @@
       }
     }
 
-
+    function getPreviousMonth() {
+      let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      let currentDate = new Date();
+      let prevMonth = currentDate.getMonth() - 1;
+      let year = currentDate.getFullYear();
+      if (prevMonth == 11) {
+        year = year - 1;
+      }
+      vm.displayDate = months[prevMonth] + ',' + year;
+      vm.dateOfFile = new Date(year, prevMonth);
+    }
 
     function postFileData() {
       let newPurchaseData = [];
@@ -105,11 +131,10 @@
       let postPurchaseDataFlag = false;
       lodash.forEach(vm.saleData, function(record) {
         let newSaleObject = {};
-        $('#Sale').find('select').each(function() {
-          if (record[$(this)[0].value]) {
-            console.log("record[$(this)[0]", record[$(this)[0]]);
-            let saleHeaderId = vm.defaultSalesHeaderValues[$(this)[0].id];
-            newSaleObject[saleHeaderId] = record[$(this)[0].value];
+        $('#Sale').find('button').each(function() {
+          if (record[$(this).find('.filter-option').text()]) {
+            let saleHeaderId = vm.defaultSalesHeaderValues[$(this).attr('data-id')];
+            newSaleObject[saleHeaderId] = record[$(this).find('.filter-option').text()].trim();
           }
         });
         newSaleData.push(newSaleObject);
@@ -117,10 +142,10 @@
 
       lodash.forEach(vm.purchaseData, function(record) {
         let newPurchaseObject = {};
-        $('#Purchase').find('select').each(function() {
-          if (record[$(this)[0].value]) {
-            let purchaseHeaderId = vm.defaultPurchaseHeaderValues[$(this)[0].id];
-            newPurchaseObject[purchaseHeaderId] = record[$(this)[0].value];
+        $('#Purchase').find('button').each(function() {
+          if (record[$(this).find('.filter-option').text()]) {
+            let purchaseHeaderId = vm.defaultPurchaseHeaderValues[$(this).attr('data-id')];
+            newPurchaseObject[purchaseHeaderId] = record[$(this).find('.filter-option').text()].trim();
           }
         });
         newPurchaseData.push(newPurchaseObject);
@@ -130,6 +155,8 @@
         newPurchaseData: newPurchaseData,
         date: vm.dateOfFile.toString("yyyy-MM")
       }
+
+      console.log("postObj", postObj);
       lodash.forEach(newSaleData, function(record) {
         if (!record.Invoice_Number) {
           postSaleDataFlag = true;
@@ -141,46 +168,52 @@
         }
       })
       if (postSaleDataFlag == true) {
-        noty('error', 'Invoice number missing for some record/records in sale file');
+        noty('error', 'Invoice number is missing for some record/records in sale file');
       }
       if (postPurchaseDataFlag == true) {
-        noty('error', 'Invoice number missing in some record/records in purchase file');
+        noty('error', 'Invoice number is missing in some record/records in purchase file');
       }
       if (postSaleDataFlag == false && postPurchaseDataFlag == false) {
+        console.log('2');
+
         UserService.postFileData(postObj).then((response) => {
           $rootScope.missingDataArrayForSale = [];
           $rootScope.missingDataArrayForPurchase = [];
           lodash.forEach(response.data.saleFileData, function(row) {
             let pushSaleFlag = true;
-            if (!row.Mobile_Number || !row.Email_Address) {
-              if (lodash.size($rootScope.missingDataArrayForSale)) {
-                lodash.forEach($rootScope.missingDataArrayForSale, function(value) {
-                  if (row.Customer_Billing_GSTIN == value.Customer_Billing_GSTIN) {
-                    pushSaleFlag = false;
+            if (row.Customer_Billing_GSTIN) {
+              if (!row.Mobile_Number || !row.Email_Address) {
+                if (lodash.size($rootScope.missingDataArrayForSale)) {
+                  lodash.forEach($rootScope.missingDataArrayForSale, function(value) {
+                    if (row.Customer_Billing_GSTIN == value.Customer_Billing_GSTIN) {
+                      pushSaleFlag = false;
+                    }
+                  })
+                  if (pushSaleFlag == true) {
+                    $rootScope.missingDataArrayForSale.push(row);
                   }
-                })
-                if (pushSaleFlag == true) {
+                } else {
                   $rootScope.missingDataArrayForSale.push(row);
                 }
-              } else {
-                $rootScope.missingDataArrayForSale.push(row);
               }
             }
           })
           lodash.forEach(response.data.purchaseFileData, function(row) {
             let pushPurchaseFlag = true;
-            if (!row.Mobile_Number || !row.Email_Address) {
-              if (lodash.size($rootScope.missingDataArrayForPurchase)) {
-                lodash.forEach($rootScope.missingDataArrayForPurchase, function(value) {
-                  if (row.Supplier_GSTIN == value.Supplier_GSTIN) {
-                    pushPurchaseFlag = false;
+            if (row.Supplier_GSTIN) {
+              if (!row.Mobile_Number || !row.Email_Address) {
+                if (lodash.size($rootScope.missingDataArrayForPurchase)) {
+                  lodash.forEach($rootScope.missingDataArrayForPurchase, function(value) {
+                    if (row.Supplier_GSTIN == value.Supplier_GSTIN) {
+                      pushPurchaseFlag = false;
+                    }
+                  })
+                  if (pushPurchaseFlag == true) {
+                    $rootScope.missingDataArrayForPurchase.push(row);
                   }
-                })
-                if (pushPurchaseFlag == true) {
+                } else {
                   $rootScope.missingDataArrayForPurchase.push(row);
                 }
-              } else {
-                $rootScope.missingDataArrayForPurchase.push(row);
               }
             }
           })

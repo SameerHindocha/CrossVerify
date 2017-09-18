@@ -10,18 +10,9 @@
     let vm = this;
     $rootScope.showLoginBackground = false;
     vm.DashboardService = DashboardService;
-    // vm.sendLink = sendLink;
-    // vm.sendSMS = sendSMS;
-    vm.Logout = Logout;
-    // vm.link = JSON.parse(localStorage.getItem('currentUser')).preLink + '/' + JSON.parse(localStorage.getItem('currentUser'))._id;
     vm.fullData = [];
-    vm.openFileComparisionPage = openFileComparisionPage;
-    // vm.onSuccess = onSuccess;
-    // vm.onError = onError;
-    vm.dateOfFile = '07-02-2017';
+    vm.dateOfFile = '07-02-2017'; //GST Applied From 1st July, 2017
     vm.filterByMonth = new Date();
-    vm.showMoreSaleDetail = showMoreSaleDetail;
-    vm.showMorePurchaseDetail = showMorePurchaseDetail;
     vm.redirectToImportPage = redirectToImportPage;
     vm.editSaleRow = editSaleRow;
     vm.editpurchaseRow = editpurchaseRow;
@@ -35,16 +26,19 @@
     vm.purchaseSearchText = '';
     vm.correct = correctPurchase;
     vm.editCustomer = editCustomer;
+    vm.sendToAllEmailAndSMS = sendToAllEmailAndSMS;
     let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    vm.currentUserGSTIN = currentUser.GSTNo;
     let verifiedSale = 0;
     let notVerifiedSale = 0;
     let mismatchedSale = 0;
     let totalSaleInvoice = 0;
-
     let verifiedPurchase = 0;
     let notVerifiedPurchase = 0;
     let mismatchedPurchase = 0;
     let totalPurchaseInvoice = 0;
+    let emailIdSaleArray = [];
+    let mobileSaleArray = [];
 
     activate();
 
@@ -55,49 +49,29 @@
       vm.getInvoicesByMonth();
     }
 
-    // function sendLink() {
-    //   let postObj = {
-    //     email: vm.email
-    //   }
-    //   DashboardService.shareLinkService(postObj).then((response) => {
-    //     noty('success', response.data.message);
-    //   }).catch((error) => {
-    //     noty('error', error.data.message);
-    //   })
-    // }
-
-    // function sendSMS() {
-    //   let postObj = {
-    //     email: vm.email,
-    //     link: '' 
-    //   }
-    //   DashboardService.sendSMSService(postObj).then((response) => {
-    //     noty('success', response.data.message);
-    //   }).catch((error) => {
-    //     noty('error', error.data.message);
-    //   })
-    // }
-
     $scope.finalvalues = function(details) {
-      console.log("details__##########", details);
-
+      if (details.invoiceFlag == 0) {
+        editSaleRow(details);
+      } else if (details.invoiceFlag == 1) {
+        editpurchaseRow(details);
+      }
     }
     $scope.openPopup = function(saleFile) {
       $scope.fileData = saleFile;
     }
 
-    function sendMonthlyEmail(customerGSTIN, invoiceNo, event) {
-      console.log("invoiceNo", invoiceNo);
-      console.log("customerGSTIN", customerGSTIN);
+    function sendToAllEmailAndSMS() {
+      console.log("123");
+    }
+
+    function sendMonthlyEmail(customerGSTIN, invoiceNo, event, email) {
       let category;
       category = (event.target.id == 'saleEmail') ? 0 : 1;
-      console.log("category", category);
-
       let month = vm.filterByMonth.toString("yyyy-MM");
       let link = 'temporary-dashboard/' + currentUser.GSTNo + '/' + customerGSTIN + '/' + month + '/' + invoiceNo + '/' + category;
-      console.log("link", link);
       let postObj = {
-        email: vm.email,
+        // email: vm.email,
+        email: email,
         link: link
       }
       DashboardService.sendMonthlyEmail(postObj).then((response) => {
@@ -107,48 +81,50 @@
       })
     }
 
-    function sendMonthlySMS(customerGSTIN, invoiceNo, event) {
+    function sendMonthlySMS(customerGSTIN, invoiceNo, mobile, event) {
       let category;
       category = (event.target.id == 'saleSMS') ? 0 : 1;
-      console.log("category", category);
       let month = vm.filterByMonth.toString("yyyy-MM");
-
       let link = 'temporary-dashboard/' + currentUser.GSTNo + '/' + customerGSTIN + '/' + month + '/' + invoiceNo + '/' + category;
-
       let postObj = {
-        mobile: '9978770693',
-        link: link
-
+        mobile: mobile,
+        link: link,
+        category: category,
+        month: month,
+        senderName: currentUser.companyName
       }
-
-      console.log("postObj", postObj);
       DashboardService.sendMonthlySMS(postObj).then((response) => {
         noty('success', response.data.message);
       }).catch((error) => {
         noty('error', error.data.message);
       })
     }
+    // function sendMonthlySMS(customerGSTIN, invoiceNo, mobile, event) {
+    //   console.log("mobile", mobile);
+    //   let category;
+    //   category = (event.target.id == 'saleSMS') ? 0 : 1;
+    //   let month = vm.filterByMonth.toString("yyyy-MM");
+    //   let link = 'temporary-dashboard/' + currentUser.GSTNo + '/' + customerGSTIN + '/' + month + '/' + invoiceNo + '/' + category;
+    //   let postObj = {
+    //     // mobile: '9978770693',
+    //     mobile: mobile,
+    //     link: link
+    //   }
+    //   DashboardService.sendMonthlySMS(postObj).then((response) => {
+    //     noty('success', response.data.message);
+    //   }).catch((error) => {
+    //     noty('error', error.data.message);
+    //   })
+    // }
 
     function redirectToImportPage() {
-      $location.path('/user/import');
-    }
-
-    function showMoreSaleDetail(saleFile) {
-      vm.fileDetail = saleFile;
-    }
-
-    function showMorePurchaseDetail(purchaseFile) {
-      vm.purchaseFileDetail = purchaseFile;
-    }
-
-    function Logout() {
-      AuthService.logout().then((response) => {
-        window.localStorage.removeItem('currentUser');
-        noty('success', response.data.message);
-        $location.path('/login');
-      }).catch((error) => {
-        noty('error', error.data.message);
-      })
+      let currentDate = new Date().getDate();
+      currentDate = 2;
+      if (currentDate > 10) {
+        noty('error', 'File can only be uploaded during first ten days of month');
+      } else {
+        $location.path('/user/import');
+      }
     }
 
     function getInvoicesByMonth() {
@@ -157,7 +133,6 @@
       notVerifiedSale = 0;
       mismatchedSale = 0;
       totalSaleInvoice = 0;
-
       verifiedPurchase = 0;
       notVerifiedPurchase = 0;
       mismatchedPurchase = 0;
@@ -168,11 +143,26 @@
           month: filterMonth
         }
         DashboardService.filterInvoicesByMonth(monthObj).then((response) => {
+          vm.invoiceData = response;
+          vm.saleInvoiceData = response.data.filteredSaleFileData;
+          vm.purchaseInvoiceData = response.data.filteredPurchaseFileData;
           if (lodash.size(response.data.filteredSaleFileData)) {
             vm.saleFileDataToFilter = response.data.filteredSaleFileData;
-            vm.purchaseFileDataToFilter = response.data.filteredPurchaseFileData;
-            vm.invoiceData = response;
             lodash.forEach(response.data.filteredSaleFileData, function(record) {
+              if (record.Email_Address && record.Invoice_Number && record.Customer_Billing_GSTIN) {
+                let linkObj = {
+                  Email_Address: record.Email_Address,
+                  Invoice_Number: record.Invoice_Number,
+                  Customer_Billing_GSTIN: record.Customer_Billing_GSTIN
+                }
+                // customerGSTIN, invoiceNo, event, mobile
+                // 'temporary-dashboard/' + currentUser.GSTNo + '/' + customerGSTIN + '/' + month + '/' + invoiceNo + '/' + category;
+                //http://localhost:8020/#/temporary-dashboard/27AAACB7403R1ZD/27AAACP7444E1ZH/2017-09/054 /1
+                emailIdSaleArray.push(linkObj);
+              }
+              if (record.Mobile_Number) {
+                mobileSaleArray.push(record.Mobile_Number);
+              }
               if (record.status == 'verified') {
                 verifiedSale++;
               } else if (record.status == 'mismatched') {
@@ -181,8 +171,16 @@
                 notVerifiedSale++;
               }
               totalSaleInvoice++;
-              vm.saleInvoiceTo = record.Invoice_Number;
+              // vm.saleInvoiceTo = record.Invoice_Number;
             })
+
+            // console.log("emailIdSaleArray", emailIdSaleArray);
+          }
+
+          // vm.saleInvoiceFrom = response.data.filteredSaleFileData[0].Invoice_Number;
+
+          if (lodash.size(response.data.filteredPurchaseFileData)) {
+            vm.purchaseFileDataToFilter = response.data.filteredPurchaseFileData;
             lodash.forEach(response.data.filteredPurchaseFileData, function(record) {
               if (record.status == 'verified') {
                 verifiedPurchase++;
@@ -193,10 +191,6 @@
               }
               totalPurchaseInvoice++;
             })
-            vm.saleInvoiceFrom = response.data.filteredSaleFileData[0].Invoice_Number;
-          } else {
-            vm.noRecord = "NO";
-            vm.invoiceData = '';
           }
           vm.verifiedSale = verifiedSale;
           vm.mismatchedSale = mismatchedSale;
@@ -208,185 +202,207 @@
           vm.notVerifiedPurchase = notVerifiedPurchase;
           vm.totalPurchaseInvoice = totalPurchaseInvoice;
         }).catch((error) => {
-          console.log("error------", error);
+          // console.log("error------", error);
         })
       }
     }
 
     function editSaleRow(data) {
-      let btnText = $("#saleEditableRow #saleEditbtn").text();
-      if (btnText == 'Edit') {
-        $('#saleEditableRow').find('input').each(function() {
-          $(this).prop('readonly', false)
-          $("#saleEditableRow #saleEditbtn").prop('value', 'Save');
-        });
-      } else if (btnText == 'Save') {
+      if (vm.filterByMonth) {
+        let month = vm.filterByMonth.toString("yyyy-MM");
+        data.date = month;
+      }
+      console.log("data-------", data);
+      DashboardService.editSaleFile(data).then((response) => {
+        console.log("response OF editSaleRow", response);
+        noty('success', response.data.message);
 
+        console.log("data._id", data.recordId);
+        console.log("currentUser._id", currentUser._id);
+        console.log("response.data.data._id", response.data.data._id);
 
-        let isShare = confirm("Do You Want to Send OTP?");
+        let isShare = confirm("Do You Want to Send Confirmation Email to " + response.data.data.Customer_Billing_Name + " ?");
         if (isShare == true) {
-          if (data.Email_Address) {
+          // response.data.data._id = currentUser._id;
+          response.data.data.type = 'Sale';
+
+          response.data.data.date = vm.filterByMonth.toString("yyyy-MM");
+          if (response.data.data.Email_Address) {
             let postObj = {
-              email: data.Email_Address
+              data: response.data.data,
+              currentUserId: currentUser._id
             }
+
             DashboardService.sendConfirmationMail(postObj).then((response) => {
               noty('success', response.data.message);
             }).catch((error) => {
               noty('error', error.data.message);
             })
+          } else {
+            noty('error', 'Email Address Not Found');
           }
-          if (data.Mobile_Number) {
-            let postObj = {
-              mobile: data.Mobile_Number
-            }
-            DashboardService.sendConfirmationSMS(postObj).then((response) => {
-              noty('success', response.data.message);
-            }).catch((error) => {
-              noty('error', error.data.message);
-            })
-          }
+          // if (data.Mobile_Number) {
+          //   let postObj = {
+          //     data: data
+          //   }
+          //   DashboardService.sendConfirmationSMS(postObj).then((response) => {
+          //     noty('success', response.data.message);
+          //   }).catch((error) => {
+          //     noty('error', error.data.message);
+          //   })
+          // }
         }
-
-        $('#saleEditableRow').find('input').each(function() {
-          $(this).prop('readonly', true)
-        });
-        if (vm.filterByMonth) {
-          let month = vm.filterByMonth.toString("yyyy-MM");
-          data.date = month;
-        }
-        data._id = currentUser._id;
-        DashboardService.editSaleFile(data).then((response) => {
-          noty('success', response.data.message);
-        }).catch((error) => {
-          noty('error', error.data.message);
-        })
-      }
-
-
-      $("#saleEditableRow #saleEditbtn").html($("#saleEditableRow #saleEditbtn").html() == 'Edit' ? 'Save' : 'Edit');
+      }).catch((error) => {
+        noty('error', error.data.message);
+      })
     }
-    $(document).mouseup(function(e) {
-      let container = $("#editableTable");
-      if (e.target.id == 'plus-button') {
-        container.show();
-      } else if (!container.is(e.target) && container.has(e.target).length === 0) {
-        container.hide();
-      }
-    });
+
 
     function editpurchaseRow(data) {
-      let btnText = $("#purchaseEditableRow #purchaseEditbtn").text();
-      if (btnText == 'Edit') {
-        $('#purchaseEditableRow').find('input').each(function() {
-          $(this).prop('readonly', false)
-          $("#purchaseEditableRow #purchaseEditbtn").prop('value', 'Save');
-        });
-      } else if (btnText == 'Save') {
-
-
-        let isShare = confirm("Do You Want to Send OTP?");
+      if (vm.filterByMonth) {
+        let month = vm.filterByMonth.toString("yyyy-MM");
+        data.date = month;
+      }
+      console.log("data-------", data);
+      DashboardService.editPurchaseFile(data).then((response) => {
+        console.log("response OF editpurchaseRow", response);
+        noty('success', response.data.message);
+        let isShare = confirm("Do You Want to Send Confirmation Email to " + response.data.data.Supplier_Name + " ?");
         if (isShare == true) {
-          if (data.Email_Address) {
+          response.data.data.type = 'Purchase';
+
+          console.log("data.Email_Address", data.Email_Address);
+
+          console.log("response.data.data", response.data.data);
+          response.data.data.date = vm.filterByMonth.toString("yyyy-MM");
+
+          if (response.data.data.Email_Address) {
             let postObj = {
-              email: data.Email_Address
+              data: response.data.data
             }
+
+            console.log("postObj", postObj);
             DashboardService.sendConfirmationMail(postObj).then((response) => {
               noty('success', response.data.message);
             }).catch((error) => {
               noty('error', error.data.message);
             })
+          } else {
+            noty('error', 'Email Address Not Found');
           }
-          if (data.Mobile_Number) {
-            let postObj = {
-              mobile: data.Mobile_Number
-            }
-            DashboardService.sendConfirmationSMS(postObj).then((response) => {
-              noty('success', response.data.message);
-            }).catch((error) => {
-              noty('error', error.data.message);
-            })
-          }
+          // if (data.Mobile_Number) {
+          //   let postObj = {
+          //     data: data
+          //   }
+          //   DashboardService.sendConfirmationSMS(postObj).then((response) => {
+          //     noty('success', response.data.message);
+          //   }).catch((error) => {
+          //     noty('error', error.data.message);
+          //   })
+          // }
         }
-
-
-        $('#purchaseEditableRow').find('input').each(function() {
-          $(this).prop('readonly', true)
-        });
-        if (vm.filterByMonth) {
-          let month = vm.filterByMonth.toString("yyyy-MM");
-          data.date = month;
-        }
-        data._id = currentUser._id;
-        DashboardService.editPurchaseFile(data).then((response) => {
-          noty('success', response.data.message);
-
-        }).catch((error) => {
-          noty('error', error.data.message);
-        })
-      }
-
-
-
-
-      $("#purchaseEditableRow #purchaseEditbtn").html($("#purchaseEditableRow #purchaseEditbtn").html() == 'Edit' ? 'Save' : 'Edit');
+      }).catch((error) => {
+        noty('error', error.data.message);
+      })
     }
-    $(document).mouseup(function(e) {
-      let container = $("#purchaseEditableTable");
-      if (e.target.id == 'plus-button') {
-        container.show();
-      } else if (!container.is(e.target) && container.has(e.target).length === 0) {
-        container.hide();
-      }
-    });
 
-    function selfVerify(invoiceNo, event, GSTIN) {
+
+    function selfVerify(recordId, event) {
       let parent = event.srcElement.parentElement.parentElement;
       let month = vm.filterByMonth.toString("yyyy-MM");
-      let flag = (event.target.id == 'saleSelfVerify') ? 0 : 1;;
-      console.log("flag", flag);
+      let salePurchaseStatus = (event.target.id == 'saleSelfVerify') ? 0 : 1;;
       let statusObj = {
         date: month,
         status: 'verified',
-        Invoice_Number: invoiceNo,
-        _id: currentUser._id,
-        GSTIN: currentUser.GSTNo,
-        flag: flag
+        recordId: recordId,
+        salePurchaseStatus: salePurchaseStatus
       }
       DashboardService.selfVerify(statusObj).then((response) => {
         noty('success', response.data.message);
-        $(parent).addClass("verified");
-        $(parent).removeClass("mismatched");
         $(parent).find('#saleSelfVerify').remove();
         $(parent).find('#purchaseSelfVerify').remove();
-        if ($(parent).attr('class') == 'ng-scope mismatched') {
-          verifiedSale++;
-          mismatchedSale--;
-        } else {
-          verifiedSale++;
-          notVerifiedSale--;
+        if (salePurchaseStatus == 0) {
+          if ($(parent).attr('class') == 'ng-scope mismatched') {
+            verifiedSale++;
+            mismatchedSale--;
+          } else {
+            verifiedSale++;
+            notVerifiedSale--;
+          }
+          vm.verifiedSale = verifiedSale;
+          vm.mismatchedSale = mismatchedSale;
+          vm.notVerifiedSale = notVerifiedSale;
         }
-        vm.verifiedSale = verifiedSale;
-        vm.mismatchedSale = mismatchedSale;
-        vm.notVerifiedSale = notVerifiedSale;
+        if (salePurchaseStatus == 1) {
+          if ($(parent).attr('class') == 'ng-scope mismatched') {
+            verifiedPurchase++;
+            mismatchedPurchase--;
+          } else {
+            verifiedPurchase++;
+            notVerifiedPurchase--;
+          }
+          vm.verifiedPurchase = verifiedPurchase;
+          vm.mismatchedPurchase = mismatchedPurchase;
+          vm.notVerifiedPurchase = notVerifiedPurchase;
+        }
+        $(parent).addClass("verified");
+        $(parent).removeClass("mismatched");
+
+
+        /*
+              vm.verifiedSale = verifiedSale;
+                  vm.mismatchedSale = mismatchedSale;
+                  vm.notVerifiedSale = notVerifiedSale;
+                  vm.totalSaleInvoice = totalSaleInvoice;
+
+                  vm.verifiedPurchase = verifiedPurchase;
+                  vm.mismatchedPurchase = mismatchedPurchase;
+                  vm.notVerifiedPurchase = notVerifiedPurchase;
+                  vm.totalPurchaseInvoice = totalPurchaseInvoice;
+         */
+
       }).catch((error) => {
         noty('error', error.data.message);
       })
     }
 
     function correctPurchase(invoiceNo, GSTIN, event) {
+      console.log("event", event);
+
       let status = event.toElement.id == 'correct' ? 'verified' : 'mismatched';
       let parent = event.srcElement.parentElement.parentElement;
       $(parent).find('#correct').remove();
       $(parent).find('#wrong').remove();
       let month = vm.filterByMonth.toString("yyyy-MM");
+
+
       let statusObj = {
         date: month,
         status: status,
         Invoice_Number: invoiceNo,
-        GSTIN: GSTIN,
-        fromPurchase: true
+        GSTINOfRecord: GSTIN,
+        currentUserGSTIN: currentUser.GSTNo
       }
-      DashboardService.changeStatus(statusObj).then((response) => {
+
+      console.log("statusObj purchase", statusObj);
+      DashboardService.changePurchaseStatus(statusObj).then((response) => {
+        // noty('success', 'Purchase Status Changed');
+      }).catch((error) => {
+        noty('error', error.data.message);
+      })
+
+
+
+      let obj = {
+        date: month,
+        status: status,
+        Invoice_Number: invoiceNo,
+        GSTINOfRecord: currentUser.GSTNo,
+        currentUserGSTIN: GSTIN
+      }
+
+      console.log("obj sale", obj);
+      DashboardService.changeSaleStatus(obj).then((response) => {
         noty('success', response.data.message);
         if (status == 'verified') {
           $(parent).addClass("verified");
@@ -410,12 +426,13 @@
       })
     }
 
-    function editCustomer(invoiceNumber, event) {
+    function editCustomer(recordId, event) {
       let id = currentUser._id;
+      // let recordId = recordId;
       let month = vm.filterByMonth.toString("yyyy-MM");
       let flag = (event.target.id == 'saleEdit') ? 0 : 1;;
-      let invoiceNo = invoiceNumber;
-      $location.path('/edit-customer/' + id + '/' + month + '/' + invoiceNo + '/' + flag);
+      // let invoiceNo = invoiceNumber;
+      $location.path('/edit-customer/' + id + '/' + month + '/' + recordId + '/' + flag);
     }
 
     function searchSaleGrid() {
@@ -423,18 +440,26 @@
         if (item) {
           if (item.Customer_Billing_Name && item.Customer_Billing_GSTIN) {
             return (item.Customer_Billing_Name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 || item.Customer_Billing_GSTIN.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+          } else {
+            if (item.Customer_Billing_Name && !item.Customer_Billing_GSTIN) {
+              return (item.Customer_Billing_Name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+            }
+            if (item.Customer_Billing_GSTIN && !item.Customer_Billing_Name) {
+              return (item.Customer_Billing_GSTIN.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+            }
           }
         }
       }
       let totalSaleData = vm.saleFileDataToFilter;
       if (vm.saleSearchText == '') {
-        vm.invoiceData.data.filteredSaleFileData = vm.saleFileDataToFilter;
+        vm.saleInvoiceData = vm.saleFileDataToFilter;
       } else {
         vm.filteredSaleList = lodash.filter(totalSaleData,
           function(item) {
             return searchUtil(item, vm.saleSearchText);
           });
-        vm.invoiceData.data.filteredSaleFileData = vm.filteredSaleList;
+
+        vm.saleInvoiceData = vm.filteredSaleList;
       }
     }
 
@@ -443,68 +468,26 @@
         if (item) {
           if (item.Supplier_Name && item.Supplier_GSTIN) {
             return (item.Supplier_Name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 || item.Supplier_GSTIN.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+          } else {
+            if (item.Supplier_Name && !item.Supplier_GSTIN) {
+              return (item.Supplier_Name.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+            }
+            if (item.Supplier_GSTIN && !item.Supplier_Name) {
+              return (item.Supplier_GSTIN.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+            }
           }
         }
       }
       let totalPurchaseData = vm.purchaseFileDataToFilter;
       if (vm.purchaseSearchText == '') {
-        vm.invoiceData.data.filteredPurchaseFileData = vm.purchaseFileDataToFilter;
+        vm.purchaseInvoiceData = vm.purchaseFileDataToFilter;
       } else {
         vm.filteredPurchaseList = lodash.filter(totalPurchaseData,
           function(item) {
             return searchUtil(item, vm.purchaseSearchText);
           });
-        vm.invoiceData.data.filteredPurchaseFileData = vm.filteredPurchaseList;
+        vm.purchaseInvoiceData = vm.filteredPurchaseList;
       }
     }
-
-    function openFileComparisionPage(client) {
-      $rootScope.clientData = client;
-      $location.path('/file-compare/' + client._id + '/' + client.GSTNo);
-    }
-
-
-    $('#clip').tooltip({
-      trigger: 'click',
-      placement: 'top'
-    });
-
-    $("#clip").hover(function() {
-      $(this)
-        .attr('data-original-title', 'copy to clipbard')
-        .tooltip('show');
-    }, function() {
-      $(this).tooltip('hide');
-    });
-
-    $("#share").hover(function() {
-      $(this)
-        .attr('data-original-title', 'share via')
-        .tooltip('show');
-    }, function() {
-      $(this).tooltip('hide');
-    });
-
-    function setTooltip(btn, message) {
-      $(btn)
-        .attr('data-original-title', message)
-        .tooltip('show');
-    }
-
-    function hideTooltip(btn) {
-      setTimeout(function() {
-        $(btn).tooltip('hide');
-      }, 500);
-    }
-
-    // function onSuccess(e) {
-    //   setTooltip(e.trigger, 'Copied!');
-    //   hideTooltip(e.trigger);
-    // };
-
-    // function onError(e) {
-    //   setTooltip(e.trigger, 'Failed!');
-    //   hideTooltip(e.trigger);
-    // }
   }
 })();

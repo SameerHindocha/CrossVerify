@@ -4,19 +4,19 @@
     .module('fileApp')
     .controller('temporaryDashboardController', controller);
 
-  controller.$inject = ['DashboardService', '$location', '$route', 'lodash', '$rootScope'];
+  controller.$inject = ['DashboardService', 'UserService', '$location', '$route', 'lodash', '$rootScope'];
 
-  function controller(DashboardService, $location, $route, lodash, $rootScope) {
+  function controller(DashboardService, UserService, $location, $route, lodash, $rootScope) {
     let vm = this;
     vm.sendOTPViaSMS = sendOTPViaSMS;
     vm.sendOTPViaEmail = sendOTPViaEmail;
     vm.correctPurchase = correctPurchase;
     vm.filterByMonth = filterByMonth;
     vm.mobile = '';
-    let mobileNumber = vm.mobile;
+    // let mobileNumber = vm.mobile;
     vm.verifyOTP = verifyOTP;
-    let otp = Math.floor(1000 + Math.random() * 9000);;
-    let customerGSTIN = $route.current.params.customerGSTIN;
+    let otp = Math.floor(1000 + Math.random() * 9000);
+    let receiverGST = $route.current.params.customerGSTIN;
     let invoiceNo = $route.current.params.invoiceNo;
     let month = $route.current.params.month;
     let category = $route.current.params.category;
@@ -29,7 +29,16 @@
     vm.purchaseSearchText = '';
     vm.searchSaleGrid = searchSaleGrid;
     vm.searchPurchaseGrid = searchPurchaseGrid;
+    let saleFile = {},
+      purchaseFile = {};
+    vm.states = ["Andaman and Nicobar", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chandigarh", "Dadra and Nagar Haveli", "Daman and Diu", "Delhi", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu & Kashmir", "Karnataka", "Kerala", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Orissa", "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Tripura", "Uttar Pradesh", "West Bengal", "Chhattisgarh", "Uttarakhand", "Jharkhand", "Telangana"];
+    let premiumUser = false;
+    vm.addUser = addUser;
 
+    /* TEMP */
+    // vm.mobile1 = 8866610765;
+    // vm.hideMobile = '0765';
+    /* TEMP */
 
     activate();
 
@@ -76,253 +85,173 @@
       }
     }
 
-
     function filterByMonth() {
-      console.log("filterByMonth");
       let postObj = {};
       let object = {
-        gst: customerGSTIN
+        receiverGST: receiverGST
       }
-      DashboardService.checkUser(object).then((response) => {
+      DashboardService.checkReceiver(object).then((response) => {
         if (response.data.user) {
           $location.path('/login');
         } else {
-
           let obj = {
-            gst: userGSTNo
-          }
+            senderGST: userGSTNo,
+            receiverGST: receiverGST,
+            month: month,
+            category: category
+          };
           DashboardService.checkUser(obj).then((response) => {
-            if (response.data.user) {
-              vm.senderCompany = response.data.user.companyName;
-              if (vm.fileCategory == 'Purchase') {
-                if (response.data.user.saleFile[month]) {
-                  lodash.forEach(response.data.user.saleFile[month], function(record) {
-                    // console.log("record.Invoice_Number", record.Invoice_Number);
-                    if (invoiceNo == record.Invoice_Number) {
-                      record.Customer_Billing_Name = response.data.user.companyName;
-                      record.Customer_Billing_GSTIN = response.data.user.GSTNo;
-                      record.Customer_Billing_State = response.data.user.state;
-                      postObj = {
-                        month: vm.selectedMonth.toString("yyyy-MM"),
-                        data: record,
-                        gst: customerGSTIN,
-                        category: category
-                      }
+            if (response.data.matchedSaleRecords) {
 
-                      console.log("Purchase postObj", postObj);
-                      // if (record.Mobile_Number) {
-                      //   vm.mobile = record.Mobile_Number;
-                      //   vm.hideMobile = vm.mobile.substring(6, 10);
-                      // }
-                      // vm.confirmationData = record;
-                    }
-                  })
-                }
+              if (response.data.matchedSaleRecords[0].Customer_Billing_Name) {
+                vm.receiverCompany = response.data.matchedSaleRecords[0].Customer_Billing_Name;
               }
-              if (vm.fileCategory == 'Sale') {
-                if (response.data.user.purchaseFile[month]) {
-                  lodash.forEach(response.data.user.purchaseFile[month], function(record) {
-                    // console.log("record.Invoice_Number", record.Invoice_Number);
-                    if (invoiceNo == record.Invoice_Number) {
-                      record.Supplier_Name = response.data.user.companyName;
-                      record.Supplier_GSTIN = response.data.user.GSTNo;
-                      record.Supplier_State = response.data.user.state;
-                      postObj = {
-                        month: vm.selectedMonth.toString("yyyy-MM"),
-                        data: record,
-                        gst: customerGSTIN,
-                        category: category
-                      }
-
-                      console.log("Sale postObj", postObj);
-                      // if (record.Mobile_Number) {
-                      //   vm.mobile = record.Mobile_Number;
-                      //   vm.hideMobile = vm.mobile.substring(6, 10);
-                      // }
-                      // vm.confirmationData = record;
-                    }
-                  })
-                }
+              if (response.data.user.companyName) {
+                vm.senderCompany = response.data.user.companyName;
               }
+              if (response.data.matchedSaleRecords[0].Customer_Billing_Name) {
+                vm.companyName = response.data.matchedSaleRecords[0].Customer_Billing_Name;
+              }
+              if (response.data.matchedSaleRecords[0].Customer_Billing_State) {
+                vm.state = response.data.matchedSaleRecords[0].Customer_Billing_State;
+              }
+              if (response.data.matchedSaleRecords[0].Customer_Billing_City) {
+                vm.city = response.data.matchedSaleRecords[0].Customer_Billing_City;
+              }
+              if (response.data.matchedSaleRecords[0].Customer_Billing_PinCode) {
+                vm.pincode = response.data.matchedSaleRecords[0].Customer_Billing_PinCode;
+              }
+              if (response.data.matchedSaleRecords[0].Email_Address) {
+                vm.email = response.data.matchedSaleRecords[0].Email_Address;
+              }
+              if (response.data.matchedSaleRecords[0].Customer_Billing_Address) {
+                vm.address = response.data.matchedSaleRecords[0].Customer_Billing_Address;
+              }
+              if (response.data.matchedSaleRecords[0].Mobile_Number) {
+                console.log("response123", response.data.matchedSaleRecords[0]);
+                console.log("response456", response.data.matchedSaleRecords[0].Mobile_Number);
 
-              DashboardService.addTemporaryData(postObj).then((response) => {
-                console.log("response.data****", response.data);
-                if (response.data.recordDetails) {
-                  function compare(a, b) {
-                    const genreA = a.Customer_Billing_GSTIN.toUpperCase();
-                    const genreB = b.Customer_Billing_GSTIN.toUpperCase();
-                    let comparison = 0;
-                    if (genreA > genreB) {
-                      comparison = 1;
-                    } else if (genreA < genreB) {
-                      comparison = -1;
-                    }
-                    return comparison;
-                  }
-                  if (response.data.recordDetails.saleFile) {
-                    vm.saleGridData = response.data.recordDetails.saleFile[postObj.month];
-                    vm.saleFileDataToFilter = response.data.recordDetails.saleFile[postObj.month];
-
-                    //.sort(compare);
-                  } else {
-                    vm.saleGridData = [];
-                  }
-                  if (response.data.recordDetails.purchaseFile) {
-                    vm.purchaseGridData = response.data.recordDetails.purchaseFile[postObj.month];
-                    vm.purchaseFileDataToFilter = response.data.recordDetails.purchaseFile[postObj.month];
-                    //.sort(compare);
-                  } else {
-                    vm.purchaseGridData = [];
-                  }
-                } else {
-                  vm.saleGridData = [];
-                  vm.purchaseGridData = [];
-                }
-              }).catch((error) => {
-                console.log("error", error);
+                vm.mobile1 = response.data.matchedSaleRecords[0].Mobile_Number;
+              }
+              if (response.data.matchedSaleRecords[0].Customer_Billing_GSTIN) {
+                vm.GSTNo = response.data.matchedSaleRecords[0].Customer_Billing_GSTIN;
+              }
+              if (response.data.matchedSaleRecords[0].Mobile_Number) {
+                vm.hideMobile = response.data.matchedSaleRecords[0].Mobile_Number.substring(6, 10);
+              }
+              purchaseFile[month + ''] = response.data.matchedSaleRecords;
+              lodash.forEach(purchaseFile[month], function(record) {
+                record.Supplier_Name = response.data.user.companyName;
+                record.Supplier_GSTIN = response.data.user.GSTNo;
+                record.Supplier_State = response.data.user.state;
+                record.Supplier_Address = response.data.user.address;
+                record.Supplier_City = response.data.user.city;
+                record.Supplier_PinCode = response.data.user.pincode;
+                record.Mobile_Number = response.data.user.mobile1;
+                record.Email_Address = response.data.user.email;
+                delete record['Customer_Billing_Name'];
+                delete record['Customer_Billing_GSTIN'];
+                delete record['Customer_Billing_State'];
+                delete record['Customer_Billing_Address'];
+                delete record['Customer_Billing_City'];
+                delete record['Customer_Billing_PinCode'];
+                delete record['Customer_Billing_StateCode'];
+              })
+            } else if (response.data.matchedPurchaseRecords) {
+              if (response.data.matchedPurchaseRecords[0].Supplier_Name) {
+                vm.receiverCompany = response.data.matchedPurchaseRecords[0].Supplier_Name;
+              }
+              if (response.data.user.companyName) {
+                vm.senderCompany = response.data.user.companyName;
+              }
+              if (response.data.matchedPurchaseRecords[0].Supplier_Name) {
+                vm.companyName = response.data.matchedPurchaseRecords[0].Supplier_Name;
+              }
+              if (response.data.matchedPurchaseRecords[0].Supplier_State) {
+                vm.state = response.data.matchedPurchaseRecords[0].Supplier_State;
+              }
+              if (response.data.matchedPurchaseRecords[0].Supplier_City) {
+                vm.city = response.data.matchedPurchaseRecords[0].Supplier_City;
+              }
+              if (response.data.matchedPurchaseRecords[0].Supplier_PinCode) {
+                vm.pincode = response.data.matchedPurchaseRecords[0].Supplier_PinCode;
+              }
+              if (response.data.matchedPurchaseRecords[0].Email_Address) {
+                vm.email = response.data.matchedPurchaseRecords[0].Email_Address;
+              }
+              if (response.data.matchedPurchaseRecords[0].Supplier_Address) {
+                vm.address = response.data.matchedPurchaseRecords[0].Supplier_Address;
+              }
+              if (response.data.matchedPurchaseRecords[0].Mobile_Number) {
+                vm.mobile1 = response.data.matchedPurchaseRecords[0].Mobile_Number;
+              }
+              if (response.data.matchedPurchaseRecords[0].Supplier_GSTIN) {
+                vm.GSTNo = response.data.matchedPurchaseRecords[0].Supplier_GSTIN;
+              }
+              if (response.data.matchedPurchaseRecords[0].Mobile_Number) {
+                vm.hideMobile = response.data.matchedPurchaseRecords[0].Mobile_Number.substring(6, 10);
+              }
+              saleFile[month + ''] = response.data.matchedPurchaseRecords;
+              lodash.forEach(saleFile[month], function(record) {
+                record.Customer_Billing_Name = response.data.user.companyName;
+                record.Customer_Billing_GSTIN = response.data.user.GSTNo;
+                record.Customer_Billing_State = response.data.user.state;
+                record.Customer_Billing_Address = response.data.user.address;
+                record.Customer_Billing_City = response.data.user.city;
+                record.Customer_Billing_PinCode = response.data.user.pincode;
+                record.Mobile_Number = response.data.user.mobile1;
+                record.Email_Address = response.data.user.email;
+                delete record['Supplier_Name'];
+                delete record['Supplier_GSTIN'];
+                delete record['Supplier_State'];
+                delete record['Supplier_Address'];
+                delete record['Supplier_City'];
+                delete record['Supplier_PinCode'];
+                delete record['Supplier_StateCode'];
               })
             }
           }).catch((error) => {
-            console.log("error - - - - ", error);
+            // console.log("error - - - - ", error);
           })
         }
       }).catch((error) => {
-        console.log("error - - - - ", error);
+        // console.log("error - - - - ", error);
       })
     }
 
 
-
-    // function filterByMonth() {
-    //   let object = {
-    //     gst: customerGSTIN
-    //   }
-
-    //   console.log("1st object", object);
-    //   DashboardService.checkUser(object).then((response) => {
-    //     console.log("1st object response", response);
-    //     if (response.data.user) {
-    //       $location.path('/login');
-    //     } else {
-    //       console.log("NOT FOUND");
-
-    //       let obj = {
-    //         gst: userGSTNo
-    //       }
-
-    //       console.log("2nd object", obj);
-    //       DashboardService.checkUser(obj).then((response) => {
-    //         if (response.data.user) {
-    //           console.log("2nd object USER FOUND", response.data.user);
-    //           vm.senderCompany = response.data.user.companyName;
-
-
-
-    //           if (category == 0) {
-    //             if (response.data.user.saleFile[month]) {
-    //               lodash.forEach(response.data.user.saleFile[month], function(record) {
-    //                 if (invoiceNo == record.Invoice_Number) {
-    //                   record.Customer_Billing_Name = response.data.user.companyName;
-    //                   record.Customer_Billing_GSTIN = response.data.user.GSTNo;
-    //                   record.Customer_Billing_State = response.data.user.state;
-    //                   let obj = {
-    //                     month: vm.selectedMonth.toString("yyyy-MM"),
-    //                     data: record,
-    //                     gst: customerGSTIN,
-    //                     category: category
-    //                   }
-
-    //                   DashboardService.addTemporaryPurchaseData(obj).then((response) => {
-    //                     console.log("response.data 109", response.data);
-    //                     if (response.data.recordDetails) {
-    //                       function compare(a, b) {
-    //                         const gstA = a.Customer_Billing_GSTIN.toUpperCase();
-    //                         const gstB = b.Customer_Billing_GSTIN.toUpperCase();
-    //                         let comparison = 0;
-    //                         if (gstA > gstB) {
-    //                           comparison = 1;
-    //                         } else if (gstA < gstB) {
-    //                           comparison = -1;
-    //                         }
-    //                         return comparison;
-    //                       }
-
-    //                       vm.purchaseGridData = response.data.recordDetails.purchaseFile[obj.month].sort(compare);
-    //                     } else {
-    //                       vm.purchaseGridData = [];
-    //                     }
-    //                   }).catch((error) => {
-    //                     console.log("error", error);
-    //                   })
-    //                 }
-    //               })
-
-
-    //             } else {
-    //               console.log("Some Error in Fatching Data");
-    //             }
-    //           } else if (category == 1) {
-    //             // UPLOAD SALE
-    //             if (response.data.user.purchaseFile[month]) {
-    //               lodash.forEach(response.data.user.purchaseFile[month], function(record) {
-    //                 if (invoiceNo == record.Invoice_Number) {
-    //                   record.Customer_Billing_Name = response.data.user.companyName;
-    //                   record.Customer_Billing_GSTIN = response.data.user.GSTNo;
-    //                   record.Customer_Billing_State = response.data.user.state;
-    //                   let obj = {
-    //                     month: vm.selectedMonth.toString("yyyy-MM"),
-    //                     data: record,
-    //                     gst: customerGSTIN,
-    //                     category: category
-    //                   }
-
-    //                   console.log("obj", obj);
-    //                   DashboardService.addTemporarySaleData(obj).then((response) => {
-    //                     console.log("response.data 132", response.data);
-    //                     if (response.data.recordDetails) {
-    //                       function compare(a, b) {
-    //                         const gstA = a.Customer_Billing_GSTIN.toUpperCase();
-    //                         const gstB = b.Customer_Billing_GSTIN.toUpperCase();
-    //                         let comparison = 0;
-    //                         if (gstA > gstB) {
-    //                           comparison = 1;
-    //                         } else if (gstA < gstB) {
-    //                           comparison = -1;
-    //                         }
-    //                         return comparison;
-    //                       }
-
-    //                       vm.saleGridData = response.data.recordDetails.purchaseFile[obj.month].sort(compare);
-    //                     } else {
-    //                       vm.saleGridData = [];
-    //                     }
-    //                   }).catch((error) => {
-    //                     console.log("error", error);
-    //                   })
-    //                 }
-    //               })
-    //             }
-
-    //           }
-    //           // vm.confirmationData = record;
-
-    //           // if (record.Mobile_Number) {
-    //           //   vm.mobile = record.Mobile_Number;
-    //           //   vm.hideMobile = vm.mobile.substring(6, 10);
-
-    //           // } else {
-    //           //   console.log("IN NO MOBILE");
-    //           // }
-
-    //         }
-    //       }).catch((error) => {
-    //         console.log("error - - - - ", error);
-    //       })
-    //     }
-    //   }).catch((error) => {
-    //     console.log("error - - - - ", error);
-    //   })
-    // }
+    function addUser() {
+      let postObj = {
+        companyName: vm.companyName,
+        state: vm.state,
+        city: vm.city,
+        pincode: vm.pincode,
+        email: vm.email,
+        ownerName: vm.ownerName,
+        address: vm.address,
+        mobile1: vm.mobile1,
+        // mobile2: vm.mobile2,
+        landline: vm.landline,
+        // panNo: vm.panNo.toUpperCase(),
+        GSTNo: vm.GSTNo.toUpperCase(),
+        password: vm.password,
+        saleFile: saleFile,
+        purchaseFile: purchaseFile,
+        premiumUser: premiumUser
+      };
+      if (vm.password != vm.confirmPassword) {
+        noty('warning', 'Confirm password must match the entered password');
+      } else {
+        UserService.addUser(postObj).then((response) => {
+          noty('success', response.data.message);
+          $location.path('/login');
+        }).catch((error) => {
+          if (error.status == 409) {
+            noty('error', error.data.message);
+          }
+        });
+      }
+    }
 
 
     function searchSaleGrid() {
@@ -365,16 +294,10 @@
       }
     }
 
-
     function correctPurchase(invoiceNo, GSTIN, event) {
       let status = event.toElement.id == 'correct' ? 'verified' : 'mismatched';
       let flag = event.toElement.id == 'correct' ? 0 : 1;
-      console.log("status", status);
       let parent = event.srcElement.parentElement.parentElement.parentElement.parentElement;
-      console.log("parent", parent);
-      // $(parent).find('#correct').remove();
-      // $(parent).find('#wrong').remove();
-      // vm.filterByMonth = '2017-09';
       let month = vm.filterByMonth.toString("yyyy-MM");
       let statusObj = {
         date: month,
@@ -384,10 +307,7 @@
         fromPurchase: true,
         flag: flag
       }
-
-      console.log("statusObj", statusObj);
       DashboardService.changeStatus(statusObj).then((response) => {
-        console.log("response", response);
         noty('success', response.data.message);
         if (status == 'verified') {
           $(parent).addClass("verified");
@@ -396,34 +316,23 @@
           $(parent).addClass("mismatched");
           $(parent).removeClass("verified");
         }
-        //   if ($(parent).attr('class') == 'ng-scope mismatched') {
-        //     console.log('ng-scope mismatched');
-        //     notVerifiedPurchase--;
-        //     mismatchedPurchase++;
-        //   } else {
-        //     console.log('NOT ng-scope mismatched');
-        //     verifiedPurchase++;
-        //     notVerifiedPurchase--;
-        //   }
-        //   vm.verifiedPurchase = verifiedPurchase;
-        //   vm.mismatchedPurchase = mismatchedPurchase;
-        //   vm.notVerifiedPurchase = notVerifiedPurchase;
       }).catch((error) => {
-        console.log("error", error);
         noty('error', error.data.message);
       })
-
     }
 
     function sendOTPViaSMS() {
       let obj = {
-        // mobile: vm.mobile,
-        mobile: '9978770693', // Mobile Displayed in temp deshboard
+        // mobile: '9978770693', // Mobile Displayed in temp deshboard
+        mobile: vm.mobile1,
         otp: otp
       }
-      console.log(obj);
       DashboardService.sendOTPViaSMS(obj).then((response) => {
         noty('success', response.data.message);
+        setTimeout(function() {
+          // alert("Hello");
+          otp = '';
+        }, 480000);
       }).catch((error) => {
         noty('error', error.data.message);
       })
@@ -432,14 +341,17 @@
     function sendOTPViaEmail() {
 
       let obj = {
-        email: 'samir@yopmail.com', // Email of owner of temp deshboard
+        // email: 'samir@yopmail.com', // Email of owner of temp deshboard
+        email: vm.email,
         otp: otp
       }
-      console.log(obj);
       DashboardService.sendOTPViaEmail(obj).then((response) => {
         noty('success', response.data.message);
+        setTimeout(function() {
+          // alert("Hello");
+          otp = '';
+        }, 480000);
       }).catch((error) => {
-        console.log("error", error);
         noty('error', error.data.message);
       })
     }
@@ -450,8 +362,8 @@
         vm.verify = true;
 
       } else {
-        // vm.verify = false;
-        vm.verify = true;
+        vm.verify = false;
+        // vm.verify = true;
         noty('error', 'OTP Verification Failed');
       }
     }

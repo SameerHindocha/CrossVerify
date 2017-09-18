@@ -23,7 +23,6 @@
     var momNow = moment.tz("Asia/Kolkata");
     // Current time in India formatted (string)
     let date = momNow.format("YYYY-MM-DD HH:mm:ss");
-    console.log(date);
 
     $scope.finalvalues = function(updatedData) {
       let setLocalStorageData, updatedResponseData;

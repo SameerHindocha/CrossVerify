@@ -1,19 +1,16 @@
 <header></header>
-<div class="container dashboardHeader">
+<div class="container-fluid">
   <div class="row">
-    <div class="col-md-12 text-center">
+    <div class="col-sm-6">
+      <h2>Profile</h2>
+    </div>
+    <div class="col-sm-6 text-right">
+      <popup-info data="vm.user" on-update="finalvalues(details)"></popup-info>
     </div>
   </div>
-</div>
-<div class="container">
-  <div class="row">
-    <b style="font-size: 17px">Profile</b><span class="pull-right">
-      <popup-info data="vm.user" on-update="finalvalues(details)"></popup-info>
-      </span>
-  </div>
-  <div class="row">
-    <fieldset class="profile">
-      <div class="col-md-12 registrationForm registrationFormDisplay">
+  <div class="row profile">
+    <div class="col-md-12">
+      <div class="registrationForm registrationFormDisplay">
         <div class="row">
           <div class="col-md-12">
             <h4>Company Information</h4>
@@ -117,6 +114,6 @@
           </div>
         </div>
       </div>
-    </fieldset>
+    </div>
   </div>
 </div>

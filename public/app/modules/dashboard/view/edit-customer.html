@@ -26,12 +26,18 @@
               <input type="email" name="clientEmail" class="form-control" ng-model="vm.clientEmail" placeholder="Email Address">
               <div class="input-icon"><i class="fa fa-envelope-o"></i></div>
             </div>
+            <div ng-hide="addUserForm.clientEmail.$valid || addUserForm.clientEmail.$pristine" class="alert alert-danger">
+              Invalid Email
+            </div>
           </div>
           <!-- *******GST NO******** -->
           <div class="inputGroupWrap col-md-6">
             <div class="input-group input-group-icon">
-              <input type="text" name="clientGSTNo" class="form-control toUpper" ng-model="vm.clientGSTNo" placeholder="GST Number">
+              <input type="text" name="clientGSTNo" class="form-control toUpper" ng-model="vm.clientGSTNo" placeholder="GST Number" ng-pattern="/^[a-zA-Z0-9]{15}$/" minlength="15" maxlength="15">
               <div class="input-icon"><i class="fa fa-id-card-o"></i></div>
+            </div>
+            <div ng-hide="addUserForm.clientGSTNo.$valid || addUserForm.clientGSTNo.$pristine" class="alert alert-danger">
+              Invalid GST Number
             </div>
           </div>
           <!-- *******ADDRESS******** -->
@@ -47,10 +53,6 @@
               <select name="clientState" class="form-control" ng-model="vm.clientState1" ng-options="state for state in vm.clientState">
                 <option value="">Please select State</option>
               </select>
-              <!--   <select class="form-control">
-                <option disabled="" >Select</option>
-                <option ng-repeat="field in vm.clientState" ng-selected="vm.clientState1">{{field}}</option>
-              </select> -->
               <div class="input-icon "><i class="fa fa-location-arrow "></i></div>
             </div>
           </div>
@@ -76,15 +78,20 @@
             </div>
           </div> -->
           <!-- *******MOBILE ******** -->
-          <div class="inputGroupWrap col-md-6 ">
-            <div class="input-group input-group-icon ">
-              <input type="number " name="clientMobile " class="form-control no-spin " ng-model="vm.clientMobile " placeholder="Mobile Number ">
-              <div class="input-icon "><i class="fa fa-mobile "></i></div>
+          <div class="inputGroupWrap col-md-6">
+            <div class="input-group input-group-icon">
+              <input type="text" name="clientMobile" class="form-control" ng-model="vm.clientMobile" placeholder="Mobile Number" maxlength="10" minlength="10">
+              <div class="input-icon"><i class="fa fa-mobile"></i></div>
             </div>
+            <div ng-hide="addUserForm.clientMobile.$valid || addUserForm.clientMobile.$pristine" class="alert alert-danger">
+              Invalid Mobile Number
+            </div>
+          </div>
+          <div class="inputGroupWrap col-md-12 ">
+            <button class="btn btn-primary" ng-disabled="addUserForm.clientEmail.$invalid || addUserForm.clientGSTNo.$invalid || addUserForm.clientMobile.$invalid" ng-click="vm.updateClient() ">Update Client Info</button>
           </div>
         </div>
     </div>
-    <button class="btn btn-primary " ng-click="vm.updateClient() ">Update Client Info</button>
     </form>
   </div>
 </div>

@@ -10,7 +10,7 @@
           controllerAs: 'vm',
           loggedInGuard: true
         })
-        .when("/edit-customer/:id/:month/:invoiceNo/:flag", {
+        .when("/edit-customer/:id/:month/:recordId/:flag", {
           templateUrl: 'app/modules/dashboard/view/edit-customer.html',
           controller: 'editCustomerController',
           controllerAs: 'vm',
@@ -20,7 +20,6 @@
           templateUrl: 'app/modules/dashboard/view/temporary-dashboard.html',
           controller: 'temporaryDashboardController',
           controllerAs: 'vm',
-          // loggedInGuard: true
           loggedInGuard: false
         })
     }]);

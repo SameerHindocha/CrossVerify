@@ -16,11 +16,13 @@
       transclude: true,
       controller: ['$scope', 'lodash', function($scope, lodash) {
         $scope.modelId = 'ModelID' + Math.floor(Math.random() * 2000);
-
-        console.log("$scope.data", $scope.data);
+        let name, GSTIN, invoiceFlag;
+        if ($scope.data.Customer_Billing_Name) {
+          invoiceFlag = 0;
+        } else {
+          invoiceFlag = 1;
+        }
         $scope.details = {
-          Customer_Billing_Name: $scope.data.Customer_Billing_Name,
-          Customer_Billing_GSTIN: $scope.data.Customer_Billing_GSTIN,
           Email_Address: $scope.data.Email_Address,
           Invoice_Number: $scope.data.Invoice_Number,
           Item_Taxable_Value: $scope.data.Item_Taxable_Value,
@@ -35,7 +37,11 @@
           Cess_Amount: $scope.data.Cess_Amount,
           Other_Charges: $scope.data.Other_Charges,
           Roundoff: $scope.data.Roundoff,
-          Item_Total_Including_GST: $scope.data.Item_Total_Including_GST
+          Item_Total_Including_GST: $scope.data.Item_Total_Including_GST,
+          invoiceFlag: invoiceFlag,
+          Mobile_Number: $scope.data.Mobile_Number,
+          recordId: $scope.data._id
+
         }
 
         $scope.openAddPopup = function() {
@@ -53,7 +59,9 @@
             Cess_Amount: $scope.data.Cess_Amount,
             Other_Charges: $scope.data.Other_Charges,
             Roundoff: $scope.data.Roundoff,
-            Item_Total_Including_GST: $scope.data.Item_Total_Including_GST
+            Item_Total_Including_GST: $scope.data.Item_Total_Including_GST,
+            Mobile_Number: $scope.data.Mobile_Number,
+            recordId: $scope.data._id
           }
         };
         $scope.send = function() {
