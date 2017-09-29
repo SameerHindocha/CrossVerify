@@ -1,0 +1,59 @@
+<header></header>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>
+        Update Contact Detail
+      </h2>
+    </div>
+    <div class="col-md-12 registrationForm">
+      <form name="editContactForm">
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Information</h4>
+          </div>
+          <div class="inputGroupWrap col-md-6">
+            <div class="input-group input-group-icon">
+              <input type="text" name="name" class="form-control" ng-model="vm.editContact.name" placeholder=" Company Name">
+              <div class="input-icon">
+                <i class="fa fa-briefcase"></i>
+              </div>
+            </div>
+          </div>
+          <!-- *******EMAIL******** -->
+          <div class="inputGroupWrap col-md-6">
+            <div class="input-group input-group-icon">
+              <input type="email" name="email" class="form-control" ng-model="vm.editContact.email" placeholder="Email Address">
+              <div class="input-icon"><i class="fa fa-envelope-o"></i></div>
+            </div>
+            <div ng-hide="editContactForm.email.$valid || editContactForm.email.$pristine" class="alert alert-danger">
+              Invalid Email
+            </div>
+          </div>
+          <!-- *******GST NO******** -->
+          <div class="inputGroupWrap col-md-6">
+            <div class="input-group input-group-icon">
+              <input type="text" name="GSTNo" class="form-control toUpper" ng-model="vm.editContact.GSTNo" placeholder="GST Number" ng-pattern="/^[a-zA-Z0-9]{15}$/" minlength="15" maxlength="15" required>
+              <div class="input-icon"><i class="fa fa-id-card-o"></i></div>
+            </div>
+            <div ng-hide="editContactForm.GSTNo.$valid || editContactForm.GSTNo.$pristine" class="alert alert-danger">
+              Invalid GST Number
+            </div>
+          </div>
+          <div class="inputGroupWrap col-md-6">
+            <div class="input-group input-group-icon">
+              <input type="text" name="mobile" class="form-control" ng-model="vm.editContact.mobile" placeholder="Mobile Number" maxlength="10" minlength="10">
+              <div class="input-icon"><i class="fa fa-mobile"></i></div>
+            </div>
+            <div ng-hide="editContactForm.mobile.$valid || editContactForm.mobile.$pristine" class="alert alert-danger">
+              Invalid Mobile Number
+            </div>
+          </div>
+          <div class="inputGroupWrap col-md-12 ">
+            <button class="btn btn-primary" ng-disabled="editContactForm.GSTNo.$invalid" ng-click="vm.updateContact()">Update Contact</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

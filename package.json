@@ -11,6 +11,8 @@
   "dependencies": {
     "angular-route": "^1.6.5",
     "angular-ui-bootstrap": "^2.5.0",
+    "async": "^2.5.0",
+    "asyncawait": "^1.0.6",
     "autoprefixer": "^7.1.2",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
@@ -38,6 +40,7 @@
     "nodemailer-smtp-transport": "^2.7.4",
     "otplib": "^6.0.3",
     "q": "^1.5.0",
+    "randomstring": "^1.1.5",
     "request": "^2.81.0",
     "textmagic-rest-client": "0.0.5",
     "tinyurl": "^1.1.2",

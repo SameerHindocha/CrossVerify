@@ -11,7 +11,6 @@ let byPassedEndpoints = [
   '/logout',
   '/gst-status',
   '/edit-user',
-  // '/sale-file',
   '/filter-invoices-by-month',
   '/update-contact-detail',
   '/update-sale-file',
@@ -31,7 +30,17 @@ let byPassedEndpoints = [
   '/check-user',
   '/check-receiver',
   '/change-sale-status-by-mail',
-  '/change-purchase-status-by-mail'
+  '/change-purchase-status-by-mail',
+  '/auto-verify-sale',
+  '/auto-verify-purchase',
+  '/send-all-monthly-mail',
+  '/send-all-monthly-sms',
+  '/change-password',
+  '/get-contact-details',
+  '/update-basic-contact-details',
+  '/forgot-password',
+  '/get-user-data-from-token',
+  '/reset-password'
 ];
 
 let fs = require('fs');

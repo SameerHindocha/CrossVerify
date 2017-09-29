@@ -25,6 +25,7 @@
         $scope.details = {
           Email_Address: $scope.data.Email_Address,
           Invoice_Number: $scope.data.Invoice_Number,
+          Invoice_Date: $scope.data.Invoice_Date,
           Item_Taxable_Value: $scope.data.Item_Taxable_Value,
           CGST_Rate: $scope.data.CGST_Rate,
           CGST_Amount: $scope.data.CGST_Amount,
@@ -47,6 +48,8 @@
         $scope.openAddPopup = function() {
           $('#' + $scope.modelId).modal('show');
           $scope.initData = {
+            Invoice_Number: $scope.data.Invoice_Number,
+            Invoice_Date: $scope.data.Invoice_Date,
             Item_Taxable_Value: $scope.data.Item_Taxable_Value,
             CGST_Rate: $scope.data.CGST_Rate,
             CGST_Amount: $scope.data.CGST_Amount,

@@ -10,7 +10,7 @@
           controllerAs: 'vm',
           loggedInGuard: true
         })
-        .when("/edit-customer/:id/:month/:recordId/:flag", {
+        .when("/edit-customer/:id/:month/:recordId/:GSTIN/:flag", {
           templateUrl: 'app/modules/dashboard/view/edit-customer.html',
           controller: 'editCustomerController',
           controllerAs: 'vm',

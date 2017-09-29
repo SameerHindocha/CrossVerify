@@ -22,6 +22,34 @@ select option {
   padding-bottom: 4px;
 }
 
+
+
+
+
+/*TMP*/
+
+.search-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.search-group .search-icon i {
+  line-height: 2.0em;
+}
+
+
+
+
+
+
+/*TMP*/
+
+.table td i.fa[disabled="disabled"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .alpha {
   background-image: url('../images/login_background.jpg');
 }
@@ -357,12 +385,17 @@ fieldset {
 }
 
 .detailTable input[type=search]:focus {
-  width: 60%;
+  width: 80%;
 }
 
 .detailTable .search-group .search-icon i {
   line-height: 2.0em;
 }
+
+.searchWrap .actionButtons {
+  padding-top: 2px;
+}
+
 
 .detailTable .invoiceTable update-invoice {
   padding: 5px 2px;
@@ -404,6 +437,12 @@ fieldset {
   right: 0;
 }
 
+.detailTable .invoiceTable .table td .custName i.fa[disabled="disabled"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .detailTable .invoiceTable .table td .btn {
   font-size: 12px;
   padding: 3px 8px;
@@ -414,6 +453,16 @@ fieldset {
 }
 
 .detailTable .invoiceTable .table td .shareButtons .btn:first-child {
+  margin-right: 4px;
+}
+
+.detailTable .invoiceTable .table td .correctBtn,
+.detailTable .invoiceTable .table td .wrongBtn {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.detailTable .invoiceTable .table td .correctBtn {
   margin-right: 4px;
 }
 
@@ -440,6 +489,10 @@ fieldset {
 
 .detailTable .invoiceTable .table tr.notVerified {
   background: #fafafa;
+}
+
+.highlightPopupFormFields {
+  border: 1px solid #888888;
 }
 
 .fileUpload {
@@ -487,7 +540,7 @@ fieldset {
   position: absolute;
   padding: 2px 10px 2px 10px;
   top: 0;
-  left: 0;
+  left: 15px;
   text-align: center;
   pointer-events: none;
 }
@@ -505,6 +558,7 @@ fieldset {
   border: 1px solid #ecf1f0;
   border-radius: 5px;
   text-align: center;
+  cursor: pointer;
 }
 
 .invoiceSummaryWrap .invoiceSummary .invoiceSummaryCell .invoiceSummaryTitle {
@@ -521,9 +575,19 @@ fieldset {
   border-bottom: 5px solid #45b1cd;
 }
 
+.invoiceSummaryWrap .invoiceSummary .invoiceSummaryCellTotal:hover,
+.invoiceSummaryWrap .invoiceSummary .invoiceSummaryCellTotal.focused {
+  background: #78d5ed;
+}
+
 .invoiceSummaryWrap .invoiceSummary .invoiceSummaryCellVerified {
   background: #c0f2ca;
   border-bottom: 5px solid #33b64e;
+}
+
+.invoiceSummaryWrap .invoiceSummary .invoiceSummaryCellVerified:hover,
+.invoiceSummaryWrap .invoiceSummary .invoiceSummaryCellVerified.focused {
+  background: #7ee592;
 }
 
 .invoiceSummaryWrap .invoiceSummary .invoiceSummaryCellNotVerified {
@@ -531,9 +595,19 @@ fieldset {
   border-bottom: 5px solid #bbbbbb;
 }
 
+.invoiceSummaryWrap .invoiceSummary .invoiceSummaryCellNotVerified:hover,
+.invoiceSummaryWrap .invoiceSummary .invoiceSummaryCellNotVerified.focused {
+  background: #dbdbdb;
+}
+
 .invoiceSummaryWrap .invoiceSummary .invoiceSummaryCellMismatched {
   background: #ffe7ce;
   border-bottom: 5px solid #f0af6c;
+}
+
+.invoiceSummaryWrap .invoiceSummary .invoiceSummaryCellMismatched:hover,
+.invoiceSummaryWrap .invoiceSummary .invoiceSummaryCellMismatched.focused {
+  background: #f9c590;
 }
 
 .datePickerWrap {
@@ -678,6 +752,7 @@ input[type="number"] {
 
 .registrationForm .input-group select.form-control {
   color: #555555;
+  -webkit-appearance: none;
 }
 
 .registrationForm .input-group select.form-control option {
@@ -878,8 +953,8 @@ label.shareLinkText {
   float: none;
 }
 
-.modal-dialog .modal-body .input-group .form-control input,
-.modal-dialog .modal-body .input-group .form-control select {
+.modal-dialog .modal-body .input-group input.form-control,
+.modal-dialog .modal-body .input-group select.form-control {
   border-radius: 4px;
 }
 
@@ -1188,9 +1263,116 @@ table tbody .fa-minus {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 LODER
  */
+
+.loderBackground {
+  background: #e9e9e9; // display: none;
+  // position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0.5;
+}
 
 #circularG {
   position: relative;
@@ -1313,6 +1495,7 @@ LODER
 
 
 
+
 @keyframes bounce_circularG {
   0% {
     transform: scale(1);
@@ -1362,6 +1545,103 @@ LODER
     -moz-transform: scale(.3);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1574,6 +1854,7 @@ LODER
   .detailTable .invoiceTable .table td .custName i.fa {
     top: -1px;
   }
+
 
   .detailTable .invoiceTable .table td .shareButtons {
     display: inline-block;

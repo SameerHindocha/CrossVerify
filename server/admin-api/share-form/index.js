@@ -14,6 +14,8 @@ module.exports = class ShareFormController {
     app.post('/admin-api/send-otp-email', this.sendOTPEmail);
     app.post('/admin-api/send-monthly-mail', this.sendMonthlyMail);
     app.post('/admin-api/send-monthly-sms', this.sendMonthlySMS);
+    app.post('/admin-api/send-all-monthly-mail', this.sendAllMonthlyMail)
+    app.post('/admin-api/send-all-monthly-sms', this.sendAllMonthlySMS);
 
   }
 
@@ -73,7 +75,6 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
     let emailObj;
     let email = req.body.data.Email_Address;
     let stringifiedData = JSON.stringify(req.body.data);
-    console.log("email", email);
     session = req.session;
     if (req.session.isLoggedIn == 'Y') {
       if (req.body.data.type == 'Sale') {
@@ -139,8 +140,8 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
          </tr>
          </table>
           <br><br>
-          <a href="http://${global.config.server.url}:${global.config.server.port}/admin-api/change-sale-status-by-mail/${req.body.data.date}/verified/${req.session.userProfile._id}/${req.body.data._id}" style="font-size:16px; background-color:green;color:white; font-weight: bold; font-family: Helvetica, Arial, sans-serif; text-decoration: none; line-height:40px; width:100%; display:inline-block;padding:8px 15px">Correct</a>
-          <a href="http://${global.config.server.url}:${global.config.server.port}/admin-api/change-sale-status-by-mail/${req.body.data.date}/mismatched/${req.session.userProfile._id}/${req.body.data._id}" style="font-size:16px; background-color:orange;color:white; font-weight: bold; font-family: Helvetica, Arial, sans-serif; text-decoration: none; line-height:40px; width:100%; display:inline-block;padding:8px 15px">Wrong</a>
+          <a href="http://${global.config.server.url}:${global.config.server.port}/admin-api/change-sale-status-by-mail/${req.body.data.date}/verified/${req.session.userProfile._id}/${req.body.data._id}" style="font-size:16px; background-color:#5cb85c;color:white; font-weight: bold; font-family: Helvetica, Arial, sans-serif; text-decoration: none; line-height:40px; width:100%; display:inline-block;padding:8px 15px">Correct</a>
+          <a href="http://${global.config.server.url}:${global.config.server.port}/admin-api/change-sale-status-by-mail/${req.body.data.date}/mismatched/${req.session.userProfile._id}/${req.body.data._id}" style="font-size:16px; background-color:#E51400;color:white; font-weight: bold; font-family: Helvetica, Arial, sans-serif; text-decoration: none; line-height:40px; width:100%; display:inline-block;padding:8px 15px">Wrong</a>
          `
         }
       } else if (req.body.data.type == 'Purchase') {
@@ -221,12 +222,14 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
          </tr>
          </table>
           <br><br>
-          <a href="http://${global.config.server.url}:${global.config.server.port}/admin-api/change-purchase-status-by-mail/${req.body.data.date}/verified/${req.session.userProfile._id}/${req.body.data._id}" style="font-size:16px; background-color:green;color:white; font-weight: bold; font-family: Helvetica, Arial, sans-serif; text-decoration: none; line-height:40px; width:100%; display:inline-block;padding:8px 15px">Correct</a>
-          <a href="http://${global.config.server.url}:${global.config.server.port}/admin-api/change-purchase-status-by-mail/${req.body.data.date}/mismatched/${req.session.userProfile._id}/${req.body.data._id}" style="font-size:16px; background-color:orange;color:white; font-weight: bold; font-family: Helvetica, Arial, sans-serif; text-decoration: none; line-height:40px; width:100%; display:inline-block;padding:8px 15px">Wrong</a>
+          <a href="http://${global.config.server.url}:${global.config.server.port}/admin-api/change-purchase-status-by-mail/${req.body.data.date}/verified/${req.session.userProfile._id}/${req.body.data._id}" style="font-size:16px; background-color:#5cb85c;color:white; font-weight: bold; font-family: Helvetica, Arial, sans-serif; text-decoration: none; line-height:40px; width:100%; display:inline-block;padding:8px 15px">Correct</a>
+          <a href="http://${global.config.server.url}:${global.config.server.port}/admin-api/change-purchase-status-by-mail/${req.body.data.date}/mismatched/${req.session.userProfile._id}/${req.body.data._id}" style="font-size:16px; background-color:#E51400;color:white; font-weight: bold; font-family: Helvetica, Arial, sans-serif; text-decoration: none; line-height:40px; width:100%; display:inline-block;padding:8px 15px">Wrong</a>
          `
         }
       };
 
+      console.log("email", email);
+      console.log("emailObj", emailObj);
       SendMail.MailFunction(emailObj, email).then(function(data) {
         res.send({ message: "Confirmation Email has been sent successfully to your registered Email" })
       }, function(err) {
@@ -298,24 +301,32 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
   sendMonthlyMail(req, res) {
     let emailObj;
     let email = req.body.email;
+    let senderName = req.body.senderName;
+    let month = req.body.month;
+    let type = (req.body.category == 0) ? 'Sale' : 'Purchase';
     let link = 'http://' + global.config.server.url + ':' + global.config.server.port + '/#/' + req.body.link;
     TinyURL.shorten(link, function(res) {
       link = res;
-    })
+    });
+    month = month.substring(5, 7);
+    month = getMonthName(month);
+    console.log("---------------------month---------------------", month);
+
     session = req.session;
     if (req.session.isLoggedIn == 'Y') {
       setTimeout(function() {
         emailObj = {
-          subject: `This is a Monthly Email`, // Subject line
-          html: `Monthly mail link
-        <a href=${link}>
-            h4 > $ { link } < /h4>`,
+          subject: `Cross Verify monthly confirmation email`, // Subject line
+          html: ` <h3>${senderName} wants you to confirm ${type} for the month ${month}. Click this link to confirm: <a href="${link}">Click here</a></h3>
+          <br /> 
+          <p>What is CrossVerify.in <br />
+           CrossVerify is a free portal where you can register your company ,unique link will be created of your company you can send it through whatsapp ,email or any other messaging service to your clients
+           Your client can fill all their company details with GSTIN and submit ,if they want same service you are using then they just need to provide password while submitting form and they will automaticially be registered and can get details of thier client also
+           If you are already registered with CrossVerify.in, and your client asks for your company details you just need to login on the link sent by your client ,all your detials will be auto submitted to your client and their details will be auto fetched to your company database
+           <br /></p>
+           <h3>Warm Regards,</h3>
+           <h3>${senderName}</h3> `
         };
-
-        msg = `${senderName} wants you to confirm ${type} for the month ${month}. Click this link to confirm: ` + link;
-        msg = encodeURIComponent(msg);
-
-        console.log("emailObj", emailObj);
         SendMail.MailFunction(emailObj, email).then(function(data) {
           res.send({ message: "Confirmation Email has been sent successfully to your registered Email" })
         }, function(err) {
@@ -328,26 +339,6 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
     }
   }
 
-  /*
-        emailObj = {
-        subject: `Welcome to Cross Verify registration`, // Subject line
-        html: `<h4>We ${req.session.userProfile.companyName}  request you to fill your Company DETAILS with GSTIN ,WHICH WILL BE NEEDED ( WITHOUT SPELLING ERROR).
-      </h4>We humbly request to fill up this form and submit it as early as possible to update your details with our company.
-                    <h4> PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS.</h4><br>
-                    <a href='http://${global.config.server.url}:${global.config.server.port}/#/client/add/${req.session.userProfile._id}' class='alert-link'>Click here to fill the Cross Verify registration form</a></br></br>
-                    <br /><br />
-                    <h4>
-                    What is CrossVerify.in <br />
-CrossVerify is a free portal where you can register your company ,unique link will be created of your company you can send it through whatsapp ,email or any other messaging service to your clients
-  Your client can fill all their company details with GSTIN and submit ,if they want same service you are using then they just need to provide password while submitting form and they will automaticially be registered and can get details of thier client also
-  If you are already registered with CrossVerify.in, and your client asks for your company details you just need to login on the link sent by your client ,all your detials will be auto submitted to your client and their details will be auto fetched to your company database
-                    </h4>
-
-                   <h4>Warm Regards,</h4>
-                   <h4>${req.session.userProfile.companyName} </h4>`,
-      };
-   */
-
   sendMonthlySMS(req, res) {
     console.log('sendMonthlySMS body', req.body);
     let uri, link, msg, data;
@@ -357,46 +348,10 @@ CrossVerify is a free portal where you can register your company ,unique link wi
     let type = (req.body.category == 0) ? 'Sale' : 'Purchase';
     session = req.session;
     month = month.substring(5, 7);
-    switch (month) {
-      case '01':
-        month = "January";
-        break;
-      case '02':
-        month = "February";
-        break;
-      case '03':
-        month = "March";
-        break;
-      case '04':
-        month = "April";
-        break;
-      case '05':
-        month = "May";
-        break;
-      case '06':
-        month = "June";
-        break;
-      case '07':
-        month = "July";
-        break;
-      case '08':
-        month = "August";
-        break;
-      case '09':
-        month = "September";
-        break;
-      case '10':
-        month = "October";
-        break;
-      case '11':
-        month = "November";
-        break;
-      case '12':
-        month = "December";
-        break;
-    }
+    month = getMonthName(month);
+    console.log("---------------------month---------------------", month);
+
     uri = 'http://' + global.config.server.url + ':' + global.config.server.port + '/#/' + req.body.link;
-    // link = encodeURIComponent(uri);
     TinyURL.shorten(uri, function(res) {
       link = res;
     });
@@ -414,6 +369,60 @@ CrossVerify is a free portal where you can register your company ,unique link wi
     }, 5000)
   }
 
+  sendAllMonthlyMail(req, res) {
+    month = month.substring(5, 7);
+    month = getMonthName(month);
 
+  }
+
+  sendAllMonthlySMS(req, res) {
+    month = month.substring(5, 7);
+    month = getMonthName(month);
+  }
+
+
+
+}
+
+function getMonthName(month) {
+  switch (month) {
+    case '01':
+      month = "January";
+      break;
+    case '02':
+      month = "February";
+      break;
+    case '03':
+      month = "March";
+      break;
+    case '04':
+      month = "April";
+      break;
+    case '05':
+      month = "May";
+      break;
+    case '06':
+      month = "June";
+      break;
+    case '07':
+      month = "July";
+      break;
+    case '08':
+      month = "August";
+      break;
+    case '09':
+      month = "September";
+      break;
+    case '10':
+      month = "October";
+      break;
+    case '11':
+      month = "November";
+      break;
+    case '12':
+      month = "December";
+      break;
+  }
+  return month;
 
 }

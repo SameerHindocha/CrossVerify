@@ -7,26 +7,24 @@
   controller.$inject = ['UserService', '$location', '$route', 'lodash', '$rootScope'];
 
   function controller(UserService, $location, $route, lodash, $rootScope) {
-
-    console.log(" $rootScope.saleFileData", $rootScope.saleFileData);
-
     let vm = this;
-
-    vm.uploadContact = uploadContact;
-
-
+    $rootScope.updateContact = function(missingDataArrayForSale, missingDataArrayForPurchase) {
+      let updateObj = {
+        dateOfFile: $rootScope.uploadDate,
+        updatedSaleFileData: missingDataArrayForSale,
+        updatedPurchaseFileData: missingDataArrayForPurchase
+      }
+      UserService.updateContact(updateObj).then((response) => {
+        noty('success', response.data.message);
+        $location.path('/dashboard');
+      }).catch((error) => {
+        noty('error', error.data.message);
+      })
+    }
     activate();
 
     function activate() {
 
     }
-
-    function uploadContact() {
-
-
-    }
-
-
-
   }
 })();

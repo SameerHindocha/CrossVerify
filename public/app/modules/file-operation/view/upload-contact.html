@@ -3,8 +3,8 @@
   <div class="row tabWrap">
     <div class="col-md-12">
       <h4>Please Update Missing Contact Information of Following : </h4>
-      <uib-tabset active="activeJustified">
-        <uib-tab index="0" heading="Sales Invoice Missing Information">
+      <uib-tabset active="activeTab">
+        <uib-tab index="0" heading="Sales Invoice Missing Information" ng-show="missingDataArrayForSale.length>0">
           <div ng-repeat="obj in missingDataArrayForSale">
             <div class="row" id="s1">
               <div class="form-group col-xs-4">
@@ -19,7 +19,7 @@
             </div>
           </div>
         </uib-tab>
-        <uib-tab index="1" heading="Purchase Invoice Missing Information">
+        <uib-tab index="1" heading="Purchase Invoice Missing Information" ng-show="missingDataArrayForPurchase.length>0">
           <div ng-repeat="obj in missingDataArrayForPurchase">
             <div class="row" id="s1">
               <div class="form-group col-xs-4">

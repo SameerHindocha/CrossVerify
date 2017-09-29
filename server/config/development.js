@@ -21,9 +21,12 @@ var config = {
     "port": 465,
     "secure": true,
     "debug": true,
-    "username": "tapasvi.vaghela@rapidops.com", //crossverify.com@gmail.com
-    "password": "t7600434720", //crossverify101
-    "fromAddress": "tapasvi.vaghela@rapidops.com"
+    // "username": " tapasvi.vaghela@rapidops.com",
+    "username": "crossverify.com@gmail.com",
+    // "password": "t7600434720",
+    "password": "crossverify101",
+    // "fromAddress": "tapasvi.vaghela@rapidops.com"
+    "fromAddress": "crossverify.com@gmail.com"
   }
 }
 module.exports = config;

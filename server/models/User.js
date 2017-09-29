@@ -64,8 +64,13 @@ module.exports = (mongoose) => {
     },
     purchaseFile: {
       type: Mixed
+    },
+    ResetToken: {
+      type: String
+    },
+    TokenExpire: {
+      type: Number
     }
-
   }, { timestamps: true }, { strict: true });
   return mongoose.model('User', UserSchema);
 };

@@ -13,6 +13,7 @@
     vm.AuthService = AuthService;
     vm.doLogin = doLogin;
     vm.register = register;
+    vm.redirectToForgotPassword = redirectToForgotPassword;
     activate();
 
     function activate() {
@@ -42,6 +43,10 @@
 
     function register() {
       $location.path('/user/add');
+    }
+
+    function redirectToForgotPassword() {
+      $location.path('/forgot-password');
     }
   }
 })();

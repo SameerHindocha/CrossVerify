@@ -1,10 +1,19 @@
 const Utils = require('../../libs/utils.js');
 let session;
+const SendMail = require("../../helpers/send-mail.js");
+const randomString = require('randomstring');
+
 module.exports = class AuthController {
   constructor(app) {
     app.get('/checkLogin', this.IsLoogedIn);
     app.post('/login', this.Login);
     app.get('/logout', this.Logout);
+    app.put('/change-password', this.changePassword);
+    app.post('/forgot-password', this.forgotPassword);
+    app.get('/get-user-data-from-token/:ResetToken', this.getUserDataFromToken);
+    app.put('/reset-password', this.resetPasssword);
+
+
   }
 
   IsLoogedIn(req, res) {
@@ -61,6 +70,102 @@ module.exports = class AuthController {
       } else {
         return res.send({ message: "Logged out" })
       }
+    })
+  }
+
+
+  changePassword(req, res) {
+    let oldPassword = req.body.oldPassword;
+    let newPassword = req.body.newPassword;
+    oldPassword = Utils.md5(oldPassword);
+    newPassword = Utils.md5(newPassword);
+    db.User.findById({ _id: req.session.userProfile._id }).then((user) => {
+      if (user) {
+        let storedPassword = user.password;
+        if (oldPassword === storedPassword) {
+          user.password = newPassword;
+          db.User.update({ "_id": req.session.userProfile._id }, { $set: user }).then((response) => {
+            return res.send({ user: response, message: 'Password Changed Successfully' });
+          }).catch((error) => {
+            return res.send(error);
+          })
+        } else {
+          return res.send({ status: 401, message: 'Your current password does not match the entered password' })
+        }
+      } else {
+        return res.send({ message: 'Object Not Found' });
+      }
+    })
+  }
+
+  forgotPassword(req, res) {
+    console.log("req.body", req.body);
+    let resetToken = randomString.generate(16);
+    let tokenExpireOn = new Date().getTime();
+    tokenExpireOn = tokenExpireOn + 86400000; //Expire after 24HRs
+    let email = req.body.Email;
+    let Username;
+    let urlLink = `http://${global.config.server.url}:${global.config.server.port}/#/reset-password/` + resetToken;
+    let ownerName;
+    db.User.findOne({ 'email': email }).then((user) => {
+      ownerName = (user.ownerName) ? user.ownerName : "user"
+      let emailObj = {
+        url: urlLink,
+        subject: "Reset Password",
+        html: `<div><h4>Hello, ${ownerName}</h4>
+                           <p>You’re receiving this email due to a forgot password action you requested.
+                            Click on following link to reset your password::</p>
+                            <a href=${urlLink}><h2 style="border: 1px solid #175817;width: 125px;margin: 0px 100px;background: #4DC14D;color: black;font-size: 16px;padding: 25px;">Click Here</h2></a>
+                            <p>This email is an automated response to your password request.</p>
+                            </br>
+                            <h4>Warm Regards</h4>
+                            <h4>Cross Verify Admin</h4>
+                            </div>`
+      };
+      db.User.update({ '_id': user._id }, {
+        $set: {
+          'ResetToken': resetToken,
+          'TokenExpire': tokenExpireOn
+        }
+      }).then((response) => {
+        SendMail.MailFunction(emailObj, email).then((response) => {
+          res.send({ message: "Email has been sent successfully to your registered Email", email: email });
+        }).catch((error) => {
+          console.log("error", error);
+          res.send({ message: "Error in Sending Email" });
+        })
+      }).catch((error) => {
+        res.send({ message: "Error in set Token" });
+      })
+    }).catch(() => {
+      res.send({ message: "Object not Found" });
+    })
+  }
+
+
+  getUserDataFromToken(req, res) {
+    let ResetToken = req.params.ResetToken;
+    db.User.findOne({ "ResetToken": ResetToken }).then((user) => {
+      res.send({ user });
+    }).catch(() => {
+      res.send(error);
+    })
+  }
+
+
+  resetPasssword(req, res) {
+    console.log("===", req.body);
+    let newPassword = Utils.md5(req.body.newPassword);
+    let email = req.body.email;
+    db.User.findOne({ "email": email }).then((user) => {
+      user.password = newPassword;
+      user.save().then((user) => {
+        res.send({ message: "New Password set Successfull" });
+      }).catch((err) => {
+        res.send({ message: "Error in Reset Password" });
+      })
+    }).catch(() => {
+      res.send({ message: "Object not Found" });
     })
   }
 }

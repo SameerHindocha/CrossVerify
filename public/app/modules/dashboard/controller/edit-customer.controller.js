@@ -13,8 +13,10 @@
     let id = $route.current.params.id,
       month = $route.current.params.month,
       flag = $route.current.params.flag,
-      recordId = $route.current.params.recordId;
+      recordId = $route.current.params.recordId,
+      GSTIN = $route.current.params.GSTIN;
     let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    let defaultGSTIN;
 
     activate();
 
@@ -23,6 +25,7 @@
         if (flag == 0) {
           lodash.forEach(response.saleFile[month], function(data) {
             if (data._id == recordId) {
+              defaultGSTIN = data.Customer_Billing_GSTIN;
               vm.clientCompanyName = data.Customer_Billing_Name;
               vm.clientEmail = data.Email_Address;
               vm.clientGSTNo = data.Customer_Billing_GSTIN;
@@ -37,6 +40,7 @@
         if (flag == 1) {
           lodash.forEach(response.purchaseFile[month], function(data) {
             if (data._id == recordId) {
+              defaultGSTIN = data.Supplier_GSTIN;
               vm.clientCompanyName = data.Supplier_Name;
               vm.clientEmail = data.Email_Address;
               vm.clientGSTNo = data.Supplier_GSTIN;
@@ -67,42 +71,43 @@
         Invoice_Number: $route.current.params.invoiceNo,
         date: $route.current.params.month,
         recordId: recordId,
-        flag: flag
+        flag: flag,
+        defaultGSTIN: defaultGSTIN
       }
       let type = (flag == 0) ? 'Sale' : 'Purchase';
       DashboardService.updateClientInfo(updatedObj).then((response) => {
         let customerName = (flag == 0) ? response.data.data.Customer_Billing_Name : response.data.data.Supplier_Name;
         noty('success', response.data.message);
-        let isShare = confirm("Do You Want to Send Confirmation Email to " + customerName + " ?");
-        if (isShare == true) {
-          if (vm.clientEmail) {
-            response.data.data.type = type;
-            response.data.data.date = month;
+        // let isShare = confirm("Do You Want to Send Confirmation Email to " + customerName + " ?");
+        // if (isShare == true) {
+        //   if (vm.clientEmail) {
+        //     response.data.data.type = type;
+        //     response.data.data.date = month;
 
-            let postObj = {
-              data: response.data.data,
-              currentUserId: currentUser._id
-            }
+        //     let postObj = {
+        //       data: response.data.data,
+        //       currentUserId: currentUser._id
+        //     }
 
-            console.log("postObj", postObj);
-            DashboardService.sendConfirmationMail(postObj).then((response) => {
-              noty('success', response.data.message);
-            }).catch((error) => {
-              noty('error', error.data.message);
-            })
-          }
-          // if (vm.clientMobile) {
-          //   console.log("vm.clientMobile", vm.clientMobile);
-          //   let postObj = {
-          //     mobile: vm.clientMobile
-          //   }
-          //   DashboardService.sendConfirmationSMS(postObj).then((response) => {
-          //     noty('success', response.data.message);
-          //   }).catch((error) => {
-          //     noty('error', error.data.message);
-          //   })
-          // }
-        }
+        //     console.log("postObj", postObj);
+        //     DashboardService.sendConfirmationMail(postObj).then((response) => {
+        //       noty('success', response.data.message);
+        //     }).catch((error) => {
+        //       noty('error', error.data.message);
+        //     })
+        //   }
+        //   // if (vm.clientMobile) {
+        //   //   console.log("vm.clientMobile", vm.clientMobile);
+        //   //   let postObj = {
+        //   //     mobile: vm.clientMobile
+        //   //   }
+        //   //   DashboardService.sendConfirmationSMS(postObj).then((response) => {
+        //   //     noty('success', response.data.message);
+        //   //   }).catch((error) => {
+        //   //     noty('error', error.data.message);
+        //   //   })
+        //   // }
+        // }
         $location.path('/dashboard');
       }).catch((error) => {
         noty('error', error.data.message);

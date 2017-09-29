@@ -1,0 +1,85 @@
+<header></header>
+<div ng-class="{loderBackground : showFieldset && vm.displayLabel==false}">
+  <div class="container registrationForm registrationFormDisplay fileUpload">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>File Uploads</h2>
+        <!-- <i class="fa fa-info-circle" aria-hidden="true"></i> -->
+      </div>
+      <div class="inputGroupWrap col-sm-4">
+        <label>Date</label>
+        <br>
+        <!-- <pre>{{vm.displayDate}}</pre> -->
+        <ng-combo-date-picker ng-model="vm.dateOfFile" ng-min-date="2017-07-01" ng-attrs-date='{"class": "col-md-4 hidden"}'></ng-combo-date-picker>
+      </div>
+      <div class="inputGroupWrap col-sm-4" ng-show="vm.upload =='reUploadSale' || vm.upload =='import' ">
+        <label>Sale File</label>
+        <input type="file" class="filestyle" id="saleFile" ngf-select ng-model="vm.saleFile" name="saleFile" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
+        <div class="alert alert-danger" ng-show="updateUserForm.saleFile.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
+        </div>
+      </div>
+      <div class="inputGroupWrap col-sm-4" ng-show="vm.upload =='reUploadPurchase' || vm.upload =='import' ">
+        <label>Purchase File</label>
+        <input type="file" class="filestyle" id="purchaseFile" ngf-select ng-model="vm.purchaseFile" name="purchaseFile" accept=".xlsx,.xls" ngf-max-size="2MB" ngf-model-invalid="errorFile">
+        <div class="alert alert-danger" ng-show="updateUserForm.purchaseFile.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2MB
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <input type="button" class="btn btn-primary" value="Submit" ng-click="vm.uploadFiles();showFieldset=true">
+      </div>
+    </div>
+  </div>
+  <div id="circularG" class="overlay" ng-if="showFieldset && vm.displayLabel==false">
+    <div id="circularG_1" class="circularG"></div>
+    <div id="circularG_2" class="circularG"></div>
+    <div id="circularG_3" class="circularG"></div>
+    <div id="circularG_4" class="circularG"></div>
+    <div id="circularG_5" class="circularG"></div>
+    <div id="circularG_6" class="circularG"></div>
+    <div id="circularG_7" class="circularG"></div>
+    <div id="circularG_8" class="circularG"></div>
+  </div>
+  <div class="container-fluid">
+    <div class="row tabWrap">
+      <div class="headerValSettings col-md-12" ng-show="showFieldset && vm.purchaseData.length>0 && vm.saleData.length>0 && vm.displayLabel==true">
+        <uib-tabset active="activeJustified">
+          <uib-tab index="0" heading="Sales File" ng-show="vm.upload =='reUploadSale' || vm.upload =='import' ">
+            <div class="row" id="Sale">
+              <div class="col-md-12">
+                <h3>Set SaleFile Header Values</h3>
+              </div>
+              <div class="col-sm-12 headerDropdown">
+                <div class="headerDropdownSelectWrap clearfix" ng-repeat="saleLabelFromFile in vm.saleHeaderArray">
+                  <label title="{{saleLabelFromFile}}" style="display: block;">{{saleLabelFromFile}}</label>
+                  <select class="selectpicker" data-size="10" data-live-search="true" id="{{$index}}">
+                    <option selected>Select</option>
+                    <option ng-repeat="field in vm.defaultSalesHeaderValues" ng-selected="{{field ===saleLabelFromFile}}">{{field}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </uib-tab>
+          <uib-tab index="1" heading="Purchase File" ng-show="vm.upload =='reUploadPurchase' || vm.upload =='import' ">
+            <div class="row" id="Purchase">
+              <div class="col-md-12">
+                <h3>Set PurchaseFile Header Values</h3>
+              </div>
+              <div class="col-sm-12 headerDropdown">
+                <div class="headerDropdownSelectWrap clearfix" ng-repeat="purchaseLabelFromFile in vm.purchaseHeaderArray">
+                  <label title="{{purchaseLabelFromFile}}" style="display: block;">{{purchaseLabelFromFile}}</label>
+                  <select class="selectpicker" data-size="10" data-live-search="true" id="{{$index}}">
+                    <option selected>Select</option>
+                    <option ng-repeat="field in vm.defaultPurchaseHeaderValues" ng-selected="{{field === purchaseLabelFromFile}}">{{field}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </uib-tab>
+        </uib-tabset>
+        <div class="finishBtn">
+          <input type="button" class="btn btn-primary" value="Finish" ng-click="vm.postFileData()">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

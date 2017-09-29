@@ -4,7 +4,7 @@
     .module('fileApp')
     .config(['$routeProvider', function($routeProvider) {
       $routeProvider
-        .when("/user/import", {
+        .when("/user/import/:from/:month", {
           templateUrl: 'app/modules/file-operation/view/file-upload.html',
           controller: 'fileUploadController',
           controllerAs: 'vm',
@@ -12,7 +12,7 @@
         })
         .when("/user/upload-contact", {
           templateUrl: 'app/modules/file-operation/view/upload-contact.html',
-          controller: 'fileUploadController',
+          controller: 'contactUploadController',
           controllerAs: 'vm',
           loggedInGuard: true
         })

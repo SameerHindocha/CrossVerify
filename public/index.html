@@ -30,7 +30,6 @@
   <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
   <script src="node_modules/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
   <link rel="stylesheet" href="node_modules/bootstrap-select/dist/css/bootstrap-select.min.css">
-  <!-- /public/node_modules/xlsx/dist/xlsx.full.min.js -->
   <link rel="stylesheet" href="node_modules/noty/lib/noty.css">
   <script src="node_modules/noty/lib/noty.js"></script>
   <!-- ***** NODE MODULE END ***** -->
@@ -43,24 +42,30 @@
   <script src="app/modules/dashboard/dashboard.module.js"></script>
   <script src="app/modules/auth/login/auth.module.js"></script>
   <script src="app/modules/file-operation/file-operation.module.js"></script>
-  <!-- <script src="app/modules/auth/edit-profile/edit-profile.module.js"></script> -->
+  <script src="app/modules/auth/change-password/change-password.module.js"></script>
+  <script src="app/modules/my-contacts/my-contacts.module.js"></script>
+  <script src="app/modules/auth/forgot-password/forgot-password.module.js"></script>
   <script src="app/app.module.js"></script>
   <script src="app/header/header.js"></script>
   <!-- ***** SERVICES ***** -->
   <script src="app/services/noty.js"></script>
   <script src="app/modules/users/model/user.service.js"></script>
-  <!-- <script src="app/modules/client/model/client.service.js"></script> -->
+  <script src="app/modules/auth/change-password/model/change-password.service.js"></script>
   <script src="app/modules/dashboard/model/dashboard.service.js"></script>
   <script src="app/modules/auth/login/model/auth.service.js"></script>
+  <script src="app/modules/my-contacts/model/my-contacts.service.js"></script>
+  <script src="app/modules/auth/forgot-password/model/forgot-password.service.js"></script>
   <!-- ***** ROUTE ***** -->
   <script src="app/modules/users/user.route.js"></script>
-  <script src="app/modules/client/client.route.js"></script>
+  <!-- <script src="app/modules/client/client.route.js"></script> -->
   <script src="app/modules/dashboard/dashboard.route.js"></script>
   <script src="app/modules/auth/login/auth.route.js"></script>
   <script src="app/modules/file-operation/file-operation.route.js"></script>
+  <script src="app/modules/auth/change-password/change-password.route.js"></script>
+  <script src="app/modules/my-contacts/my-contacts.route.js"></script>
+  <script src="app/modules/auth/forgot-password/forgot-password.route.js"></script>
   <!--  ***** Controller ***** -->
   <script src="app/modules/users/controller/add-user.controller.js"></script>
-  <!-- <script src="app/modules/client/controller/add-client.controller.js"></script> -->
   <script src="app/modules/dashboard/controller/dashboard.controller.js"></script>
   <script src="app/modules/auth/login/controller/login.controller.js"></script>
   <script src="app/modules/users/controller/profile.controller.js"></script>
@@ -68,14 +73,16 @@
   <script src="app/modules/file-operation/controller/upload-contact.controller.js"></script>
   <script src="app/modules/dashboard/controller/edit-customer.controller.js"></script>
   <script src="app/modules/dashboard/controller/temporary-dashboard.controller.js"></script>
+  <script src="app/modules/auth/change-password/controller/change-password.controller.js"></script>
+  <script src="app/modules/my-contacts/controller/my-contacts.controller.js"></script>
+  <script src="app/modules/my-contacts/controller/update-contact.controller.js"></script>
+  <script src="app/modules/auth/forgot-password/controller/reset-password.controller.js"></script>
+  <script src="app/modules/auth/forgot-password/controller/forgot-password.controller.js"></script>
   <!-- ***** DIRECTIVE ***** -->
   <script src="app/modules/users/directive/popup.directive.js"></script>
   <script src="app/modules/dashboard/directive/update-invoice.directive.js"></script>
   <!-- EXTRA -->
-  <!-- <script src="assets/js/jquery-1.11.1.min.js"></script> -->
-  <!-- <script src="assets/bootstrap/js/bootstrap.min.js"></script> -->
   <script src="assets/js/jquery.backstretch.min.js"></script>
-  <!-- <script src="assets/js/retina-1.1.0.min.js"></script> -->
   <script src="assets/js/scripts.js"></script>
   <script src="assets/js/retina-1.1.0.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>

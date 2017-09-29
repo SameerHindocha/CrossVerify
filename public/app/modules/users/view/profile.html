@@ -60,22 +60,15 @@
             <div class="input-group input-group-icon">
               <label>Address</label>
               <br>
-              <span>{{vm.user.address}}</span>
+              <span ng-if="vm.user.address">{{vm.user.address}}</span>
+              <span ng-if="!vm.user.address">-</span>
             </div>
           </div>
           <div class="inputGroupWrap col-sm-3">
             <div class="input-group input-group-icon">
-              <label>Mobile 1</label>
+              <label>Mobile Number</label>
               <br>
               <span>{{vm.user.mobile1}}</span>
-            </div>
-          </div>
-          <div class="inputGroupWrap col-sm-3">
-            <div class="input-group input-group-icon">
-              <label>Mobile 2</label>
-              <br>
-              <span ng-if="vm.user.mobile2">{{vm.user.mobile2}}</span>
-              <span ng-if="!vm.user.mobile2">-</span>
             </div>
           </div>
           <div class="inputGroupWrap col-sm-3">
@@ -90,13 +83,6 @@
         <div class="row">
           <div class="col-md-12">
             <h4>KYC Information</h4>
-          </div>
-          <div class="inputGroupWrap col-sm-3">
-            <div class="input-group input-group-icon">
-              <label>Pan Number</label>
-              <br>
-              <span>{{vm.user.panNo}}</span>
-            </div>
           </div>
           <div class="inputGroupWrap col-sm-3">
             <div class="input-group input-group-icon">

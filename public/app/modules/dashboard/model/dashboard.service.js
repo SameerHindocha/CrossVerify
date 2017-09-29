@@ -27,7 +27,9 @@
       checkUser: checkUser,
       addTemporaryData: addTemporaryData,
       addTemporaryPurchaseData: addTemporaryPurchaseData,
-      checkReceiver: checkReceiver
+      checkReceiver: checkReceiver,
+      autoVerifySaleService: autoVerifySaleService,
+      autoVerifyPurchaseService: autoVerifyPurchaseService
     };
 
     function shareLinkService(data) {
@@ -300,6 +302,34 @@
       $http({
         method: 'post',
         url: '/api/add-temporary-purchase-data',
+        data: data
+      }).then(function(response) {
+        defer.resolve(response);
+      }).catch(function(error) {
+        defer.reject(error);
+      });
+      return defer.promise;
+    }
+
+    function autoVerifySaleService(data) {
+      let defer = $q.defer();
+      $http({
+        method: 'post',
+        url: '/admin-api/auto-verify-sale',
+        data: data
+      }).then(function(response) {
+        defer.resolve(response);
+      }).catch(function(error) {
+        defer.reject(error);
+      });
+      return defer.promise;
+    }
+
+    function autoVerifyPurchaseService(data) {
+      let defer = $q.defer();
+      $http({
+        method: 'post',
+        url: '/admin-api/auto-verify-purchase',
         data: data
       }).then(function(response) {
         defer.resolve(response);
