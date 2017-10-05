@@ -8,12 +8,19 @@
 
   function controller(UserService, $location, $route, lodash, $rootScope) {
     let vm = this;
+
+    // $(window).bind('beforeunload', function() {
+    //   return 'are you sure you want to leave?';
+    // });
+
     $rootScope.updateContact = function(missingDataArrayForSale, missingDataArrayForPurchase) {
       let updateObj = {
         dateOfFile: $rootScope.uploadDate,
         updatedSaleFileData: missingDataArrayForSale,
         updatedPurchaseFileData: missingDataArrayForPurchase
       }
+
+      console.log("updateObj", updateObj);
       UserService.updateContact(updateObj).then((response) => {
         noty('success', response.data.message);
         $location.path('/dashboard');

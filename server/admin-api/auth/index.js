@@ -99,7 +99,6 @@ module.exports = class AuthController {
   }
 
   forgotPassword(req, res) {
-    console.log("req.body", req.body);
     let resetToken = randomString.generate(16);
     let tokenExpireOn = new Date().getTime();
     tokenExpireOn = tokenExpireOn + 86400000; //Expire after 24HRs
@@ -107,6 +106,7 @@ module.exports = class AuthController {
     let Username;
     let urlLink = `http://${global.config.server.url}:${global.config.server.port}/#/reset-password/` + resetToken;
     let ownerName;
+    console.log("urlLink", urlLink);
     db.User.findOne({ 'email': email }).then((user) => {
       ownerName = (user.ownerName) ? user.ownerName : "user"
       let emailObj = {
@@ -114,12 +114,12 @@ module.exports = class AuthController {
         subject: "Reset Password",
         html: `<div><h4>Hello, ${ownerName}</h4>
                            <p>You’re receiving this email due to a forgot password action you requested.
-                            Click on following link to reset your password::</p>
+                            Click on following link to reset your password : </p>
                             <a href=${urlLink}><h2 style="border: 1px solid #175817;width: 125px;margin: 0px 100px;background: #4DC14D;color: black;font-size: 16px;padding: 25px;">Click Here</h2></a>
                             <p>This email is an automated response to your password request.</p>
                             </br>
                             <h4>Warm Regards</h4>
-                            <h4>Cross Verify Admin</h4>
+                            <h4>Cross Verify</h4>
                             </div>`
       };
       db.User.update({ '_id': user._id }, {
@@ -131,14 +131,14 @@ module.exports = class AuthController {
         SendMail.MailFunction(emailObj, email).then((response) => {
           res.send({ message: "Email has been sent successfully to your registered Email", email: email });
         }).catch((error) => {
-          console.log("error", error);
+
           res.send({ message: "Error in Sending Email" });
         })
       }).catch((error) => {
         res.send({ message: "Error in set Token" });
       })
-    }).catch(() => {
-      res.send({ message: "Object not Found" });
+    }).catch((error) => {
+      res.status(404).send({ message: "Your email address is not registered." });
     })
   }
 
@@ -154,7 +154,6 @@ module.exports = class AuthController {
 
 
   resetPasssword(req, res) {
-    console.log("===", req.body);
     let newPassword = Utils.md5(req.body.newPassword);
     let email = req.body.email;
     db.User.findOne({ "email": email }).then((user) => {

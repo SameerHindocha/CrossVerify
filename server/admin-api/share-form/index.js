@@ -259,15 +259,12 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
     } else {
       res.redirect(500, '/logout');
     }
-
-
   }
 
   sendOTPSMS(req, res) {
-
     let uri, link, msg, data;
     session = req.session;
-    msg = `Your OTP is :  ` + req.body.otp
+    msg = req.body.otp + ` is the OTP for verifying your mobile with CrossVerify`
     console.log("msg", msg);
     data = {
       mobile: req.body.mobile,
@@ -282,14 +279,14 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
     let email = req.body.email;
     session = req.session;
     emailObj = {
-      subject: `This is a Monthly Email`, // Subject line
-      html: 'Your OTP is ' + req.body.otp,
+      subject: `One Time Password from CrossVerify`, // Subject line
+      html: req.body.otp + ' is the OTP for verifying your email with CrossVerify',
     };
     console.log("emailObj", emailObj);
 
     console.log("email", email);
     SendMail.MailFunction(emailObj, email).then(function(data) {
-      res.send({ message: "Confirmation Email has been sent successfully to your registered Email" })
+      res.send({ message: "OTP has been sent to your registered Email" })
     }, function(err) {
       res.send(err)
     });
@@ -310,14 +307,12 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
     });
     month = month.substring(5, 7);
     month = getMonthName(month);
-    console.log("---------------------month---------------------", month);
-
     session = req.session;
     if (req.session.isLoggedIn == 'Y') {
       setTimeout(function() {
         emailObj = {
-          subject: `Cross Verify monthly confirmation email`, // Subject line
-          html: ` <h3>${senderName} wants you to confirm ${type} for the month ${month}. Click this link to confirm: <a href="${link}">Click here</a></h3>
+          subject: `Cross Verify monthly Sale/Purchase confirmation email`, // Subject line
+          html: ` <h3>${senderName} wants you to confirm ${type} for the month ${month}. <a href="${link}">Click here</a> to confirm. </h3>
           <br /> 
           <p>What is CrossVerify.in <br />
            CrossVerify is a free portal where you can register your company ,unique link will be created of your company you can send it through whatsapp ,email or any other messaging service to your clients
@@ -349,8 +344,6 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
     session = req.session;
     month = month.substring(5, 7);
     month = getMonthName(month);
-    console.log("---------------------month---------------------", month);
-
     uri = 'http://' + global.config.server.url + ':' + global.config.server.port + '/#/' + req.body.link;
     TinyURL.shorten(uri, function(res) {
       link = res;
@@ -358,13 +351,10 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
     setTimeout(function() {
       msg = `${senderName} wants you to confirm ${type} for the month ${month}. Click this link to confirm: ` + link;
       msg = encodeURIComponent(msg);
-
       data = {
         mobile: req.body.mobile,
         message: msg
       }
-
-      console.log("data - - ", data);
       SendSMS.SMSFunction(data, req, res);
     }, 5000)
   }
@@ -372,7 +362,6 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
   sendAllMonthlyMail(req, res) {
     month = month.substring(5, 7);
     month = getMonthName(month);
-
   }
 
   sendAllMonthlySMS(req, res) {

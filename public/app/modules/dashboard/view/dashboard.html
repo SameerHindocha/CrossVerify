@@ -16,7 +16,7 @@
       <ng-combo-date-picker ng-model="vm.filterByMonth" ng-change="vm.getInvoicesByMonth()" ng-min-date="2017-07-01" ng-attrs-date='{"class": "col-md-1 hidden"}'></ng-combo-date-picker>
     </div>
     <div class="col-xs-5 actionButtons text-right">
-      <button id="import" class="btn btn-default" ng-click="vm.redirectToImportPage($event)">
+      <button id="import" class="btn btn-primary" ng-click="vm.redirectToImportPage($event)">
         <i class="fa fa-upload" aria-hidden="true"></i> import
       </button>
     </div>
@@ -24,7 +24,146 @@
   <div class="row tabWrap">
     <div class="col-md-12">
       <uib-tabset active="activeJustified">
-        <uib-tab index="0" heading="Sales Invoice">
+        <uib-tab index="0" heading="Purchase Invoice">
+          <div class="invoiceSummaryWrap">
+            <div class="invoiceSummary row">
+              <div class="col-md-3">
+                <div class="invoiceSummaryCell invoiceSummaryCellTotal" ng-class="{focused:totalPurchaseInvoiceClick==true}" ng-click="vm.filterTotalPurchaseInvoice(); totalPurchaseInvoiceClick=true; verifiedPurchaseClick=false; notVerifiedPurchaseClick=false; mismatchedPurchaseClick=false;">
+                  <div class="invoiceSummaryTitle">
+                    Total Purchase Invoice
+                  </div>
+                  <div class="invoiceSummaryValue">
+                    {{vm.totalPurchaseInvoice}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="invoiceSummaryCell invoiceSummaryCellVerified" ng-class="{focused:verifiedPurchaseClick==true}" ng-click="vm.filterVerifiedPurchaseInvoice(); totalPurchaseInvoiceClick=false; verifiedPurchaseClick=true; notVerifiedPurchaseClick=false; mismatchedPurchaseClick=false;">
+                  <div class="invoiceSummaryTitle">
+                    Verified
+                  </div>
+                  <div class="invoiceSummaryValue">
+                    {{vm.verifiedPurchase}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="invoiceSummaryCell invoiceSummaryCellNotVerified" ng-class="{focused:notVerifiedPurchaseClick==true}" ng-click="vm.filterNotVerifiedPurchaseInvoice(); totalPurchaseInvoiceClick=false; verifiedPurchaseClick=false; notVerifiedPurchaseClick=true; mismatchedPurchaseClick=false">
+                  <div class="invoiceSummaryTitle">
+                    Not Verified
+                  </div>
+                  <div class="invoiceSummaryValue">
+                    {{vm.notVerifiedPurchase}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="invoiceSummaryCell invoiceSummaryCellMismatched" ng-class="{focused:mismatchedPurchaseClick==true}" ng-click="vm.filterMismatchedPurchaseInvoice(); totalPurchaseInvoiceClick=false; verifiedPurchaseClick=false; notVerifiedPurchaseClick=false; mismatchedPurchaseClick=true">
+                  <div class="invoiceSummaryTitle">
+                    Mismatched
+                  </div>
+                  <div class="invoiceSummaryValue">
+                    {{vm.mismatchedPurchase}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row searchWrap">
+            <div class="search-group col-xs-6">
+              <span class="search-icon"><i class=" fa fa-search"></i></span>
+              <input type="search" class="form-control" ng-model="vm.purchaseSearchText" placeholder="Search by Customer Name or GST number" type="search" ng-change="vm.searchPurchaseGrid()" />
+              <span class="remove-icon"><i class=" fa fa-times" ng-click="vm.clearPurchasesearch()"></i></span>
+            </div>
+            <div class="col-xs-6 actionButtons text-right">
+              <button id="reUploadPurchase" class="btn btn-default" ng-click="vm.redirectToImportPage($event)">
+                <i class="fa fa-upload" aria-hidden="true"></i> Re-Upload Purchase File
+              </button>
+              <!-- <button class="btn btn-default" ng-click="vm.purchaseSendToAllEmailAndSMS()">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+                </i> Share Link to all Purchase Invoices
+              </button> -->
+              <button class="btn btn-default" ng-disabled="vm.purchaseInvoiceData.length < 1" ng-click="vm.autoVerifyPurchase()">
+                <i class="fa fa-magic" aria-hidden="true"></i>
+                </i> Auto Verify Purchase Invoices
+              </button>
+            </div>
+          </div>
+          <div class="invoiceTable">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr class="info">
+                    <th class="active"></th>
+                    <th class="active">Verification Type</th>
+                    <th class="active">Invoice No</th>
+                    <th class="active">Date</th>
+                    <th class="active">Customer</th>
+                    <th class="active">State</th>
+                    <!-- <th class="active">Invoice Type</th> -->
+                    <!-- <th class="active">Goods / Services</th> -->
+                    <th class="active">GSTIN</th>
+                    <th class="active">Total Invoice Value</th>
+                    <th class="active">Share Link</th>
+                    <th class="active">Verification</th>
+                    <!-- <th class="active">Wrong</th> -->
+                    <!-- <th class="active">Self Verify</th> -->
+                  </tr>
+                </thead>
+                <tbody ng-if="vm.purchaseInvoiceData.length > 0">
+                  <tr ng-repeat="purchaseFile in  vm.purchaseInvoiceData" ng-class="purchaseFile.status" id="purchaseFileData">
+                    <td>
+                      <update-invoice title="Update Invoice" data="purchaseFile" on-update="finalvalues(details)"></update-invoice>
+                    </td>
+                    <td>
+                      <div ng-if="purchaseFile.statusType=='auto'">AUTO</div>
+                      <div ng-if="purchaseFile.statusType=='manual'">MANUAL</div>
+                      <div ng-if="!purchaseFile.statusType">Not Verified</div>
+                    </td>
+                    <td><span class="mobileTitle">Invoice No</span> {{purchaseFile.Invoice_Number}} </td>
+                    <td><span class="mobileTitle">Date</span> {{purchaseFile.Invoice_Date}} </td>
+                    <td><span class="mobileTitle">Customer</span>
+                      <div class="custName">
+                        <i ng-if="purchaseFile.isRegisteredUser" class="fa fa-user" aria-hidden="true"></i> {{purchaseFile.Supplier_Name}}
+                        <i title="Edit Client Detail" ng-disabled="!purchaseFile.Supplier_GSTIN" class="fa fa-pencil-square-o" id="purchaseEdit" aria-hidden="true" ng-click="vm.editCustomer(purchaseFile._id,purchaseFile.Supplier_GSTIN,$event)"></i>
+                      </div>
+                    </td>
+                    <td><span class="mobileTitle">State</span> {{purchaseFile.Supplier_State }} </td>
+                    <!--   <td><span class="mobileTitle">Invoice_Type</span> {{purchaseFile.Invoice_Category }} </td> -->
+                    <!-- <td><span class="mobileTitle">Goods/Services</span> {{purchaseFile.email }} </td> -->
+                    <td><span class="mobileTitle">GSTIN</span> {{purchaseFile.Supplier_GSTIN }} </td>
+                    <td><span class="mobileTitle">Total_Invoice_Value</span> {{purchaseFile.Item_Total_Including_GST }} </td>
+                    <td><span class="mobileTitle">Verification</span>
+                      <div class="shareButtons">
+                        <button class="btn btn-primary" id="purchaseEmail" ng-disabled="!purchaseFile.Supplier_GSTIN || !purchaseFile.Email_Address" ng-click="vm.sendMonthlyEmail(purchaseFile.Supplier_GSTIN,purchaseFile.Invoice_Number,$event,purchaseFile.Email_Address)">
+                          <i class="fa fa-envelope-o"></i> Via Email
+                        </button>
+                        <button class="btn btn-primary" id="purchaseSMS" ng-disabled="!purchaseFile.Supplier_GSTIN || !purchaseFile.Mobile_Number" ng-click="vm.sendMonthlySMS(purchaseFile.Supplier_GSTIN,purchaseFile.Invoice_Number,purchaseFile.Mobile_Number,$event)">
+                          <i class="fa fa-mobile"></i> Via SMS
+                        </button>
+                      </div>
+                    </td>
+                    <td ng-show="purchaseFile.Supplier_GSTIN" id="corectWrongBtn">
+                      <div class="correctBtn">
+                        <input type="button" id="correctPurchase" class="btn btn-success" value="Correct" ng-show="purchaseFile.status!='verified'" ng-click="vm.correct(purchaseFile.Invoice_Number,purchaseFile.Supplier_GSTIN,$event)">
+                      </div>
+                      <div class="wrongBtn">
+                        <input type="button" id="wrongPurchase" class="btn btn-danger" value="Wrong" ng-show="purchaseFile.status!='verified'" ng-click="vm.correct(purchaseFile.Invoice_Number,purchaseFile.Supplier_GSTIN,$event)">
+                      </div>
+                    </td>
+                    <td ng-show="!purchaseFile.Supplier_GSTIN" class="selfVerifyBtnWrap">
+                      <input type="button" id="purchaseSelfVerify" class="btn btn-primary" value="Self Verify" ng-show="purchaseFile.status!='verified'" ng-click="vm.selfVerify(purchaseFile._id,$event)">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="noDataMessage" ng-if="vm.purchaseInvoiceData.length < 1">
+                No data Found
+              </div>
+            </div>
+          </div>
+        </uib-tab>
+        <uib-tab index="1" heading="Sales Invoice">
           <div class="invoiceSummaryWrap">
             <div class="invoiceSummary salesInvoiceSummary row">
               <div class="col-md-3">
@@ -71,8 +210,9 @@
           </div>
           <div class="row searchWrap">
             <div class="search-group col-xs-6">
+              <span class="search-icon"><i class=" fa fa-search"></i></span>
               <input type="search" class="form-control" ng-model="vm.saleSearchText" placeholder="Search by Customer Name or GST number" type="search" ng-change="vm.searchSaleGrid()" />
-              <div class="search-icon"><i class=" fa fa-search"></i></div>
+              <span class="remove-icon"><i class=" fa fa-times" ng-click="vm.clearSaleSearch()"></i></span>
             </div>
             <div class="col-xs-6 actionButtons text-right">
               <button id="reUploadSale" class="btn btn-default" ng-click="vm.redirectToImportPage($event)">
@@ -81,23 +221,34 @@
               <!--  <button class="btn btn-default" ng-click="vm.saleSendToAllEmailAndSMS()">
                 <i class="fa fa-share-alt" aria-hidden="true"></i> Share Link to all Sale Invoices
               </button> -->
-              <button class="btn btn-default" ng-click="vm.autoVerifySale()">
+              <button class="btn btn-default" ng-disabled="vm.saleInvoiceData.length < 1" ng-click="vm.autoVerifySale()">
                 <i class="fa fa-magic" aria-hidden="true"></i>
                 </i> Auto Verify Sale Invoices
               </button>
             </div>
           </div>
+          <!-- <div id="circularG" class="overlay" ng-if="!vm.saleInvoiceData || vm.displaySaleLoder==true">
+            <div id="circularG_1" class="circularG"></div>
+            <div id="circularG_2" class="circularG"></div>
+            <div id="circularG_3" class="circularG"></div>
+            <div id="circularG_4" class="circularG"></div>
+            <div id="circularG_5" class="circularG"></div>
+            <div id="circularG_6" class="circularG"></div>
+            <div id="circularG_7" class="circularG"></div>
+            <div id="circularG_8" class="circularG"></div>
+          </div> -->
           <div class="invoiceTable">
             <table class="table table-hover">
               <thead>
                 <tr class="info">
                   <th class="active"></th>
+                  <th class="active">Verification Type</th>
                   <th class="active">Invoice No</th>
                   <th class="active">Date</th>
                   <th class="active">Customer</th>
                   <th class="active">State</th>
-                  <th class="active">Invoice Type</th>
-                  <th class="active">Goods / Services</th>
+                  <!-- <th class="active">Invoice Type</th> -->
+                  <!-- <th class="active">Goods / Services</th> -->
                   <th class="active">GSTIN</th>
                   <th class="active">Total Invoice Value</th>
                   <th class="active">Share Link</th>
@@ -110,18 +261,24 @@
                     <update-invoice title="Update Invoice" data="saleFile" on-update="finalvalues(details)"></update-invoice>
                     <!--   <i id="plus-button" class="fa fa-plus-circle" aria-hidden="true" ng-click="vm.showMoreSaleDetail(saleFile)"></i> -->
                   </td>
+                  <td>
+                    <div ng-if="saleFile.statusType=='auto'">AUTO</div>
+                    <div ng-if="saleFile.statusType=='manual  '">MANUAL</div>
+                    <div ng-if="!saleFile.statusType">Not Verified</div>
+                  </td>
                   <td><span class="mobileTitle">Invoice No</span> {{saleFile.Invoice_Number}} </td>
                   <td><span class="mobileTitle">Date</span> {{saleFile.Invoice_Date}} </td>
                   <td><span class="mobileTitle">Customer</span>
+                    <div ng-if="saleFile.isRegisteredUser"><i class="fa fa-user" aria-hidden="true"></i></div>
                     <div class="custName">
                       {{saleFile.Customer_Billing_Name }}
                       <i title="Edit Client Detail" ng-disabled="!saleFile.Customer_Billing_GSTIN" class="fa fa-pencil-square-o" id="saleEdit" aria-hidden="true" ng-click="vm.editCustomer(saleFile._id,saleFile.Customer_Billing_GSTIN,$event)"></i>
                     </div>
                   </td>
                   <td><span class="mobileTitle">State</span> {{saleFile.Customer_Billing_State }} </td>
-                  <td><span class="mobileTitle">Invoice_Type</span> {{saleFile.Invoice_Category }} </td>
-                  <td><span class="mobileTitle">Goods/Services</span>
-                  </td>
+                  <!-- <td><span class="mobileTitle">Invoice_Type</span> {{saleFile.Invoice_Category }} </td> -->
+                  <!-- <td><span class="mobileTitle">Goods/Services</span>
+                  </td> -->
                   <td><span class="mobileTitle">GSTIN</span> {{saleFile.Customer_Billing_GSTIN }} </td>
                   <td><span class="mobileTitle">Total_Invoice_Value</span> {{saleFile.Item_Total_Including_GST }} </td>
                   <td><span class="mobileTitle">Share Link</span>
@@ -153,139 +310,19 @@
             </div>
           </div>
         </uib-tab>
-        <uib-tab index="1" heading="Purchase Invoice">
-          <div class="invoiceSummaryWrap">
-            <div class="invoiceSummary row">
-              <div class="col-md-3">
-                <div class="invoiceSummaryCell invoiceSummaryCellTotal" ng-class="{focused:totalPurchaseInvoiceClick==true}" ng-click="vm.filterTotalPurchaseInvoice(); totalPurchaseInvoiceClick=true; verifiedPurchaseClick=false; notVerifiedPurchaseClick=false">
-                  <div class="invoiceSummaryTitle; mismatchedPurchaseClick=false; ">
-                    Total Purchase Invoice
-                  </div>
-                  <div class="invoiceSummaryValue">
-                    {{vm.totalPurchaseInvoice}}
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="invoiceSummaryCell invoiceSummaryCellVerified" ng-class="{focused:verifiedPurchaseClick==true}" ng-click="vm.filterVerifiedPurchaseInvoice(); totalPurchaseInvoiceClick=false; verifiedPurchaseClick=true; notVerifiedPurchaseClick=false; mismatchedPurchaseClick=false;">
-                  <div class="invoiceSummaryTitle">
-                    Verified
-                  </div>
-                  <div class="invoiceSummaryValue">
-                    {{vm.verifiedPurchase}}
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="invoiceSummaryCell invoiceSummaryCellNotVerified" ng-class="{focused:notVerifiedPurchaseClick==true}" ng-click="vm.filterNotVerifiedPurchaseInvoice(); totalPurchaseInvoiceClick=false; verifiedPurchaseClick=false; notVerifiedPurchaseClick=true; mismatchedPurchaseClick=false">
-                  <div class="invoiceSummaryTitle">
-                    Not Verified
-                  </div>
-                  <div class="invoiceSummaryValue">
-                    {{vm.notVerifiedPurchase}}
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="invoiceSummaryCell invoiceSummaryCellMismatched" ng-class="{focused:mismatchedPurchaseClick==true}" ng-click="vm.filterMismatchedPurchaseInvoice(); totalPurchaseInvoiceClick=false; verifiedPurchaseClick=false; notVerifiedPurchaseClick=false; mismatchedPurchaseClick=true">
-                  <div class="invoiceSummaryTitle">
-                    Mismatched
-                  </div>
-                  <div class="invoiceSummaryValue">
-                    {{vm.mismatchedPurchase}}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row searchWrap">
-            <div class="search-group col-xs-6">
-              <input type="search" class="form-control" ng-model="vm.purchaseSearchText" placeholder="Search by Customer Name or GST number" type="search" ng-change="vm.searchPurchaseGrid()" />
-              <div class="search-icon"><i class=" fa fa-search"></i></div>
-            </div>
-            <div class="col-xs-6 actionButtons text-right">
-              <button id="reUploadPurchase" class="btn btn-default" ng-click="vm.redirectToImportPage($event)">
-                <i class="fa fa-upload" aria-hidden="true"></i> Re-Upload Purchase File
-              </button>
-              <!-- <button class="btn btn-default" ng-click="vm.purchaseSendToAllEmailAndSMS()">
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-                </i> Share Link to all Purchase Invoices
-              </button> -->
-              <button class="btn btn-default" ng-click="vm.autoVerifyPurchase()">
-                <i class="fa fa-magic" aria-hidden="true"></i>
-                </i> Auto Verify Purchase Invoices
-              </button>
-            </div>
-          </div>
-          <div class="invoiceTable">
-            <div class="table-responsive">
-              <table class="table table-hover">
-                <thead>
-                  <tr class="info">
-                    <th class="active"></th>
-                    <th class="active">Invoice No</th>
-                    <th class="active">Date</th>
-                    <th class="active">Customer</th>
-                    <th class="active">State</th>
-                    <th class="active">Invoice Type</th>
-                    <th class="active">Goods / Services</th>
-                    <th class="active">GSTIN</th>
-                    <th class="active">Total Invoice Value</th>
-                    <th class="active">Share Link</th>
-                    <th class="active">Verification</th>
-                    <!-- <th class="active">Wrong</th> -->
-                    <!-- <th class="active">Self Verify</th> -->
-                  </tr>
-                </thead>
-                <tbody ng-if="vm.purchaseInvoiceData.length > 0">
-                  <tr ng-repeat="purchaseFile in  vm.purchaseInvoiceData" ng-class="purchaseFile.status" id="purchaseFileData">
-                    <td>
-                      <update-invoice title="Update Invoice" data="purchaseFile" on-update="finalvalues(details)"></update-invoice>
-                    </td>
-                    <td><span class="mobileTitle">Invoice No</span> {{purchaseFile.Invoice_Number}} </td>
-                    <td><span class="mobileTitle">Date</span> {{purchaseFile.Invoice_Date}} </td>
-                    <td><span class="mobileTitle">Customer</span>
-                      <div class="custName">
-                        {{purchaseFile.Supplier_Name}}
-                        <i title="Edit Client Detail" ng-disabled="!purchaseFile.Supplier_GSTIN" class="fa fa-pencil-square-o" id="purchaseEdit" aria-hidden="true" ng-click="vm.editCustomer(purchaseFile._id,purchaseFile.Supplier_GSTIN,$event)"></i>
-                      </div>
-                    </td>
-                    <td><span class="mobileTitle">State</span> {{purchaseFile.Supplier_State }} </td>
-                    <td><span class="mobileTitle">Invoice_Type</span> {{purchaseFile.Invoice_Category }} </td>
-                    <td><span class="mobileTitle">Goods/Services</span> {{purchaseFile.email }} </td>
-                    <td><span class="mobileTitle">GSTIN</span> {{purchaseFile.Supplier_GSTIN }} </td>
-                    <td><span class="mobileTitle">Total_Invoice_Value</span> {{purchaseFile.Item_Total_Including_GST }} </td>
-                    <td><span class="mobileTitle">Verification</span>
-                      <div class="shareButtons">
-                        <button class="btn btn-primary" id="purchaseEmail" ng-disabled="!purchaseFile.Supplier_GSTIN || !purchaseFile.Email_Address" ng-click="vm.sendMonthlyEmail(purchaseFile.Supplier_GSTIN,purchaseFile.Invoice_Number,$event,purchaseFile.Email_Address)">
-                          <i class="fa fa-envelope-o"></i> Via Email
-                        </button>
-                        <button class="btn btn-primary" id="purchaseSMS" ng-disabled="!purchaseFile.Supplier_GSTIN || !purchaseFile.Mobile_Number" ng-click="vm.sendMonthlySMS(purchaseFile.Supplier_GSTIN,purchaseFile.Invoice_Number,purchaseFile.Mobile_Number,$event)">
-                          <i class="fa fa-mobile"></i> Via SMS
-                        </button>
-                      </div>
-                    </td>
-                    <td ng-show="purchaseFile.Supplier_GSTIN" id="corectWrongBtn">
-                      <div class="correctBtn">
-                        <input type="button" id="correctPurchase" class="btn btn-success" value="Correct" ng-show="purchaseFile.status!='verified'" ng-click="vm.correct(purchaseFile.Invoice_Number,purchaseFile.Supplier_GSTIN,$event)">
-                      </div>
-                      <div class="wrongBtn">
-                        <input type="button" id="wrongPurchase" class="btn btn-danger" value="Wrong" ng-show="purchaseFile.status!='verified'" ng-click="vm.correct(purchaseFile.Invoice_Number,purchaseFile.Supplier_GSTIN,$event)">
-                      </div>
-                    </td>
-                    <td ng-show="!purchaseFile.Supplier_GSTIN" class="selfVerifyBtnWrap">
-                      <input type="button" id="purchaseSelfVerify" class="btn btn-primary" value="Self Verify" ng-show="purchaseFile.status!='verified'" ng-click="vm.selfVerify(purchaseFile._id,$event)">
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <div class="noDataMessage" ng-if="vm.purchaseInvoiceData.length < 1">
-                No data Found
-              </div>
-            </div>
-          </div>
-        </uib-tab>
       </uib-tabset>
     </div>
+  </div>
+</div>
+<div class="loaderOverlay" ng-if="!vm.purchaseInvoiceData || vm.displayPurchaseLoder==true || !vm.saleInvoiceData || vm.displaySaleLoder==true">
+  <div id="circularG">
+    <div id="circularG_1" class="circularG"></div>
+    <div id="circularG_2" class="circularG"></div>
+    <div id="circularG_3" class="circularG"></div>
+    <div id="circularG_4" class="circularG"></div>
+    <div id="circularG_5" class="circularG"></div>
+    <div id="circularG_6" class="circularG"></div>
+    <div id="circularG_7" class="circularG"></div>
+    <div id="circularG_8" class="circularG"></div>
   </div>
 </div>

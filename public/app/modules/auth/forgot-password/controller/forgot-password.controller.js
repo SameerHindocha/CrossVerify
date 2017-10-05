@@ -10,7 +10,7 @@
 
     let vm = this;
     vm.forgotPassword = forgotPassword;
-    $rootScope.showLoginBackground = false;
+    $rootScope.showLoginBackground = true;
     activate();
 
     function activate() {}

@@ -9,7 +9,7 @@
   function controller(AuthService, $location, $rootScope, $route) {
     let vm = this;
     vm.resetPassword = resetPassword;
-    $rootScope.showLoginBackground = false;
+    $rootScope.showLoginBackground = true;
     activate();
 
     function activate() {
@@ -35,8 +35,6 @@
           email: vm.email,
           newPassword: vm.password
         }
-
-        console.log("passwordObj", passwordObj);
         AuthService.resetPassword(passwordObj).then((response) => {
           noty('success', response.data.message);
           $location.path('/login');

@@ -9,6 +9,8 @@
   function controller(ChangePasswordService, $location, $rootScope) {
 
     let vm = this;
+    $rootScope.showLoginBackground = true;
+
     vm.changePassword = changePassword;
     activate();
 

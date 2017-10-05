@@ -22,6 +22,8 @@
 
     function activate() {
       UserService.getUserById(id).then((response) => {
+
+        console.log("flag", flag);
         if (flag == 0) {
           lodash.forEach(response.saleFile[month], function(data) {
             if (data._id == recordId) {
@@ -74,7 +76,10 @@
         flag: flag,
         defaultGSTIN: defaultGSTIN
       }
+
+      console.log("updatedObj", updatedObj);
       let type = (flag == 0) ? 'Sale' : 'Purchase';
+      console.log("type", type);
       DashboardService.updateClientInfo(updatedObj).then((response) => {
         let customerName = (flag == 0) ? response.data.data.Customer_Billing_Name : response.data.data.Supplier_Name;
         noty('success', response.data.message);
@@ -108,7 +113,7 @@
         //   //   })
         //   // }
         // }
-        $location.path('/dashboard');
+        // $location.path('/dashboard');
       }).catch((error) => {
         noty('error', error.data.message);
       })

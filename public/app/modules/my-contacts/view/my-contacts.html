@@ -1,54 +1,65 @@
 <header></header>
-<h2>My Contacts</h2>
-<div class="search-group">
-  <input type="search" class="form-control" ng-model="vm.searchContactText" placeholder="Search by Customer Name or GST number" type="search" ng-change="vm.searchContactsGrid()" />
-  <div class="search-icon"><i class=" fa fa-search"></i></div>
-</div>
-<div class="invoiceTable">
-  <div class="table-responsive">
-    <table class="table table-hover">
-      <thead>
-        <tr class="info">
-          <th class="active">Name</th>
-          <th class="active">GSTIN</th>
-          <th class="active">Email</th>
-          <th class="active">Mobile</th>
-          <th class="active">Type</th>
-          <th class="active"></th>
-        </tr>
-      </thead>
-      <tbody ng-if="vm.totalContacts.length > 0">
-        <tr ng-repeat="contact in vm.totalContacts">
-          <td>
-            <span class="mobileTitle">Name</span>
-            <span ng-if="contact.Customer_Billing_Name">{{contact.Customer_Billing_Name}}</span>
-            <span ng-if="contact.Supplier_Name">{{contact.Supplier_Name}}</span>
-          </td>
-          <td>
-            <span class="mobileTitle">GSTNo</span>
-            <span ng-if="contact.Customer_Billing_GSTIN">{{contact.Customer_Billing_GSTIN}}</span>
-            <span ng-if="contact.Supplier_GSTIN">{{contact.Supplier_GSTIN}}</span>
-          </td>
-          <td>
-            <span class="mobileTitle">Email</span>
-            <span ng-if="contact.Email_Address">{{contact.Email_Address}}</span>
-          </td>
-          <td><span class="mobileTitle">Mobile</span>
-            <span class="mobileTitle">Mobile_Number</span>
-            <span ng-if="contact.Mobile_Number">{{contact.Mobile_Number}}</span>
-          </td>
-          <td><span class="mobileTitle">Type</span>
-            <span class="mobileTitle">Type</span>
-            <span ng-if="contact.Type">{{contact.Type}}</span>
-          </td>
-          <td>
-            <i title="Edit Client Detail" ng-disabled="!contact.Customer_Billing_GSTIN && !contact.Supplier_GSTIN" class="fa fa-pencil-square-o" aria-hidden="true" ng-click="vm.editContact(contact)"></i>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="noDataMessage" ng-if="vm.totalContacts.length < 1">
-      No data Found
+<div class="container myContacts detailTable">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>My Contacts</h2>
+      <!-- <div class="search-group">
+        <input type="search" class="form-control" ng-model="vm.searchContactText" placeholder="Search by Customer Name or GST number" type="search" ng-change="vm.searchContactsGrid()" />
+        <div class="search-icon"><i class=" fa fa-search"></i></div>
+      </div>
+ -->
+      <div class="row searchWrap">
+        <div class="search-group col-xs-8">
+          <span class="search-icon"><i class=" fa fa-search"></i></span>
+          <input type="search" class="form-control" ng-model="vm.searchContactText" placeholder="Search by Customer Name or GST number" type="search" ng-change="vm.searchContactsGrid()" />
+          <span class="remove-icon"><i class=" fa fa-times" ng-click="vm.clearContactSearch()"></i></span>
+        </div>
+        <div class="col-xs-4 actionButtons text-right">
+        </div>
+      </div>
+      <div class="invoiceTable">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr class="info">
+                <th class="active">Name</th>
+                <th class="active">GSTIN</th>
+                <th class="active">Email</th>
+                <th class="active">Mobile</th>
+                <th class="active"></th>
+              </tr>
+            </thead>
+            <tbody ng-if="vm.totalContacts.length > 0">
+              <tr ng-repeat="contact in vm.totalContacts">
+                <td>
+                  <span class="mobileTitle">Name</span>
+                  <span ng-if="contact.Customer_Billing_Name">{{contact.Customer_Billing_Name}}</span>
+                  <span ng-if="contact.Supplier_Name">{{contact.Supplier_Name}}</span>
+                </td>
+                <td>
+                  <span class="mobileTitle">GSTNo</span>
+                  <span ng-if="contact.Customer_Billing_GSTIN">{{contact.Customer_Billing_GSTIN}}</span>
+                  <span ng-if="contact.Supplier_GSTIN">{{contact.Supplier_GSTIN}}</span>
+                </td>
+                <td>
+                  <span class="mobileTitle">Email</span>
+                  <span ng-if="contact.Email_Address">{{contact.Email_Address}}</span>
+                </td>
+                <td><span class="mobileTitle">Mobile</span>
+                  <span class="mobileTitle">Mobile_Number</span>
+                  <span ng-if="contact.Mobile_Number">{{contact.Mobile_Number}}</span>
+                </td>
+                <td>
+                  <i title="Edit Client Detail" ng-disabled="!contact.Customer_Billing_GSTIN && !contact.Supplier_GSTIN" class="fa fa-pencil-square-o" aria-hidden="true" ng-click="vm.editContact(contact)"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="noDataMessage" ng-if="vm.totalContacts.length < 1">
+            No data Found
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -35,7 +35,7 @@ let uri = mongodbUri.format({
 });
 
 mongoose.connect(uri, options);
-mongoose.set('debug', config.mongo.debug);
+// mongoose.set('debug', config.mongo.debug);
 db = {};
 
 fs.readdirSync(ROOT_PATH + '/models').filter(function(file) {

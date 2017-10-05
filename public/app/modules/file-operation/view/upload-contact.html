@@ -4,11 +4,11 @@
     <div class="col-md-12">
       <h4>Please Update Missing Contact Information of Following : </h4>
       <uib-tabset active="activeTab">
-        <uib-tab index="0" heading="Sales Invoice Missing Information" ng-show="missingDataArrayForSale.length>0">
-          <div ng-repeat="obj in missingDataArrayForSale">
+        <uib-tab index="0" heading="Purchase Invoice Missing Information" ng-show="missingDataArrayForPurchase.length>0">
+          <div ng-repeat="obj in missingDataArrayForPurchase">
             <div class="row" id="s1">
               <div class="form-group col-xs-4">
-                <label class="input-group-lg reg_name"> {{obj.Customer_Billing_Name}}</label>
+                <label class="input-group-lg reg_name"> {{obj.Supplier_Name}}</label>
               </div>
               <div class="form-group col-xs-4">
                 <input type="text" placeholder='Mobile No' class='form-control input-group-lg reg_name' ng-model='obj.Mobile_Number' />
@@ -19,11 +19,11 @@
             </div>
           </div>
         </uib-tab>
-        <uib-tab index="1" heading="Purchase Invoice Missing Information" ng-show="missingDataArrayForPurchase.length>0">
-          <div ng-repeat="obj in missingDataArrayForPurchase">
+        <uib-tab index="1" heading="Sales Invoice Missing Information" ng-show="missingDataArrayForSale.length>0">
+          <div ng-repeat="obj in missingDataArrayForSale">
             <div class="row" id="s1">
               <div class="form-group col-xs-4">
-                <label class="input-group-lg reg_name"> {{obj.Supplier_Name}}</label>
+                <label class="input-group-lg reg_name"> {{obj.Customer_Billing_Name}}</label>
               </div>
               <div class="form-group col-xs-4">
                 <input type="text" placeholder='Mobile No' class='form-control input-group-lg reg_name' ng-model='obj.Mobile_Number' />

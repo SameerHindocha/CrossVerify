@@ -40,7 +40,7 @@
     //     defer.reject(error);
     //   });
     //   return defer.promise;
-    // }
+    // }  
 
     // function getDataFromToken(data) {
     //   let defer = $q.defer();

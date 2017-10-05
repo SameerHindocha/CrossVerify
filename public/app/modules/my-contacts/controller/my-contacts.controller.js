@@ -15,23 +15,24 @@
     vm.searchContactText = '';
     vm.searchContactsGrid = searchContactsGrid;
     vm.editContact = editContact;
+    vm.clearContactSearch = clearContactSearch;
     activate();
 
     function activate() {
       MyContactsService.getContactDetails().then((response) => {
         saleContacts = response.data.finalSaleContactList;
         purchaseContacts = response.data.finalPurchaseContactList;
-        vm.totalContacts = saleContacts.concat(purchaseContacts);
+        let concateObj = saleContacts.concat(purchaseContacts);
+        vm.totalContacts = lodash.uniq(concateObj, function(obj) {
+          return obj.Supplier_GSTIN || obj.Customer_Billing_GSTIN;
+        });
         vm.contactsToFilter = saleContacts.concat(purchaseContacts);
       }).catch((error) => {
         console.log("error", error);
-
       })
     }
 
     function searchContactsGrid() {
-      console.log('called');
-
       function searchUtil(item, toSearch) {
         if (item) {
           if (item.Type == 'Seller') {
@@ -61,18 +62,25 @@
       }
       let finalContactList = vm.contactsToFilter;
       if (vm.searchContactText == '') {
-        vm.totalContacts = vm.contactsToFilter;
+        vm.totalContacts = lodash.uniq(vm.contactsToFilter, function(obj) {
+          return obj.Supplier_GSTIN || obj.Customer_Billing_GSTIN;
+        });
       } else {
         vm.filteredContactList = lodash.filter(finalContactList,
           function(item) {
             return searchUtil(item, vm.searchContactText);
           });
-        vm.totalContacts = vm.filteredContactList;
+        vm.totalContacts = lodash.uniq(vm.filteredContactList, function(obj) {
+          return obj.Supplier_GSTIN || obj.Customer_Billing_GSTIN;
+        });
       }
     }
 
+    function clearContactSearch() {
+      vm.searchContactText = '';
+    }
+
     function editContact(contact) {
-      console.log("contact", contact);
       let email, name, GSTNo, mobile, type, noValue;
       if (contact.Type == 'Buyer') {
         email = (contact.Email_Address) ? contact.Email_Address : noValue;
@@ -87,7 +95,6 @@
         GSTNo = (contact.Supplier_GSTIN) ? contact.Supplier_GSTIN : noValue;
         type = contact.Type;
       }
-      console.log('/edit-contact/' + name + '/' + GSTNo + '/' + email + '/' + mobile + '/' + type);
       $location.path('/edit-contact/' + name + '/' + GSTNo + '/' + email + '/' + mobile + '/' + type);
     }
 

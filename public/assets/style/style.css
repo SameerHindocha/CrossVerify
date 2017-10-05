@@ -26,7 +26,81 @@ select option {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*TMP*/
+
+#searchclear {
+  position: absolute;
+  right: 5px;
+  top: 0;
+  bottom: 0;
+  height: 14px;
+  margin: auto;
+  font-size: 14px;
+  cursor: pointer;
+  color: #ccc;
+}
 
 .search-group {
   position: relative;
@@ -36,6 +110,68 @@ select option {
 .search-group .search-icon i {
   line-height: 2.0em;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -379,9 +515,10 @@ fieldset {
   background-color: white;
   background-position: 10px 10px;
   background-repeat: no-repeat;
-  padding: 5px 20px 5px 40px;
+  padding: 5px 30px 5px 40px;
   -webkit-transition: width 0.4s ease-in-out;
   transition: width 0.4s ease-in-out;
+  float: left;
 }
 
 .detailTable input[type=search]:focus {
@@ -427,6 +564,7 @@ fieldset {
 .detailTable .invoiceTable .table td .custName {
   position: relative;
   padding-right: 20px;
+  padding-left: 20px;
 }
 
 .detailTable .invoiceTable .table td .custName i.fa {
@@ -434,7 +572,16 @@ fieldset {
   padding: 4px;
   cursor: pointer;
   top: 0;
+}
+
+.detailTable .invoiceTable .table td .custName i.fa.fa-pencil-square-o {
   right: 0;
+}
+
+.detailTable .invoiceTable .table td .custName i.fa.fa-user {
+  left: 0;
+  padding-top: 2px;
+  padding-left: 1px;
 }
 
 .detailTable .invoiceTable .table td .custName i.fa[disabled="disabled"] {
@@ -512,6 +659,35 @@ fieldset {
   border-radius: 3px;
 }
 
+.fileUpload .infoBtn {
+  display: inline-block;
+  position: relative;
+}
+
+.fileUpload .infoBtn .fa {
+  padding: 10px 10px 10px 5px;
+  font-size: 16px;
+  color: #33b64e;
+  cursor: pointer;
+}
+
+.fileUpload .infoBtn .infoText {
+  display: none;
+  width: 450px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #ffffff;
+  font-size: 14px;
+  position: absolute;
+  left: 20px;
+  top: 12px;
+  padding: 10px 15px;
+  border-radius: 6px;
+}
+
+.fileUpload .infoBtn:hover .infoText {
+  display: block;
+}
+
 .headerValSettings {
   // padding: 15px;
   // margin-top: 15px;
@@ -536,6 +712,8 @@ fieldset {
   margin: 0 auto;
 }
 
+
+
 .search-group .search-icon {
   position: absolute;
   padding: 2px 10px 2px 10px;
@@ -544,6 +722,20 @@ fieldset {
   text-align: center;
   pointer-events: none;
 }
+
+
+
+.search-group .remove-icon {
+  float: left;
+  padding: 7px 10px 2px 10px;
+  text-align: center;
+  cursor: pointer;
+  -webkit-transform: translateX(-20px);
+  -ms-transform: translateX(-20px);
+  transform: translateX(-30px);
+  color: #888888;
+}
+
 
 .invoiceSummaryWrap {
   margin-bottom: 20px;
@@ -799,6 +991,10 @@ input[type="number"] {
 
 .regLink span {
   margin-right: 10px;
+}
+
+.forgotPwdLink {
+  margin-top: 10px;
 }
 
 .navbar-inverse {
@@ -1235,6 +1431,70 @@ table tbody .fa-minus {
   box-shadow: none!important;
 }
 
+.myContacts .invoiceTable .fa-pencil-square-o {
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1374,11 +1634,24 @@ LODER
   opacity: 0.5;
 }
 
+.loaderOverlay {
+  background: rgba(0, 0, 0, 0.4);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99999;
+}
+
 #circularG {
-  position: relative;
+  position: absolute;
   width: 58px;
   height: 58px;
-  margin: auto;
+  top: 50%;
+  left: 50%;
+  margin-left: -29px;
+  margin-top: -29px;
 }
 
 .circularG {
@@ -1668,6 +1941,68 @@ LODER
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /***User Header***/
 
 
@@ -1709,6 +2044,7 @@ LODER
   .detailTable input[type="search"] {
     font-size: 13px;
     width: 100%;
+    position: relative;
   }
   .detailTable input[type="search"]:focus {
     width: 100%;

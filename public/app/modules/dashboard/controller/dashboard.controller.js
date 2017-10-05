@@ -12,7 +12,10 @@
     vm.DashboardService = DashboardService;
     vm.fullData = [];
     vm.dateOfFile = '07-02-2017'; //GST Applied From 1st July, 2017
-    vm.filterByMonth = new Date();
+    let date = new Date(); // 2012-03-31
+    date.setMonth(date.getMonth() - 1);
+
+    vm.filterByMonth = date;
     vm.redirectToImportPage = redirectToImportPage;
     vm.editSaleRow = editSaleRow;
     vm.editpurchaseRow = editpurchaseRow;
@@ -54,6 +57,10 @@
     let filterMonth;
     vm.autoVerifySale = autoVerifySale;
     vm.autoVerifyPurchase = autoVerifyPurchase;
+    vm.displaySaleLoder = false;
+    vm.displayPurchaseLoder = false;
+    vm.clearPurchasesearch = clearPurchasesearch;
+    vm.clearSaleSearch = clearSaleSearch;
 
     activate();
 
@@ -63,6 +70,7 @@
       vm.companyName = vm.getCurrentUserForEmail.companyName;
       vm.getInvoicesByMonth();
     }
+
 
     $scope.finalvalues = function(details) {
       if (details.invoiceFlag == 0) {
@@ -124,7 +132,6 @@
     }
 
     function redirectToImportPage(event) {
-      console.log("event", event.srcElement.id);
       let sourceElement = event.srcElement;
       let currentDate = new Date().getDate();
       let importMonth = vm.filterByMonth.toString("yyyy-MM");
@@ -164,6 +171,7 @@
           month: filterMonth
         }
         DashboardService.filterInvoicesByMonth(monthObj).then((response) => {
+          console.log("response", response);
           vm.invoiceData = response;
           vm.saleInvoiceData = response.data.filteredSaleFileData;
           vm.purchaseInvoiceData = response.data.filteredPurchaseFileData;
@@ -174,6 +182,7 @@
             vm.saleFileDataToFilter = response.data.filteredSaleFileData;
             lodash.forEach(response.data.filteredSaleFileData, function(record) {
               //Share Mail to All
+
               if (record.Customer_Billing_GSTIN) {
                 let link = 'temporary-dashboard/' + currentUser.GSTNo + '/' + record.Customer_Billing_GSTIN + '/' + vm.filterByMonth.toString("yyyy-MM") + '/' + record.Invoice_Number + '/' + 0;
                 let linkObj = {
@@ -188,7 +197,8 @@
                   IGST_Amount: record.IGST_Amount,
                   Item_Total_Including_GST: record.Item_Total_Including_GST,
                   _id: record._id,
-                  link: link
+                  link: link,
+                  isRegisteredUser: record.isRegisteredUser
                 }
 
 
@@ -247,7 +257,8 @@
                   IGST_Amount: record.IGST_Amount,
                   Item_Total_Including_GST: record.Item_Total_Including_GST,
                   _id: record._id,
-                  link: link
+                  link: link,
+                  isRegisteredUser: record.isRegisteredUser
                 }
 
 
@@ -603,6 +614,10 @@
       }
     }
 
+    function clearSaleSearch() {
+      vm.saleSearchText = '';
+    }
+
     function searchPurchaseGrid() {
       function searchUtil(item, toSearch) {
         if (item) {
@@ -628,6 +643,10 @@
           });
         vm.purchaseInvoiceData = vm.filteredPurchaseList;
       }
+    }
+
+    function clearPurchasesearch() {
+      vm.purchaseSearchText = '';
     }
 
     function filterTotalSaleInvoice() {
@@ -769,6 +788,7 @@
     }
 
     function autoVerifySale() {
+      vm.displaySaleLoder = true;
       let autoVerifySaleArray = [];
       // let autoVerifyPurchaseArray = [];
       let saleObject;
@@ -784,6 +804,7 @@
           IGST_Amount: saleRecord.IGST_Amount,
           Item_Total_Including_GST: saleRecord.Item_Total_Including_GST,
           _id: saleRecord._id,
+          isRegisteredUser: saleRecord.isRegisteredUser
         }
         autoVerifySaleArray.push(saleObject);
         // purchaseObject = {
@@ -799,6 +820,7 @@
         // autoVerifyPurchaseArray.push(purchaseObject);
       })
       DashboardService.autoVerifySaleService(autoVerifySaleArray).then((response) => {
+        vm.displaySaleLoder = false;
         noty('success', response.data.message);
         getInvoicesByMonth();
       }).catch((error) => {
@@ -819,6 +841,7 @@
     }
 
     function autoVerifyPurchase() {
+      vm.displayPurchaseLoder = true;
       console.log("purchaseArray", purchaseArray);
 
       let autoVerifyPurchaseArray = [];
@@ -837,7 +860,8 @@
           SGST_Amount: purchaseRecord.SGST_Amount,
           IGST_Amount: purchaseRecord.IGST_Amount,
           Item_Total_Including_GST: purchaseRecord.Item_Total_Including_GST,
-          _id: purchaseRecord._id
+          _id: purchaseRecord._id,
+          isRegisteredUser: purchaseRecord.isRegisteredUser
         }
         autoVerifyPurchaseArray.push(purchaseObject);
       })
@@ -864,6 +888,7 @@
 
 
       DashboardService.autoVerifyPurchaseService(autoVerifyPurchaseArray).then((response) => {
+        vm.displayPurchaseLoder = false;
         noty('success', response.data.message);
         getInvoicesByMonth();
 

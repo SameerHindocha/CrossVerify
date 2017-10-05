@@ -7,21 +7,20 @@
   controller.$inject = ['UserService', '$location', '$route', 'lodash', '$rootScope', '$sce', '$timeout'];
 
   function controller(UserService, $location, $route, lodash, $rootScope, $sce, $timeout) {
-    console.log("CALLED CONTROLLER");
     let vm = this;
     vm.uploadFiles = uploadFiles;
     vm.postFileData = postFileData;
     vm.datePickerChange = datePickerChange;
     // vm.removeInputErrorClass = removeInputErrorClass;
-    vm.dateOfFile = new Date();
+    // vm.dateOfFile = new Date().toString("yyyy-MM");
     vm.saleHeaderArray = [];
     vm.purchaseHeaderArray = [];
     vm.upload = $route.current.params.from;
     $rootScope.activeTab = (vm.upload == 'reUploadPurchase') ? 1 : 0;
-
-    console.log("$route.current.params", $route.current.params);
     vm.dateOfFile = $route.current.params.month;
     vm.displayDate = $route.current.params.month.substring(5, 7);
+    vm.changeSelect = changeSelect;
+    let paremsMonth = $route.current.params.month;
     let year = $route.current.params.month.substring(0, 4);
     $rootScope.userData = {
       Mobile_Number: '',
@@ -95,13 +94,11 @@
       let thisMonth = currentDate.getMonth();
       let year = currentDate.getFullYear();
       vm.displayDate = months[thisMonth] + ',' + year;
-      vm.dateOfFile = new Date(year, thisMonth);
+      // vm.dateOfFile = new Date().toString("yyyy-MM");
     }
 
     function datePickerChange() {
-      console.log("123");
       $timeout(function() {
-        console.log("samir");
         $('.selectpicker').on('change', function() {
           console.log("$(this)", $(this).children());
           $(this).parent().children().first().removeClass("input-error");
@@ -125,11 +122,13 @@
           vm.loaderBackground = false;
           noty('error', 'You have not uploaded the sale file');
         } else {
-          $rootScope.uploadDate = vm.dateOfFile;
+
+          console.log("1 ==>", paremsMonth);
+          $rootScope.uploadDate = paremsMonth;
           let fileObj = {
             saleFile: vm.saleFile,
             id: vm.id,
-            dateOfFile: vm.dateOfFile
+            dateOfFile: paremsMonth
           };
           let urldata = {
             url: "admin-api/read-file-data",
@@ -143,6 +142,8 @@
             vm.salesHeaderFields = response.data.salesHeaderFields;
             vm.saleData = response.data.saleData;
             lodash.forEach(vm.salesHeaderFields, function(field) {
+              field.h = field.h.replace(/[^a-zA-Z0-9-_.]/g, "");
+
               vm.saleHeaderArray.push(field.h);
             });
             $timeout(function() {
@@ -176,11 +177,13 @@
           vm.loaderBackground = false;
           noty('error', 'You have not uploaded the purchase file')
         } else {
-          $rootScope.uploadDate = vm.dateOfFile;
+
+          console.log("2 ==>", paremsMonth);
+          $rootScope.uploadDate = paremsMonth;
           let fileObj = {
             purchaseFile: vm.purchaseFile,
             id: vm.id,
-            dateOfFile: vm.dateOfFile
+            dateOfFile: paremsMonth
           };
           let urldata = {
             url: "admin-api/read-file-data",
@@ -197,6 +200,7 @@
             vm.purchaseData = response.data.purchaseData;
 
             lodash.forEach(vm.purchaseHeaderFields, function(field) {
+              field.h = field.h.replace(/[^a-zA-Z0-9-_.]/g, "");
               vm.purchaseHeaderArray.push(field.h);
             });
             $timeout(function() {
@@ -217,6 +221,7 @@
         }
       }
       if (vm.upload == 'import') {
+        vm.selected = 1;
         if (!vm.purchaseFile || !vm.saleFile) {
           vm.loaderBackground = false;
           noty('error', 'You have not uploaded the sale or purchase file')
@@ -225,12 +230,14 @@
           vm.purchaseHeaderFields = {};
           vm.purchaseData = [];
           vm.saleData = [];
-          $rootScope.uploadDate = vm.dateOfFile;
+
+          console.log("3 ==>", paremsMonth);
+          $rootScope.uploadDate = paremsMonth;
           let fileObj = {
             saleFile: vm.saleFile,
             purchaseFile: vm.purchaseFile,
             id: vm.id,
-            dateOfFile: vm.dateOfFile
+            dateOfFile: paremsMonth
           }
           let urldata = {
             url: "admin-api/read-file-data",
@@ -282,27 +289,35 @@
       }
     }
 
-    function getPreviousMonth() {
-      let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-      let currentDate = new Date();
-      let prevMonth = currentDate.getMonth() - 1;
-      let year = currentDate.getFullYear();
-      if (prevMonth == 11) {
-        year = year - 1;
+    function changeSelect() {
+      console.log("123");
+      if (vm.selected == 1) {
+        vm.selected = 2;
       }
-      vm.displayDate = months[prevMonth] + ',' + year;
-      vm.dateOfFile = new Date(year, prevMonth);
+      // else {
+      //   vm.selected = 1;
+      // }
+
+      console.log("vm.selected", vm.selected);
+
     }
 
     function postFileData() {
       let newPurchaseData = [];
       let newSaleData = [];
-      let postSaleDataFlag = false;
-      let postPurchaseDataFlag = false;
+      let saleRecordInvoiceNo = true;
+      let purchaseRecordInvoiceNo = true;
+      let saleRecordMobileNo = true;
+      let purchaseRecordMobileNo = true;
+      let saleRecordGrossTotal = true;
+      let purchaseRecordGrossTotal = true;
+      let insert = true;
       lodash.forEach(vm.saleData, function(record) {
+        console.log("record", record);
         let newSaleObject = {};
         $('#Sale').find('label').each(function() {
           if (record[$(this).text()]) {
+            console.log("$(this).text()", $(this).text());
             let saleHeaderId = $(this).next().children().first().text().trim();
             newSaleObject[saleHeaderId] = record[$(this).text()].trim();
           }
@@ -329,23 +344,48 @@
 
       lodash.forEach(newSaleData, function(record) {
         if (!record.Invoice_Number) {
-          postSaleDataFlag = true;
+          saleRecordInvoiceNo = false;
+          insert = false;
+        }
+        // if (!record.Mobile_Number) {
+        //   saleRecordMobileNo = false;
+        //   insert = false;
+        // }
+        if (!record.Item_Total_Including_GST) {
+          saleRecordGrossTotal = false;
+          insert = false;
         }
       })
+      if (saleRecordInvoiceNo == false) {
+        noty('error', 'Invoice Number is missing for some record in sale file');
+      }
+      // if (saleRecordMobileNo == false) {
+      //   noty('error', 'Mobile Number is missing for some record in sale file');
+      // }
+      if (saleRecordGrossTotal == false) {
+        noty('error', 'Item Total Including GST is missing for some record in sale file');
+      }
+
       lodash.forEach(newPurchaseData, function(record) {
         if (!record.Invoice_Number) {
-          postPurchaseDataFlag = true;
+          // purchaseRecordInvoiceNo = false;
+          // insert = false;
+        }
+        if (!record.Item_Total_Including_GST) {
+          purchaseRecordGrossTotal = false;
+          insert = false;
         }
       })
-      if (postSaleDataFlag == true) {
-        noty('error', 'Invoice number is missing for some record/records in sale file');
+      if (purchaseRecordInvoiceNo == false) {
+        noty('error', 'Invoice Number is missing in some record in purchase file');
       }
-      if (postPurchaseDataFlag == true) {
-        noty('error', 'Invoice number is missing in some record/records in purchase file');
+      if (purchaseRecordGrossTotal == false) {
+        noty('error', 'Item Total Including GST is missing in some record in purchase file');
       }
-      if (postSaleDataFlag == false && postPurchaseDataFlag == false) {
 
+      if (insert === true) {
         UserService.postFileData(postObj).then((response) => {
+          console.log("response", response);
           $rootScope.missingDataArrayForSale = [];
           $rootScope.missingDataArrayForPurchase = [];
           if (lodash.size(response.data.saleFileData)) {
@@ -369,12 +409,18 @@
               }
             })
           }
+
+          console.log("lodash.size(response.data.purchaseFileData)", lodash.size(response.data.purchaseFileData));
           if (lodash.size(response.data.purchaseFileData)) {
             lodash.forEach(response.data.purchaseFileData, function(row) {
+              console.log("row", row);
               let pushPurchaseFlag = true;
               if (row.Supplier_GSTIN) {
+
+                console.log("row.Supplier_GSTIN", row.Supplier_GSTIN);
                 if (!row.Mobile_Number || !row.Email_Address) {
                   if (lodash.size($rootScope.missingDataArrayForPurchase)) {
+                    console.log("lodash.size($rootScope.missingDataArrayForPurchase)", lodash.size($rootScope.missingDataArrayForPurchase));
                     lodash.forEach($rootScope.missingDataArrayForPurchase, function(value) {
                       if (row.Supplier_GSTIN == value.Supplier_GSTIN) {
                         pushPurchaseFlag = false;
@@ -390,6 +436,10 @@
               }
             })
           }
+
+          console.log("$rootScope.missingDataArrayForSale.length", $rootScope.missingDataArrayForSale.length);
+
+          console.log("$rootScope.missingDataArrayForPurchase.length", $rootScope.missingDataArrayForPurchase.length);
           if ($rootScope.missingDataArrayForSale.length > 0 || $rootScope.missingDataArrayForPurchase.length > 0) {
             $location.path('/user/upload-contact');
           } else {
