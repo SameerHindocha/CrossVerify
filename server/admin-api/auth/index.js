@@ -12,8 +12,6 @@ module.exports = class AuthController {
     app.post('/forgot-password', this.forgotPassword);
     app.get('/get-user-data-from-token/:ResetToken', this.getUserDataFromToken);
     app.put('/reset-password', this.resetPasssword);
-
-
   }
 
   IsLoogedIn(req, res) {
@@ -106,7 +104,6 @@ module.exports = class AuthController {
     let Username;
     let urlLink = `http://${global.config.server.url}:${global.config.server.port}/#/reset-password/` + resetToken;
     let ownerName;
-    console.log("urlLink", urlLink);
     db.User.findOne({ 'email': email }).then((user) => {
       ownerName = (user.ownerName) ? user.ownerName : "user"
       let emailObj = {
@@ -115,11 +112,11 @@ module.exports = class AuthController {
         html: `<div><h4>Hello, ${ownerName}</h4>
                            <p>You’re receiving this email due to a forgot password action you requested.
                             Click on following link to reset your password : </p>
-                            <a href=${urlLink}><h2 style="border: 1px solid #175817;width: 125px;margin: 0px 100px;background: #4DC14D;color: black;font-size: 16px;padding: 25px;">Click Here</h2></a>
+                            <div><a style="background:#368ee0; padding:5px 12px; font-size:14px; color:#fff; text-decoration:none; border-radius:6px;" href=${urlLink}>Click Here</a></div>
                             <p>This email is an automated response to your password request.</p>
                             </br>
-                            <h4>Warm Regards</h4>
-                            <h4>Cross Verify</h4>
+                            <p style="font-weight:bold; margin-bottom:0;">Warm Regards</p>
+                            <p style="font-weight:bold">Cross Verify</p>
                             </div>`
       };
       db.User.update({ '_id': user._id }, {

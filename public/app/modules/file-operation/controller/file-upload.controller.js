@@ -100,7 +100,6 @@
     function datePickerChange() {
       $timeout(function() {
         $('.selectpicker').on('change', function() {
-          console.log("$(this)", $(this).children());
           $(this).parent().children().first().removeClass("input-error");
         });
       }, 4000)
@@ -122,8 +121,6 @@
           vm.loaderBackground = false;
           noty('error', 'You have not uploaded the sale file');
         } else {
-
-          console.log("1 ==>", paremsMonth);
           $rootScope.uploadDate = paremsMonth;
           let fileObj = {
             saleFile: vm.saleFile,
@@ -159,14 +156,6 @@
                 }
               });
             }, 500)
-            // $timeout(function() {
-            //   $('#Purchase').find('button').each(function() {
-            //     if ($(this).find('.filter-option').text() != vm.purchaseHeaderArray[$(this).attr('data-id')]) {
-            //       $(this).addClass("input-error");
-            //       vm.displayLabel = true;
-            //     }
-            //   });
-            // }, 500)
           }).catch((error) => {
             console.log("error", error);
           });
@@ -177,8 +166,6 @@
           vm.loaderBackground = false;
           noty('error', 'You have not uploaded the purchase file')
         } else {
-
-          console.log("2 ==>", paremsMonth);
           $rootScope.uploadDate = paremsMonth;
           let fileObj = {
             purchaseFile: vm.purchaseFile,
@@ -194,11 +181,8 @@
           };
           UserService.readFiles(urldata).then((response) => {
             vm.displayLabel = false;
-
-            console.log("response purchase", response);
             vm.purchaseHeaderFields = response.data.purchaseHeaderFields;
             vm.purchaseData = response.data.purchaseData;
-
             lodash.forEach(vm.purchaseHeaderFields, function(field) {
               field.h = field.h.replace(/[^a-zA-Z0-9-_.]/g, "");
               vm.purchaseHeaderArray.push(field.h);
@@ -230,8 +214,6 @@
           vm.purchaseHeaderFields = {};
           vm.purchaseData = [];
           vm.saleData = [];
-
-          console.log("3 ==>", paremsMonth);
           $rootScope.uploadDate = paremsMonth;
           let fileObj = {
             saleFile: vm.saleFile,
@@ -290,16 +272,9 @@
     }
 
     function changeSelect() {
-      console.log("123");
       if (vm.selected == 1) {
         vm.selected = 2;
       }
-      // else {
-      //   vm.selected = 1;
-      // }
-
-      console.log("vm.selected", vm.selected);
-
     }
 
     function postFileData() {
@@ -313,11 +288,9 @@
       let purchaseRecordGrossTotal = true;
       let insert = true;
       lodash.forEach(vm.saleData, function(record) {
-        console.log("record", record);
         let newSaleObject = {};
         $('#Sale').find('label').each(function() {
           if (record[$(this).text()]) {
-            console.log("$(this).text()", $(this).text());
             let saleHeaderId = $(this).next().children().first().text().trim();
             newSaleObject[saleHeaderId] = record[$(this).text()].trim();
           }
@@ -385,7 +358,6 @@
 
       if (insert === true) {
         UserService.postFileData(postObj).then((response) => {
-          console.log("response", response);
           $rootScope.missingDataArrayForSale = [];
           $rootScope.missingDataArrayForPurchase = [];
           if (lodash.size(response.data.saleFileData)) {
@@ -409,18 +381,12 @@
               }
             })
           }
-
-          console.log("lodash.size(response.data.purchaseFileData)", lodash.size(response.data.purchaseFileData));
           if (lodash.size(response.data.purchaseFileData)) {
             lodash.forEach(response.data.purchaseFileData, function(row) {
-              console.log("row", row);
               let pushPurchaseFlag = true;
               if (row.Supplier_GSTIN) {
-
-                console.log("row.Supplier_GSTIN", row.Supplier_GSTIN);
                 if (!row.Mobile_Number || !row.Email_Address) {
                   if (lodash.size($rootScope.missingDataArrayForPurchase)) {
-                    console.log("lodash.size($rootScope.missingDataArrayForPurchase)", lodash.size($rootScope.missingDataArrayForPurchase));
                     lodash.forEach($rootScope.missingDataArrayForPurchase, function(value) {
                       if (row.Supplier_GSTIN == value.Supplier_GSTIN) {
                         pushPurchaseFlag = false;
@@ -436,10 +402,6 @@
               }
             })
           }
-
-          console.log("$rootScope.missingDataArrayForSale.length", $rootScope.missingDataArrayForSale.length);
-
-          console.log("$rootScope.missingDataArrayForPurchase.length", $rootScope.missingDataArrayForPurchase.length);
           if ($rootScope.missingDataArrayForSale.length > 0 || $rootScope.missingDataArrayForPurchase.length > 0) {
             $location.path('/user/upload-contact');
           } else {
@@ -450,20 +412,6 @@
         })
       }
     }
-
-    // $rootScope.updateContact = function(missingDataArrayForSale, missingDataArrayForPurchase) {
-    //   let updateObj = {
-    //     dateOfFile: $rootScope.uploadDate,
-    //     updatedSaleFileData: missingDataArrayForSale,
-    //     updatedPurchaseFileData: missingDataArrayForPurchase
-    //   }
-    //   UserService.updateContact(updateObj).then((response) => {
-    //     noty('success', response.data.message);
-    //     $location.path('/dashboard');
-    //   }).catch((error) => {
-    //     noty('error', error.data.message);
-    //   })
-    // }
 
   }
 })();

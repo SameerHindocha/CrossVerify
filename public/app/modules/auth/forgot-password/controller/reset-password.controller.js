@@ -18,15 +18,13 @@
         ResetToken: ResetToken
       };
       AuthService.getDataFromToken(obj).then((response) => {
-        console.log("response", response);
         vm.email = response.data.user.email;
-        // noty('success', response.data.message);
-        // $location.route('/login');
+        noty('success', response.data.message);
+        $location.route('/login');
       }).catch((error) => {
         noty('error', 'Your Reset Password Token has been Expired');
         $location.path('/login');
       })
-
     }
 
     function resetPassword() {
@@ -46,8 +44,6 @@
       } else {
         noty('error', 'Password and Confirm password must match');
       }
-
-
     }
   }
 })();

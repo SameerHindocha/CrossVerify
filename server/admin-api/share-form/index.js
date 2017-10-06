@@ -16,7 +16,6 @@ module.exports = class ShareFormController {
     app.post('/admin-api/send-monthly-sms', this.sendMonthlySMS);
     app.post('/admin-api/send-all-monthly-mail', this.sendAllMonthlyMail)
     app.post('/admin-api/send-all-monthly-sms', this.sendAllMonthlySMS);
-
   }
 
   sendMail(req, res) {
@@ -71,7 +70,6 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
   }
 
   sendConfirmationMail(req, res) {
-    console.log("req.body.data", req.body.data);
     let emailObj;
     let email = req.body.data.Email_Address;
     let stringifiedData = JSON.stringify(req.body.data);
@@ -227,9 +225,6 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
          `
         }
       };
-
-      console.log("email", email);
-      console.log("emailObj", emailObj);
       SendMail.MailFunction(emailObj, email).then(function(data) {
         res.send({ message: "Confirmation Email has been sent successfully to your registered Email" })
       }, function(err) {
@@ -241,7 +236,6 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
   }
 
   sendConfirmationSMS(req, res) {
-
     let uri, link, msg, data;
     session = req.session;
     if (req.session.isLoggedIn == 'Y') {
@@ -265,13 +259,11 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
     let uri, link, msg, data;
     session = req.session;
     msg = req.body.otp + ` is the OTP for verifying your mobile with CrossVerify`
-    console.log("msg", msg);
     data = {
       mobile: req.body.mobile,
       message: msg
     }
     SendSMS.SMSFunction(data, req, res);
-
   }
 
   sendOTPEmail(req, res) {
@@ -282,15 +274,11 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
       subject: `One Time Password from CrossVerify`, // Subject line
       html: req.body.otp + ' is the OTP for verifying your email with CrossVerify',
     };
-    console.log("emailObj", emailObj);
-
-    console.log("email", email);
     SendMail.MailFunction(emailObj, email).then(function(data) {
       res.send({ message: "OTP has been sent to your registered Email" })
     }, function(err) {
       res.send(err)
     });
-
   }
 
 
@@ -330,16 +318,13 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
       }, 5000)
     } else {
       res.redirect(500, '/logout');
-
     }
   }
 
   sendMonthlySMS(req, res) {
-    console.log('sendMonthlySMS body', req.body);
     let uri, link, msg, data;
     let senderName = req.body.senderName;
     let month = req.body.month;
-    console.log("month : ", month);
     let type = (req.body.category == 0) ? 'Sale' : 'Purchase';
     session = req.session;
     month = month.substring(5, 7);
@@ -368,8 +353,6 @@ PLEASE CLICK ON THE FOLLOWING LINK TO UPDATE YOUR DETAILS : `
     month = month.substring(5, 7);
     month = getMonthName(month);
   }
-
-
 
 }
 

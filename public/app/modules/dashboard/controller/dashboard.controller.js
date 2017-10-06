@@ -14,7 +14,6 @@
     vm.dateOfFile = '07-02-2017'; //GST Applied From 1st July, 2017
     let date = new Date(); // 2012-03-31
     date.setMonth(date.getMonth() - 1);
-
     vm.filterByMonth = date;
     vm.redirectToImportPage = redirectToImportPage;
     vm.editSaleRow = editSaleRow;
@@ -84,14 +83,12 @@
     }
 
     function saleSendToAllEmailAndSMS() {
-      console.log("saleArray", saleArray);
+
     }
 
     function purchaseSendToAllEmailAndSMS() {
-      console.log("purchaseArray", purchaseArray);
+
     }
-
-
 
     function sendMonthlyEmail(customerGSTIN, invoiceNo, event, email) {
       let category;
@@ -141,7 +138,6 @@
       let from;
       if (sourceElement) {
         from = sourceElement.id;
-        console.log("from", from);
       } else if (event.target) {
         from = event.target.id;
       }
@@ -153,7 +149,6 @@
     }
 
     function getInvoicesByMonth() {
-
       saleArray = [];
       purchaseArray = [];
       let filterMonth;
@@ -171,18 +166,15 @@
           month: filterMonth
         }
         DashboardService.filterInvoicesByMonth(monthObj).then((response) => {
-          console.log("response", response);
           vm.invoiceData = response;
           vm.saleInvoiceData = response.data.filteredSaleFileData;
           vm.purchaseInvoiceData = response.data.filteredPurchaseFileData;
           finalSaleData = response.data.filteredSaleFileData;
           finalPurchaseData = response.data.filteredPurchaseFileData;
-
           if (lodash.size(response.data.filteredSaleFileData)) {
             vm.saleFileDataToFilter = response.data.filteredSaleFileData;
             lodash.forEach(response.data.filteredSaleFileData, function(record) {
               //Share Mail to All
-
               if (record.Customer_Billing_GSTIN) {
                 let link = 'temporary-dashboard/' + currentUser.GSTNo + '/' + record.Customer_Billing_GSTIN + '/' + vm.filterByMonth.toString("yyyy-MM") + '/' + record.Invoice_Number + '/' + 0;
                 let linkObj = {
@@ -200,28 +192,8 @@
                   link: link,
                   isRegisteredUser: record.isRegisteredUser
                 }
-
-
-
-                // customerGSTIN, invoiceNo, event, mobile
-                // 'temporary-dashboard/' + currentUser.GSTNo + '/' + customerGSTIN + '/' + month + '/' + invoiceNo + '/' + category;
-                //http://localhost:8020/#/temporary-dashboard/27AAACB7403R1ZD/27AAACP7444E1ZH/2017-09/054 /1
                 saleArray.push(linkObj);
-
-
-
-
-
-
-
-                // customerGSTIN, invoiceNo, event, mobile
-                // 'temporary-dashboard/' + currentUser.GSTNo + '/' + customerGSTIN + '/' + month + '/' + invoiceNo + '/' + category;
-                //http://localhost:8020/#/temporary-dashboard/27AAACB7403R1ZD/27AAACP7444E1ZH/2017-09/054 /1
-
-
               }
-
-
               if (record.Mobile_Number) {
                 mobileSaleArray.push(record.Mobile_Number);
               }
@@ -234,16 +206,11 @@
               }
               totalSaleInvoice++;
             })
-
-
           }
           if (lodash.size(response.data.filteredPurchaseFileData)) {
             vm.purchaseFileDataToFilter = response.data.filteredPurchaseFileData;
             lodash.forEach(response.data.filteredPurchaseFileData, function(record) {
-
-
               if (record.Supplier_GSTIN) {
-
                 let link = 'temporary-dashboard/' + currentUser.GSTNo + '/' + record.Supplier_GSTIN + '/' + vm.filterByMonth.toString("yyyy-MM") + '/' + record.Invoice_Number + '/' + 1;
                 let linkObj = {
                   Email_Address: record.Email_Address,
@@ -260,14 +227,8 @@
                   link: link,
                   isRegisteredUser: record.isRegisteredUser
                 }
-
-
-                // customerGSTIN, invoiceNo, event, mobile
-                // 'temporary-dashboard/' + currentUser.GSTNo + '/' + customerGSTIN + '/' + month + '/' + invoiceNo + '/' + category;
-                //http://localhost:8020/#/temporary-dashboard/27AAACB7403R1ZD/27AAACP7444E1ZH/2017-09/054 /1
                 purchaseArray.push(linkObj);
               }
-
               if (record.status == 'verified') {
                 verifiedPurchase++;
               } else if (record.status == 'mismatched') {
@@ -278,8 +239,6 @@
               totalPurchaseInvoice++;
             })
           }
-
-          console.log("purchaseArray", purchaseArray);
           vm.verifiedSale = verifiedSale;
           vm.mismatchedSale = mismatchedSale;
           vm.notVerifiedSale = notVerifiedSale;
@@ -290,7 +249,7 @@
           vm.notVerifiedPurchase = notVerifiedPurchase;
           vm.totalPurchaseInvoice = totalPurchaseInvoice;
         }).catch((error) => {
-          // console.log("error------", error);
+
         })
       }
     }
@@ -298,8 +257,6 @@
 
 
     function selfVerify(recordId, event) {
-      // console.log("event= = = > > >", event);
-      console.log("target= = = > > >", event);
       let parent;
       if (event.srcElement) {
         parent = event.srcElement.parentElement.parentElement;
@@ -350,10 +307,6 @@
     }
 
     function correctPurchase(invoiceNo, GSTIN, event) {
-      // console.log($(this).prev().prev().attr('class'));
-      // console.log($(this).parent().children().first());
-      // console.log($(this).attr('class'));
-
       let status;
       let parent;
       let saleObject;
@@ -367,7 +320,6 @@
       } else if (event.target) { // For Firefox
         parent = event.target.parentNode.parentNode.parentNode;
       }
-
       if (event.toElement.id == 'correctSale') {
         status = 'verified';
         salePurchaseFlag = 0;
@@ -381,35 +333,6 @@
         status = 'mismatched';
         salePurchaseFlag = 1;
       }
-
-      // console.log("status", status);
-      // console.log("salePurchaseFlag", salePurchaseFlag);
-
-      // if ($(parent).attr('class') == 'ng-scope mismatched') {
-      //   if (status == 'verified' && salePurchaseFlag == 0) {
-      //     verifiedSale++;
-      //     mismatchedSale--;
-      //   }
-      //   if (status == 'verified' && salePurchaseFlag == 1) {
-      //     verifiedPurchase++;
-      //     mismatchedPurchase--;
-      //   }
-      //   skipSale = true;
-      //   skipPurchase = true;
-      // }
-      // if (status == 'verified') {
-      //   $(parent).addClass("verified");
-      //   $(parent).removeClass("mismatched");
-
-      //   console.log("$(parent).find('#corectWrongBtn')", $(parent).find('#corectWrongBtn'));
-      //   console.log("$(parent).find('#corectWrongBtn')", $(parent).find('#corectWrongBtn')[0].children[0]);
-      //   $(parent).find('#corectWrongBtn')[0].children[0].remove();
-
-      // } else {
-      //   $(parent).addClass("mismatched");
-      //   $(parent).removeClass("verified");
-      // }
-
       if (salePurchaseFlag == 0) { //Correct or Wrong From Sale
         saleObject = {
           date: month,
@@ -418,7 +341,6 @@
           GSTINOfRecord: GSTIN,
           currentUserGSTIN: currentUser.GSTNo
         }
-
         purchaseObject = {
           date: month,
           status: status,
@@ -426,19 +348,7 @@
           GSTINOfRecord: currentUser.GSTNo,
           currentUserGSTIN: GSTIN
         }
-
-        // if (skipSale == true) {
-        //   console.log("skipSale == true");
-        // } else if ($(parent).attr('class') == 'ng-scope mismatched') {
-        //   notVerifiedSale--;
-        //   mismatchedSale++;
-        // } else {
-        //   verifiedSale++;
-        //   notVerifiedSale--;
-        // }
-        // updateSummary();
       }
-
       if (salePurchaseFlag == 1) { //Correct or Wrong From Purchase
         purchaseObject = {
           date: month,
@@ -447,7 +357,6 @@
           GSTINOfRecord: GSTIN,
           currentUserGSTIN: currentUser.GSTNo
         }
-
         saleObject = {
           date: month,
           status: status,
@@ -455,9 +364,7 @@
           GSTINOfRecord: currentUser.GSTNo,
           currentUserGSTIN: GSTIN
         }
-        if (skipPurchase == true) {
-          console.log("skipPurchase == true");
-        } else if ($(parent).attr('class') == 'ng-scope mismatched') {
+        if (skipPurchase == true) {} else if ($(parent).attr('class') == 'ng-scope mismatched') {
           notVerifiedPurchase--;
           mismatchedPurchase++;
         } else {
@@ -473,22 +380,17 @@
       }).catch((error) => {
         noty('error', error.data.message);
       })
-
       DashboardService.changeSaleStatus(saleObject).then((response) => {
-        // getInvoicesByMonth();
-        // noty('success', response.data.message);
         noty('success', 'Sale Status Changed Successfully');
       }).catch((error) => {
         noty('error', error.data.message);
       })
-
     }
 
     function updateSummary() {
       vm.verifiedSale = verifiedSale;
       vm.mismatchedSale = mismatchedSale;
       vm.notVerifiedSale = notVerifiedSale;
-
       vm.verifiedPurchase = verifiedPurchase;
       vm.mismatchedPurchase = mismatchedPurchase;
       vm.notVerifiedPurchase = notVerifiedPurchase;
@@ -529,22 +431,11 @@
           } else {
             noty('error', 'Email Address Not Found');
           }
-          // if (data.Mobile_Number) {
-          //   let postObj = {
-          //     data: data
-          //   }
-          //   DashboardService.sendConfirmationSMS(postObj).then((response) => {
-          //     noty('success', response.data.message);
-          //   }).catch((error) => {
-          //     noty('error', error.data.message);
-          //   })
-          // }
         }
       }).catch((error) => {
         noty('error', error.data.message);
       })
     }
-
 
     function editpurchaseRow(data) {
       if (vm.filterByMonth) {
@@ -570,16 +461,6 @@
           } else {
             noty('error', 'Email Address Not Found');
           }
-          // if (data.Mobile_Number) {
-          //   let postObj = {
-          //     data: data
-          //   }
-          //   DashboardService.sendConfirmationSMS(postObj).then((response) => {
-          //     noty('success', response.data.message);
-          //   }).catch((error) => {
-          //     noty('error', error.data.message);
-          //   })
-          // }
         }
       }).catch((error) => {
         noty('error', error.data.message);
@@ -609,7 +490,6 @@
           function(item) {
             return searchUtil(item, vm.saleSearchText);
           });
-
         vm.saleInvoiceData = vm.filteredSaleList;
       }
     }
@@ -646,8 +526,18 @@
     }
 
     function clearPurchasesearch() {
+      console.log("123");
       vm.purchaseSearchText = '';
     }
+
+    setTimeout(function() {
+      $('button.remove-icon').click(function() {
+        console.log('hello');
+        $(this).prev('input').val('');
+      });
+    }, 1000);
+
+
 
     function filterTotalSaleInvoice() {
       if (vm.filterByMonth) {
@@ -790,7 +680,6 @@
     function autoVerifySale() {
       vm.displaySaleLoder = true;
       let autoVerifySaleArray = [];
-      // let autoVerifyPurchaseArray = [];
       let saleObject;
       let purchaseObject;
       lodash.forEach(saleArray, function(saleRecord) {
@@ -807,17 +696,6 @@
           isRegisteredUser: saleRecord.isRegisteredUser
         }
         autoVerifySaleArray.push(saleObject);
-        // purchaseObject = {
-        //   date: saleRecord.month,
-        //   Invoice_Number: saleRecord.Invoice_Number,
-        //   GSTINOfRecord: saleRecord.currentUserGSTIN,
-        //   currentUserGSTIN: saleRecord.GSTINOfRecord,
-        //   CGST_Amount: saleRecord.CGST_Amount,
-        //   SGST_Amount: saleRecord.SGST_Amount,
-        //   IGST_Amount: saleRecord.IGST_Amount,
-        //   Item_Total_Including_GST: saleRecord.Item_Total_Including_GST,
-        // }
-        // autoVerifyPurchaseArray.push(purchaseObject);
       })
       DashboardService.autoVerifySaleService(autoVerifySaleArray).then((response) => {
         vm.displaySaleLoder = false;
@@ -827,29 +705,13 @@
         noty('error', error.data.message);
       })
 
-
-      // DashboardService.autoVerifyPurchaseService(autoVerifyPurchaseArray).then((response) => {
-      //   noty('success', response.data.message);
-      // }).catch((error) => {
-      //   noty('error', error.data.message);
-      // })
-
-
-      console.log("autoVerifySaleArray", autoVerifySaleArray);
-
-
     }
 
     function autoVerifyPurchase() {
       vm.displayPurchaseLoder = true;
-      console.log("purchaseArray", purchaseArray);
-
       let autoVerifyPurchaseArray = [];
-      // let autoVerifySaleArray = [];
-
       let purchaseObject;
       let saleObject;
-
       lodash.forEach(purchaseArray, function(purchaseRecord) {
         purchaseObject = {
           date: purchaseRecord.month,
@@ -865,40 +727,14 @@
         }
         autoVerifyPurchaseArray.push(purchaseObject);
       })
-      console.log("autoVerifyPurchaseArray------", autoVerifyPurchaseArray);
-      // saleObject = {
-      //   date: purchaseRecord.month,
-      //   Invoice_Number: purchaseRecord.Invoice_Number,
-      //   GSTINOfRecord: purchaseRecord.currentUserGSTIN,
-      //   currentUserGSTIN: purchaseRecord.GSTINOfRecord,
-      //   CGST_Amount: purchaseRecord.CGST_Amount,
-      //   SGST_Amount: purchaseRecord.SGST_Amount,
-      //   IGST_Amount: purchaseRecord.IGST_Amount,
-      //   Item_Total_Including_GST: purchaseRecord.Item_Total_Including_GST,
-      // }
-      // autoVerifySaleArray.push(saleObject);
-
-
-      // DashboardService.autoVerifySaleService(autoVerifySaleArray).then((response) => {
-      //   noty('success', response.data.message);
-      //   getInvoicesByMonth();
-      // }).catch((error) => {
-      //   noty('error', error.data.message);
-      // })
-
-
       DashboardService.autoVerifyPurchaseService(autoVerifyPurchaseArray).then((response) => {
         vm.displayPurchaseLoder = false;
         noty('success', response.data.message);
         getInvoicesByMonth();
-
       }).catch((error) => {
         noty('error', error.data.message);
       })
-
-
     }
-
 
   }
 })();

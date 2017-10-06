@@ -1,10 +1,8 @@
 <header></header>
-<!-- <div ng-class="{loderBackground : (showFieldset && vm.saleData.length<1  && vm.purchaseData.length<1 && vm.displayLabel==false && vm.loaderBackground==true) || (showFieldset && vm.purchaseData.length<1 && vm.saleData.length<1 && vm.displayLabel==false && vm.loaderBackground==true)}"> -->
 <div class="container registrationForm registrationFormDisplay fileUpload">
   <div class="row">
     <div class="col-md-12">
       <h2>File Uploads</h2>
-      <!-- <i class="fa fa-info-circle" aria-hidden="true"></i> -->
     </div>
     <div class="inputGroupWrap col-sm-4">
       <label>Date</label>
@@ -29,24 +27,20 @@
       <div class="infoBtn">
         <i class="fa fa-info-circle" aria-hidden="true"></i>
         <div class="infoText">
-          <lable> 1) File should contain header in first Row </lable>
-          <br>
-          <lable> 2) File should not contain any other data such as total </lable>
-          <br>
-          <lable> 3) File should have Invoice number and Total value including GST </lable>
-          <br>
-          <lable> 4) Special characters are not allowed in file header</lable>
+          <ol>
+            <li>File should contain header in first Row </li>
+            <li>File should not contain any other data such as total </li>
+            <li>File should have Invoice number and Total value including GST </li>
+            <li>Special characters are not allowed in file header</li>
+          </ol>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- dashd kjah dahskj hdkj sadsa dasjkdjs dasjdksa css line 654 .infoText -->
-<!-- && vm.purchaseData.length>0 && vm.saleData.length>0 && vm.displayLabel==true" -->
 <div class="container-fluid ">
   <div class="row tabWrap ">
     <div class="headerValSettings col-md-12 " ng-show="(showFieldset==true && vm.purchaseData.length>0 && vm.displayLabel==true) || (showFieldset==true && vm.saleData.length>0 && vm.displayLabel==true)">
-      {{vm.selected}}
       <uib-tabset active="activeTab">
         <uib-tab index="0" heading="Purchase File" ng-hide="vm.upload =='reUploadSale'">
           <div class="row" id="Purchase">
@@ -64,8 +58,6 @@
             </div>
           </div>
           <div class="finishBtn">
-            <input type="button" class="btn btn-primary" value="Next" ng-click="vm.changeSelect()">
-            <a href="" ng-click="select($event)" class="nav-link ng-binding">Sales File</a>
           </div>
         </uib-tab>
         <uib-tab index="1" heading="Sales File" ng-hide="vm.upload =='reUploadPurchase'">
@@ -91,7 +83,6 @@
     </div>
   </div>
 </div>
-<!-- </div> -->
 <div class="loaderOverlay" ng-if="(showFieldset && vm.saleData.length<1  && vm.purchaseData.length<1 && vm.displayLabel==false && vm.loaderBackground==true) || (showFieldset && vm.purchaseData.length<1 && vm.saleData.length<1 && vm.displayLabel==false && vm.loaderBackground==true)">
   <div id="circularG">
     <div id="circularG_1" class="circularG"></div>

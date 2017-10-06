@@ -16,13 +16,13 @@
     function activate() {}
 
     function forgotPassword() {
-
-      console.log("vm.email", vm.email);
+      vm.showLoader = true;
       let obj = {
         Email: vm.email
       }
       AuthService.forgotPassword(obj).then((response) => {
         noty('success', response.data.message);
+        vm.showLoader = false;
         $location.path('/login');
       }).catch((error) => {
         noty('error', error.data.message);

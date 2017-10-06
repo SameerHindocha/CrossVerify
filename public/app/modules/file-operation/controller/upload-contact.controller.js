@@ -19,8 +19,6 @@
         updatedSaleFileData: missingDataArrayForSale,
         updatedPurchaseFileData: missingDataArrayForPurchase
       }
-
-      console.log("updateObj", updateObj);
       UserService.updateContact(updateObj).then((response) => {
         noty('success', response.data.message);
         $location.path('/dashboard');

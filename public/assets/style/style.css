@@ -88,6 +88,48 @@ select option {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*TMP*/
 
 #searchclear {
@@ -110,6 +152,48 @@ select option {
 .search-group .search-icon i {
   line-height: 2.0em;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -410,6 +494,7 @@ input[type="file"] {
 
 ng-view {
   display: block;
+  position: relative;
 }
 
 a {
@@ -590,6 +675,48 @@ fieldset {
   pointer-events: none;
 }
 
+.detailTable .invoiceTable .table td .verificationSign {
+  position: relative;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.detailTable .invoiceTable .table td .verificationSign i.fa {
+  position: absolute;
+  padding: 2px 4px 4px 1px;
+  top: 0;
+  left: 0;
+  margin-left: 2px;
+  font-size: 14px;
+}
+
+.detailTable .invoiceTable .table td .verificationSign .autoVerified {
+  font-weight: normal;
+  font-size: 12px;
+  color: #368ee0;
+}
+
+.detailTable .invoiceTable .table td .verificationSign .autoVerified i.fa {
+  color: #398439;
+}
+
+.detailTable .invoiceTable .table td .verificationSign .manualVerified {
+  font-weight: normal;
+  font-size: 12px;
+  color: #33b64e;
+}
+
+.detailTable .invoiceTable .table td .verificationSign .manualVerified i.fa {
+  color: #398439;
+}
+
+.detailTable .invoiceTable .table td .verificationSign .notVerified {
+  font-weight: normal;
+  font-size: 12px;
+  color: #ccc;
+}
+
+
 .detailTable .invoiceTable .table td .btn {
   font-size: 12px;
   padding: 3px 8px;
@@ -684,6 +811,12 @@ fieldset {
   border-radius: 6px;
 }
 
+.fileUpload .infoBtn .infoText ol,
+.fileUpload .infoBtn .infoText li {
+  padding-left: 0;
+  margin-left: 10px;
+}
+
 .fileUpload .infoBtn:hover .infoText {
   display: block;
 }
@@ -734,6 +867,23 @@ fieldset {
   -ms-transform: translateX(-20px);
   transform: translateX(-30px);
   color: #888888;
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  outline: none;
+  z-index: 999;
+  position: relative;
+}
+
+.search-group .remove-icon:hover,
+.search-group .remove-icon:focus {
+  border: none;
+  background: none;
+  box-shadow: none;
+  outline: none;
 }
 
 
@@ -1620,6 +1770,48 @@ table tbody .fa-minus {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 LODER
  */
@@ -1818,6 +2010,48 @@ LODER
     -moz-transform: scale(.3);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2216,6 +2450,7 @@ LODER
     vertical-align: middle;
     padding-left: 0;
   }
+
 
   .shareLinks.navbar-nav {
     margin: 0;

@@ -128,9 +128,6 @@
                 vm.address = response.data.matchedSaleRecords[0].Customer_Billing_Address;
               }
               if (response.data.matchedSaleRecords[0].Mobile_Number) {
-                console.log("response123", response.data.matchedSaleRecords[0]);
-                console.log("response456", response.data.matchedSaleRecords[0].Mobile_Number);
-
                 vm.mobile1 = response.data.matchedSaleRecords[0].Mobile_Number;
               }
               if (response.data.matchedSaleRecords[0].Customer_Billing_GSTIN) {
@@ -219,7 +216,6 @@
       })
     }
 
-
     function addUser() {
       let postObj = {
         companyName: vm.companyName,
@@ -230,9 +226,7 @@
         ownerName: vm.ownerName,
         address: vm.address,
         mobile1: vm.mobile1,
-        // mobile2: vm.mobile2,
         landline: vm.landline,
-        // panNo: vm.panNo.toUpperCase(),
         GSTNo: vm.GSTNo.toUpperCase(),
         password: vm.password,
         saleFile: saleFile,
